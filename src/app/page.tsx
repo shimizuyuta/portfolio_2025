@@ -23,53 +23,40 @@ export default function Home() {
   return (
     <main className="">
       {/* Hero Section */}
-
-      <section className="relative w-full h-[700px] bg-white text-gray-900 overflow-hidden">
-        <div className="max-w-7xl mx-auto h-full flex flex-col md:flex-row items-center justify-between px-6 md:px-12">
-          {/* 左カラム：テキスト */}
-          <div className="flex-1 text-center md:text-left relative z-10">
-            <p className="text-sky-600 text-sm mb-2">
-              Welcome to my portfolio!
-            </p>
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              Hi, I’m <span className="text-sky-600">Yuta Shimizu</span>
-            </h1>
-            <p className="text-lg md:text-xl mb-6 text-muted-foreground leading-relaxed">
-              フリーランスエンジニア & 社会福祉士
-              <br />
-              AI・DX活用、Web開発、マーケティング支援を通じて
-              <br />
-              中小企業や個人事業主をサポートしています
-            </p>
-            <div className="flex gap-4 justify-center md:justify-start">
-              <button className="px-6 py-3 rounded-lg bg-sky-600 hover:bg-sky-500 text-white font-medium shadow-sm transition">
-                Portfolio
-              </button>
-              <button className="px-6 py-3 rounded-lg border border-sky-600 text-sky-600 hover:bg-sky-50 font-medium transition">
-                Contact →
-              </button>
-            </div>
-          </div>
-
-          {/* 右カラム：プロフィール画像 */}
-          <div className="flex-1 flex justify-center relative z-10 mt-10 md:mt-0">
-            <div className="rounded-3xl overflow-hidden shadow-lg border border-gray-200">
-              <Image
-                src="/images/hero.png" // プロフィール画像
-                alt="プロフィール画像"
-                width={400}
-                height={500}
-                className="object-cover"
-                priority
-              />
-            </div>
-          </div>
+      {/* Hero Section - 改善版 */}
+{/* Hero Section - SP横並び対応版 */}
+<section id="hero" className="relative w-full min-h-screen bg-white text-gray-900 overflow-hidden">
+  <div className="max-w-7xl mx-auto min-h-screen flex items-center justify-center px-4 md:px-6 lg:px-12">
+    
+    {/* 全デバイスで横並び */}
+    <div className="w-full flex items-center justify-between gap-4 md:gap-8 lg:gap-12">
+      
+      {/* 左側: テキストエリア */}
+      <div className="flex-1 text-left relative z-10">
+        <p className="text-sky-600 text-xs sm:text-sm md:text-base mb-2 md:mb-3 font-medium">
+          Welcome to my portfolio!
+        </p>
+        <h1 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-3 md:mb-6 leading-tight">
+          Hi, I'm <br />
+          <span className="text-sky-600">Yuta Shimizu</span>
+        </h1>
+        <div className="space-y-1 sm:space-y-2 md:space-y-3 mb-4 md:mb-8 text-xs sm:text-sm md:text-lg lg:text-xl text-muted-foreground leading-relaxed">
+          <p className="font-medium">フリーランスエンジニア & 社会福祉士</p>
+          <p className="hidden sm:block">AI・DXサポート、Web開発、マーケティング支援を通じて</p>
+          <p className="hidden sm:block">中小企業や個人事業主をサポートしています。</p>
+          <p className="sm:hidden">AI・DX・Web開発・マーケティング支援で中小企業をサポート</p>
         </div>
-      </section>
-
+      </div>
+    </div>
+  </div>
+  
+  {/* 背景装飾要素 */}
+  <div className="absolute top-20 right-10 w-16 sm:w-24 md:w-32 h-16 sm:h-24 md:h-32 bg-sky-100 rounded-full opacity-30 blur-2xl md:blur-3xl"></div>
+  <div className="absolute bottom-20 left-10 w-12 sm:w-16 md:w-24 h-12 sm:h-16 md:h-24 bg-cyan-100 rounded-full opacity-40 blur-xl md:blur-2xl"></div>
+</section>
       {/* About Section */}
 
-      <section className="max-w-7xl mx-auto py-20 px-6">
+      <section id="about" className="max-w-7xl mx-auto py-20 px-6">
         <h2 className="text-3xl font-bold text-center mb-16">About Me</h2>
 
         <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -115,44 +102,123 @@ export default function Home() {
       </section>
 
       {/* Services Section */}
-      <section className="w-full bg-cyan-50 py-16">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-10">Services</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <Card className="p-6 text-center">
-              <Brain className="w-10 h-10 text-cyan-600 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold mb-2">AI・DX活用支援</h3>
-              <p className="text-muted-foreground">
-                業務効率化、自動化の仕組みづくりを支援します。
-              </p>
+      <section
+        id="services"
+        className="w-full bg-cyan-50 py-12 md:py-16 xl:py-20"
+      >
+        <div className="max-w-7xl mx-auto px-4 md:px-6 xl:px-8">
+          <h2 className="text-2xl md:text-3xl xl:text-4xl font-bold text-center mb-8 md:mb-12 xl:mb-16">
+            Services
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+            {/* AI・DX活用支援 - 画像付き */}
+            <Card className="overflow-hidden hover:shadow-lg transition-shadow duration-300">
+              <div className="relative">
+                <div className="w-full h-48 md:h-56 bg-gradient-to-r from-cyan-100 to-blue-100 flex items-center justify-center">
+                  <div className="text-center">
+                    <Brain className="w-12 h-12 md:w-16 md:h-16 text-cyan-600 mx-auto mb-2" />
+                    <span className="text-sm text-cyan-700 font-medium">
+                      AI・DX活用支援
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-4 md:p-6">
+                <h3 className="text-lg md:text-xl font-semibold mb-3 flex items-center gap-2">
+                  <Brain className="w-5 h-5 md:w-6 md:h-6 text-cyan-600 flex-shrink-0" />
+                  <span className="leading-tight">AI・DX活用支援</span>
+                </h3>
+
+                <p className="text-sm md:text-base text-gray-600 leading-relaxed">
+                  業務効率化、自動化の仕組みづくりを支援します。
+                </p>
+              </div>
             </Card>
-            <Card className="p-6 text-center">
-              <BarChart3 className="w-10 h-10 text-cyan-600 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Webマーケティング</h3>
-              <p className="text-muted-foreground">
-                広告運用や効果測定を通じて売上向上をサポート。
-              </p>
+
+            {/* Webマーケティング - 画像付き */}
+            <Card className="overflow-hidden hover:shadow-lg transition-shadow duration-300">
+              <div className="relative">
+                <div className="w-full h-48 md:h-56 bg-gradient-to-r from-cyan-100 to-blue-100 flex items-center justify-center">
+                  <div className="text-center">
+                    <BarChart3 className="w-12 h-12 md:w-16 md:h-16 text-cyan-600 mx-auto mb-2" />
+                    <span className="text-sm text-cyan-700 font-medium">
+                      Webマーケティング
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-4 md:p-6">
+                <h3 className="text-lg md:text-xl font-semibold mb-3 flex items-center gap-2">
+                  <BarChart3 className="w-5 h-5 md:w-6 md:h-6 text-cyan-600 flex-shrink-0" />
+                  <span className="leading-tight">Webマーケティング</span>
+                </h3>
+
+                <p className="text-sm md:text-base text-gray-600 leading-relaxed">
+                  広告運用や効果測定を通じて売上向上をサポート。
+                </p>
+              </div>
             </Card>
-            <Card className="p-6 text-center">
-              <MessageSquare className="w-10 h-10 text-cyan-600 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold mb-2">LINE公式構築</h3>
-              <p className="text-muted-foreground">
-                顧客対応や販促を効率化するLINE活用を実現。
-              </p>
+
+            {/* LINE公式構築 - 画像付き */}
+            <Card className="overflow-hidden hover:shadow-lg transition-shadow duration-300">
+              <div className="relative">
+                <div className="w-full h-48 md:h-56 bg-gradient-to-r from-cyan-100 to-blue-100 flex items-center justify-center">
+                  <div className="text-center">
+                    <MessageSquare className="w-12 h-12 md:w-16 md:h-16 text-cyan-600 mx-auto mb-2" />
+                    <span className="text-sm text-cyan-700 font-medium">
+                      LINE公式構築
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-4 md:p-6">
+                <h3 className="text-lg md:text-xl font-semibold mb-3 flex items-center gap-2">
+                  <MessageSquare className="w-5 h-5 md:w-6 md:h-6 text-cyan-600 flex-shrink-0" />
+                  <span className="leading-tight">LINE公式構築</span>
+                </h3>
+
+                <p className="text-sm md:text-base text-gray-600 leading-relaxed">
+                  顧客対応や販促を効率化するLINE活用を実現。
+                </p>
+              </div>
             </Card>
-            <Card className="p-6 text-center">
-              <Code className="w-10 h-10 text-cyan-600 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold mb-2">HP・アプリ開発</h3>
-              <p className="text-muted-foreground">
-                Webサイトやアプリの開発・リニューアルを対応。
-              </p>
+
+            {/* HP・アプリ開発 */}
+            <Card className="overflow-hidden hover:shadow-lg transition-shadow duration-300">
+              <div className="relative">
+                <div className="w-full h-48 md:h-56 bg-gradient-to-r from-cyan-100 to-blue-100 flex items-center justify-center">
+                  <div className="text-center">
+                    <Code className="w-12 h-12 md:w-16 md:h-16 text-cyan-600 mx-auto mb-4 md:mb-6" />
+                    <span className="text-sm text-cyan-700 font-medium">
+                      ホームページ制作・アプリ開発
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-4 md:p-6">
+                <h3 className="text-lg md:text-xl font-semibold mb-3 flex items-center gap-2">
+                  <MessageSquare className="w-5 h-5 md:w-6 md:h-6 text-cyan-600 flex-shrink-0" />
+                  <span className="leading-tight">
+                    ホームページ制作・アプリ開発
+                  </span>
+                </h3>
+
+                <p className="text-sm md:text-base text-gray-600 leading-relaxed">
+                  Webサイトやアプリの開発・リニューアルを対応。
+                </p>
+              </div>
             </Card>
           </div>
         </div>
       </section>
 
       {/* Portfolio Section */}
-      <section className="w-full px-6 py-16">
+      <section id="portfolio" className="w-full px-6 py-16">
         <h2 className="text-3xl font-bold text-center mb-10">Works</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-7xl mx-auto">
           <Card className="overflow-hidden">
@@ -204,25 +270,28 @@ export default function Home() {
       </section>
 
       {/* FAQ Section */}
-      <section className="w-full py-16">
-        <div className="max-w-5xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-8">よくある質問</h2>
+      {/* FAQ Section */}
+      <section id="faq" className="w-full py-12 md:py-16">
+        <div className="max-w-5xl mx-auto px-4 md:px-6">
+          <h2 className="text-2xl md:text-3xl font-bold text-center mb-8 md:mb-12">
+            よくある質問
+          </h2>
           <Accordion type="single" collapsible className="w-full space-y-4">
             <AccordionItem value="item-1">
-              <AccordionTrigger>
+              <AccordionTrigger className="text-left text-sm md:text-base">
                 開発にどれくらいの期間がかかりますか？
               </AccordionTrigger>
-              <AccordionContent>
+              <AccordionContent className="text-sm md:text-base">
                 内容や規模によって異なりますが、簡単なサイトであれば2〜4週間程度、
                 カスタムシステムやアプリ開発では1〜3ヶ月程度を目安としています。
               </AccordionContent>
             </AccordionItem>
 
             <AccordionItem value="item-2">
-              <AccordionTrigger>
+              <AccordionTrigger className="text-left text-sm md:text-base">
                 予算の目安はどのくらいですか？
               </AccordionTrigger>
-              <AccordionContent>
+              <AccordionContent className="text-sm md:text-base">
                 規模や機能により異なりますが、小規模案件では数十万円〜、
                 大規模開発では100万円以上を目安としています。
                 ご相談内容に応じて柔軟に対応可能です。
@@ -230,50 +299,50 @@ export default function Home() {
             </AccordionItem>
 
             <AccordionItem value="item-3">
-              <AccordionTrigger>
+              <AccordionTrigger className="text-left text-sm md:text-base">
                 小規模な案件や個人事業でもお願いできますか？
               </AccordionTrigger>
-              <AccordionContent>
+              <AccordionContent className="text-sm md:text-base">
                 はい、もちろんです。個人事業主の方や小規模ビジネス向けの
                 サポート実績も多数ありますのでお気軽にご相談ください。
               </AccordionContent>
             </AccordionItem>
 
             <AccordionItem value="item-4">
-              <AccordionTrigger>
+              <AccordionTrigger className="text-left text-sm md:text-base">
                 技術的な知識がなくても依頼できますか？
               </AccordionTrigger>
-              <AccordionContent>
+              <AccordionContent className="text-sm md:text-base">
                 問題ありません。専門用語を極力使わず、わかりやすく説明しながら進めますので、
                 初めての方でも安心してご依頼いただけます。
               </AccordionContent>
             </AccordionItem>
 
             <AccordionItem value="item-5">
-              <AccordionTrigger>
+              <AccordionTrigger className="text-left text-sm md:text-base">
                 LINE公式アカウントや広告運用だけの依頼も可能ですか？
               </AccordionTrigger>
-              <AccordionContent>
+              <AccordionContent className="text-sm md:text-base">
                 はい、部分的なご依頼にも対応しています。
                 公式LINEの構築・Lステップ連携、Meta広告の運用など単独のサポートも可能です。
               </AccordionContent>
             </AccordionItem>
 
             <AccordionItem value="item-6">
-              <AccordionTrigger>
+              <AccordionTrigger className="text-left text-sm md:text-base">
                 保守・運用のサポートもしてもらえますか？
               </AccordionTrigger>
-              <AccordionContent>
+              <AccordionContent className="text-sm md:text-base">
                 ご希望に応じて、リリース後の改善や運用サポートも承っています。
                 長期的なパートナーとして安心してご利用いただけます。
               </AccordionContent>
             </AccordionItem>
 
             <AccordionItem value="item-7">
-              <AccordionTrigger>
+              <AccordionTrigger className="text-left text-sm md:text-base">
                 AIや自動化はどんな業務で活用できますか？
               </AccordionTrigger>
-              <AccordionContent>
+              <AccordionContent className="text-sm md:text-base">
                 データ入力や書類処理の自動化、顧客対応のチャットボット、営業支援など、
                 中小企業や個人事業で負担になりやすい業務を効率化する事例が多いです。
               </AccordionContent>
@@ -283,10 +352,12 @@ export default function Home() {
       </section>
 
       {/* Contact Section */}
-      <section className="w-full py-16 px-6 text-center">
+      <section id="contact" className="w-full py-16 px-6 text-center">
         <h2 className="text-3xl font-bold mb-6">Contact</h2>
         <p className="text-muted-foreground mb-6">
-          お仕事のご相談やお問い合わせはお気軽にどうぞ。
+          お仕事のご相談やお問い合わせは
+          <br />
+          お気軽にどうぞ！
         </p>
         <div className="flex justify-center gap-6 mb-6 text-cyan-700">
           <Mail className="w-6 h-6" />
