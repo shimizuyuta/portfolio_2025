@@ -43,7 +43,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                   href="#services"
                   className="hover:text-sky-600 transition-colors duration-200 py-2 px-1"
                 >
-                  サービス
+                  services
                 </a>
               </li>
               <li>
@@ -51,7 +51,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                   href="#portfolio"
                   className="hover:text-sky-600 transition-colors duration-200 py-2 px-1"
                 >
-                  実績
+                  works
                 </a>
               </li>
               <li>
@@ -67,7 +67,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                   href="#contact"
                   className="hover:text-sky-600 transition-colors duration-200 py-2 px-1"
                 >
-                  お問い合わせ
+                  contact
                 </a>
               </li>
             </ul>
@@ -144,7 +144,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 
         <main className="w-full">{children}</main>
 
-        <footer className="mt-16 border-t py-8 bg-gray-50">
+        <footer className="border-t py-8 bg-gray-50">
           <div className="max-w-7xl mx-auto px-4 md:px-6">
             <div className="text-center">
               <p className="text-xs text-muted-foreground">
