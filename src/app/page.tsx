@@ -139,7 +139,7 @@ export default function Home() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10">
             {/* AI・DX活用支援 */}
-            <Card className="overflow-hidden hover:shadow-xl transition-shadow duration-300 bg-white border border-gray-200">
+            <Card className="pt-0 overflow-hidden hover:shadow-xl transition-shadow duration-300 bg-white border border-gray-200">
               <div className="relative">
                 <div className="w-full h-56 md:h-64 bg-gradient-to-r from-sky-100 to-blue-100 flex items-center justify-center">
                   <div className="text-center">
@@ -164,7 +164,7 @@ export default function Home() {
             </Card>
 
             {/* Webマーケティング */}
-            <Card className="overflow-hidden hover:shadow-xl transition-shadow duration-300 bg-white border border-gray-200">
+            <Card className="pt-0 overflow-hidden hover:shadow-xl transition-shadow duration-300 bg-white border border-gray-200">
               <div className="relative">
                 <div className="w-full h-56 md:h-64 bg-gradient-to-r from-sky-100 to-blue-100 flex items-center justify-center">
                   <div className="text-center">
@@ -189,7 +189,7 @@ export default function Home() {
             </Card>
 
             {/* LINE公式構築 */}
-            <Card className="overflow-hidden hover:shadow-xl transition-shadow duration-300 bg-white border border-gray-200">
+            <Card className="pt-0 overflow-hidden hover:shadow-xl transition-shadow duration-300 bg-white border border-gray-200">
               <div className="relative">
                 <div className="w-full h-56 md:h-64 bg-gradient-to-r from-sky-100 to-blue-100 flex items-center justify-center">
                   <div className="text-center">
@@ -214,7 +214,7 @@ export default function Home() {
             </Card>
 
             {/* HP・アプリ開発 */}
-            <Card className="overflow-hidden hover:shadow-xl transition-shadow duration-300 bg-white border border-gray-200">
+            <Card className="pt-0 overflow-hidden hover:shadow-xl transition-shadow duration-300 bg-white border border-gray-200">
               <div className="relative">
                 <div className="w-full h-56 md:h-64 bg-gradient-to-r from-sky-100 to-blue-100 flex items-center justify-center">
                   <div className="text-center">
@@ -328,8 +328,8 @@ export default function Home() {
                 予算の目安はどのくらいですか？
               </AccordionTrigger>
               <AccordionContent className="text-base md:text-lg text-gray-700 leading-relaxed pt-2">
-                規模や機能により異なりますが、小規模案件では数十万円〜、
-                大規模開発では100万円以上を目安としています。
+                規模や機能により異なりますが、小規模案件では数万円〜、
+                大規模開発では数十万円以上を目安としています。
                 ご相談内容に応じて柔軟に対応可能ですので、まずはお気軽にお問い合わせください。
               </AccordionContent>
             </AccordionItem>
@@ -340,7 +340,7 @@ export default function Home() {
               </AccordionTrigger>
               <AccordionContent className="text-base md:text-lg text-gray-700 leading-relaxed pt-2">
                 はい、もちろんです。個人事業主の方や小規模ビジネス向けの
-                サポート実績も多数ありますのでお気軽にご相談ください。
+                サポートも可能ですのでお気軽にご相談ください。
                 小さなお悩みからでも丁寧に対応いたします。
               </AccordionContent>
             </AccordionItem>
@@ -405,10 +405,6 @@ export default function Home() {
           お仕事のご相談やお問い合わせは
           <br />
           お気軽にどうぞ！
-          <br />
-          <span className="text-base text-gray-600 mt-2 block">
-            24時間以内にご返信いたします
-          </span>
         </p>
         
         <div className="flex justify-center gap-8 mb-10">
@@ -419,16 +415,6 @@ export default function Home() {
           >
             <Mail className="w-8 h-8" aria-hidden="true" />
             <span className="text-lg font-semibold">Email</span>
-          </a>
-          <a 
-            href="https://facebook.com/profile" 
-            className="flex items-center gap-3 text-sky-700 hover:text-sky-800 transition-colors duration-200"
-            aria-label="Facebookでお問い合わせ"
-            target="_blank" 
-            rel="noopener noreferrer"
-          >
-            <Facebook className="w-8 h-8" aria-hidden="true" />
-            <span className="text-lg font-semibold">Facebook</span>
           </a>
           <a 
             href="https://line.me/profile" 
