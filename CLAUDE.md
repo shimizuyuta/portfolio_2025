@@ -58,6 +58,7 @@ No test framework is configured.
 @.claude/rules/git.md
 @.claude/rules/github.md
 @.claude/rules/workflow.md
+@.claude/rules/docs.md
 
 ## Key Conventions
 
