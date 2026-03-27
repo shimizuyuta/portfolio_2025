@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  BarChart3,
-  Brain,
-  ChevronLeft,
-  ChevronRight,
-  Code,
-} from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -365,45 +359,63 @@ export default function Home() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
             {/* AI・DX活用支援 */}
-            <Card className="p-6 md:p-8 shadow-md hover:shadow-lg transition-shadow duration-300 bg-white border border-gray-200">
-              <div className="flex justify-center mb-4">
-                <Brain className="w-10 h-10 text-sky-600" aria-hidden="true" />
+            <Card className="pt-0 overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300 bg-white border border-gray-200">
+              <div className="w-full h-48 relative mb-0">
+                <Image
+                  src="/images/services/ai.png"
+                  alt="AI・DX活用支援"
+                  fill
+                  className="object-cover"
+                />
               </div>
-              <h3 className="text-lg font-bold text-center mb-4 text-gray-900">
-                AI・DX活用支援
-              </h3>
-              <p className="text-sm md:text-base text-gray-700 leading-relaxed">
-                毎日の繰り返し作業をAIで自動化。書類作成・データ集計・返信対応を仕組み化し、社員がコア業務に集中できる環境をつくります。
-              </p>
+              <div className="p-6 md:p-8">
+                <h3 className="text-lg font-bold text-center mb-4 text-gray-900">
+                  AI・DX活用支援
+                </h3>
+                <p className="text-sm md:text-base text-gray-700 leading-relaxed">
+                  毎日の繰り返し作業をAIで自動化。書類作成・データ集計・返信対応を仕組み化し、社員がコア業務に集中できる環境をつくります。
+                </p>
+              </div>
             </Card>
 
             {/* Webマーケティング */}
-            <Card className="p-6 md:p-8 shadow-md hover:shadow-lg transition-shadow duration-300 bg-white border border-gray-200">
-              <div className="flex justify-center mb-4">
-                <BarChart3
-                  className="w-10 h-10 text-sky-600"
-                  aria-hidden="true"
+            <Card className="pt-0 overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300 bg-white border border-gray-200">
+              <div className="w-full h-48 relative mb-0">
+                <Image
+                  src="/images/services/マーケ.png"
+                  alt="Webマーケティング"
+                  fill
+                  className="object-cover"
                 />
               </div>
-              <h3 className="text-lg font-bold text-center mb-4 text-gray-900">
-                Webマーケティング
-              </h3>
-              <p className="text-sm md:text-base text-gray-700 leading-relaxed">
-                数値を見ながら改善し続ける、ROIが見えるマーケ支援。集客からリピートまで一貫して支援します。
-              </p>
+              <div className="p-6 md:p-8">
+                <h3 className="text-lg font-bold text-center mb-4 text-gray-900">
+                  Webマーケティング
+                </h3>
+                <p className="text-sm md:text-base text-gray-700 leading-relaxed">
+                  数値を見ながら改善し続ける、ROIが見えるマーケ支援。集客からリピートまで一貫して支援します。
+                </p>
+              </div>
             </Card>
 
             {/* ホームページ制作・アプリ開発 */}
-            <Card className="p-6 md:p-8 shadow-md hover:shadow-lg transition-shadow duration-300 bg-white border border-gray-200">
-              <div className="flex justify-center mb-4">
-                <Code className="w-10 h-10 text-sky-600" aria-hidden="true" />
+            <Card className="pt-0 overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300 bg-white border border-gray-200">
+              <div className="w-full h-48 relative mb-0">
+                <Image
+                  src="/images/services/開発.png"
+                  alt="ホームページ制作・アプリ開発"
+                  fill
+                  className="object-cover"
+                />
               </div>
-              <h3 className="text-lg font-bold text-center mb-4 text-gray-900">
-                ホームページ制作・アプリ開発
-              </h3>
-              <p className="text-sm md:text-base text-gray-700 leading-relaxed">
-                要件を整理し、適正コストでスピーディに開発。事業視点で一緒に設計・開発するパートナーとして伴走します。
-              </p>
+              <div className="p-6 md:p-8">
+                <h3 className="text-lg font-bold text-center mb-4 text-gray-900">
+                  ホームページ制作・アプリ開発
+                </h3>
+                <p className="text-sm md:text-base text-gray-700 leading-relaxed">
+                  要件を整理し、適正コストでスピーディに開発。事業視点で一緒に設計・開発するパートナーとして伴走します。
+                </p>
+              </div>
             </Card>
           </div>
 
