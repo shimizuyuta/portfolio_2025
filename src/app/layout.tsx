@@ -12,7 +12,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="ja">
       <body className="min-h-screen bg-background text-foreground">
         {/* ナビゲーション */}
-        <header className="w-full border-b bg-white/80 backdrop-blur-md sticky top-0 z-50">
+        <header className="w-full border-b bg-red-500/80 backdrop-blur-md sticky top-0 z-50">
           <nav className="max-w-7xl mx-auto flex justify-between items-center py-3 px-4 md:py-4 md:px-6">
             {/* ロゴ */}
             <div className="flex items-center">
@@ -85,7 +85,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 
           {/* モバイルメニュー */}
           <div
-            className={`md:hidden bg-white border-t transition-all duration-300 ease-in-out ${
+            className={`md:hidden bg-red-500 border-t transition-all duration-300 ease-in-out ${
               isOpen
                 ? "max-h-64 opacity-100"
                 : "max-h-0 opacity-0 overflow-hidden"
