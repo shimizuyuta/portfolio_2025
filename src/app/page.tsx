@@ -149,8 +149,7 @@ export default function Home() {
             {/* CTA ボタン */}
             <Button
               asChild
-              size="lg"
-              className="bg-sky-600 hover:bg-sky-700 text-white font-semibold px-8 py-3 text-lg"
+              className="bg-sky-600 hover:bg-sky-700 text-white font-semibold text-lg px-10 py-4 rounded-md h-auto"
             >
               <Link href="/contact" className="flex items-center gap-2">
                 お問い合わせはこちら
