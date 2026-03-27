@@ -270,7 +270,7 @@ export default function Home() {
               {
                 num: "01",
                 title: "AI・DX活用",
-                img: "/images/hero/pc/pc_tech.png",
+                img: "/images/problem/01.png",
                 alt: "AI・DX活用イメージ",
                 items: [
                   "ChatGPTを触ったことはあるが、自社業務への活かし方がわからない",
@@ -281,7 +281,7 @@ export default function Home() {
               {
                 num: "02",
                 title: "Webマーケティング",
-                img: "/images/hero/pc/pc_business.png",
+                img: "/images/problem/02.png",
                 alt: "Webマーケティングイメージ",
                 items: [
                   "広告費をかけているのに問い合わせが来ない・費用対効果が見えない",
@@ -292,7 +292,7 @@ export default function Home() {
               {
                 num: "03",
                 title: "Web・システム開発",
-                img: "/images/hero/pc/pc_president.png",
+                img: "/images/problem/03.png",
                 alt: "Web・システム開発イメージ",
                 items: [
                   "制作会社に見積を取ったら数百万円と言われて断念した",
