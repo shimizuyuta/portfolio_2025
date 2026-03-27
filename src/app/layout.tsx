@@ -1,9 +1,9 @@
 "use client";
 
 import "./globals.css";
-import { ReactNode, useState } from "react";
-import Image from "next/image";
 import { Menu, X } from "lucide-react";
+import Image from "next/image";
+import { type ReactNode, useState } from "react";
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -74,6 +74,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 
             {/* モバイル用ハンバーガー */}
             <button
+              type="button"
               className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200"
               onClick={() => setIsOpen(!isOpen)}
               aria-label="メニュー切替"
