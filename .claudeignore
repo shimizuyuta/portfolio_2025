@@ -1,0 +1,16 @@
+# Build output
+.next/
+
+# Dependencies
+node_modules/
+
+# Version control
+.git/
+
+# Auto-generated files
+next-env.d.ts
+package-lock.json
+
+# Binary image assets (not useful for code understanding)
+public/images/
+public/logo/*.png
