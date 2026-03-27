@@ -41,6 +41,25 @@ gh pr list                        # 関連 PR の状態確認
 git log origin/main --oneline -5  # main の最新コミット確認
 ```
 
+## 検証コメントの記録（必須）
+
+PR または Issue で検証を行った場合、Claude・ユーザーどちらが行った場合も必ずコメントを残す。
+
+```bash
+gh pr comment <PR番号> --body "..."      # PR に記録
+gh issue comment <Issue番号> --body "..." # Issue に記録
+```
+
+コメントフォーマット：
+```
+## 検証記録
+
+- 検証者: Claude / ユーザー
+- 内容: （何を確認したか）
+- 結果: ✅ 問題なし / ⚠️ 軽微な指摘あり / ❌ 要修正
+- 備考: （任意）
+```
+
 ## 安全な取り消し方法
 
 ```bash
