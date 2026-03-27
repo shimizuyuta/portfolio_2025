@@ -2,15 +2,23 @@
 
 import "./globals.css";
 import { Menu, X } from "lucide-react";
+import { Noto_Sans_JP } from "next/font/google";
 import Image from "next/image";
 import { type ReactNode, useState } from "react";
+
+const notoSansJP = Noto_Sans_JP({
+  subsets: ["latin"],
+  weight: ["400", "500", "700"],
+  variable: "--font-noto-sans-jp",
+  display: "swap",
+});
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <html lang="ja">
-      <body className="min-h-screen bg-background text-foreground">
+    <html lang="ja" className={notoSansJP.variable}>
+      <body className="min-h-screen bg-background text-foreground font-[family-name:var(--font-noto-sans-jp)]">
         {/* ナビゲーション */}
         <header className="w-full border-b bg-white/80 backdrop-blur-md sticky top-0 z-50">
           <nav className="max-w-7xl mx-auto flex justify-between items-center py-3 px-4 md:py-4 md:px-6">
