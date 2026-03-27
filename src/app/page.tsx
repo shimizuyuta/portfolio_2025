@@ -133,11 +133,6 @@ export default function Home() {
         {/* コピー（左揃え） */}
         <div className="relative z-10 h-full flex items-center px-8 md:px-16 lg:px-24">
           <div className="max-w-2xl text-white">
-            {/* INNOVATION バッジ */}
-            <span className="inline-block bg-yellow-400 text-black text-xs font-bold tracking-widest px-3 py-1 rounded-full mb-6 uppercase">
-              INNOVATION
-            </span>
-
             <h1
               id="hero-heading"
               className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6"
@@ -159,18 +154,6 @@ export default function Home() {
             >
               <Link href="/contact">お問い合わせはこちら</Link>
             </Button>
-          </div>
-        </div>
-
-        {/* 右側 装飾バッジ */}
-        <div
-          className="absolute right-8 md:right-16 top-1/2 -translate-y-1/2 z-10 hidden md:flex"
-          aria-hidden="true"
-        >
-          <div className="w-28 h-28 md:w-32 md:h-32 rounded-full bg-orange-500 flex items-center justify-center text-white text-center font-bold text-sm md:text-base leading-snug">
-            AI・IT
-            <br />
-            支援
           </div>
         </div>
 
