@@ -53,9 +53,11 @@ No test framework is configured.
 - `public/logo/` — logo.png, logo2.png, logo.svg
 - Next.js の `<Image>` コンポーネントを使用。`width`/`height` は必須。
 
-## Git ルール
+## ルール
 
 @.claude/rules/git.md
+@.claude/rules/github.md
+@.claude/rules/workflow.md
 
 ## Key Conventions
 
