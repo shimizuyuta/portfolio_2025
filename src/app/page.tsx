@@ -316,13 +316,13 @@ export default function Home() {
                   />
                 </div>
                 <div className="w-full md:w-1/2">
-                  <p className="text-7xl font-bold text-primary/20 leading-none mb-3">
+                  <p className="text-5xl md:text-6xl font-bold text-primary/20 leading-none mb-2">
                     {item.num}
                   </p>
-                  <h3 className="text-xl md:text-2xl font-bold mb-4">
+                  <h3 className="text-2xl md:text-3xl font-bold mb-4">
                     {item.title}
                   </h3>
-                  <ul className="space-y-3 text-muted-foreground">
+                  <ul className="space-y-3 text-sm md:text-base text-muted-foreground">
                     {item.items.map((text) => (
                       <li key={text} className="flex items-start gap-2">
                         <span
