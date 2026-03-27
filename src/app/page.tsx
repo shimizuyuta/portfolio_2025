@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -150,9 +150,12 @@ export default function Home() {
             <Button
               asChild
               size="lg"
-              className="bg-sky-600 hover:bg-sky-700 text-white font-semibold px-8 py-3"
+              className="bg-sky-600 hover:bg-sky-700 text-white font-semibold px-8 py-3 text-lg"
             >
-              <Link href="/contact">お問い合わせはこちら</Link>
+              <Link href="/contact" className="flex items-center gap-2">
+                お問い合わせはこちら
+                <ArrowRight className="w-5 h-5" aria-hidden="true" />
+              </Link>
             </Button>
           </div>
         </div>
@@ -244,7 +247,7 @@ export default function Home() {
               id="pain-heading"
               className="text-2xl md:text-3xl lg:text-4xl font-bold"
             >
-              中小企業・個人事業主の悩みから生まれました
+              こんなお悩みありませんか？
             </h2>
           </div>
 
