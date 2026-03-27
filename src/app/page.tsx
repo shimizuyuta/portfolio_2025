@@ -134,7 +134,10 @@ export default function Home() {
         ))}
 
         {/* オーバーレイ */}
-        <div className="absolute inset-0 bg-black/50" aria-hidden="true" />
+        <div
+          className="absolute inset-0 bg-gradient-to-r from-primary/80 to-accent/60"
+          aria-hidden="true"
+        />
 
         {/* コピー */}
         <div className="relative z-10 h-full flex flex-col items-center justify-center px-4 text-center text-white">
@@ -198,15 +201,17 @@ export default function Home() {
       {/* About Section */}
       <section
         id="about"
-        className="max-w-7xl mx-auto py-16 md:py-24 px-6"
+        className="bg-background max-w-7xl mx-auto py-16 md:py-24 px-6"
         aria-labelledby="about-heading"
       >
-        <h2
-          id="about-heading"
-          className="text-3xl md:text-4xl font-bold text-center mb-16 md:mb-20 text-gray-900"
-        >
-          About
-        </h2>
+        <div className="text-center mb-16 md:mb-20">
+          <p className="text-sm font-semibold tracking-widest text-accent uppercase mb-2">
+            About
+          </p>
+          <h2 id="about-heading" className="text-3xl md:text-4xl font-bold">
+            私について
+          </h2>
+        </div>
 
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* 左側：画像 */}
@@ -244,16 +249,21 @@ export default function Home() {
       {/* お悩みセクション */}
       <section
         id="pain"
-        className="w-full bg-gray-50 py-16 md:py-24"
+        className="w-full bg-muted py-16 md:py-24"
         aria-labelledby="pain-heading"
       >
         <div className="max-w-7xl mx-auto px-4 md:px-6">
-          <h2
-            id="pain-heading"
-            className="text-2xl md:text-3xl lg:text-4xl font-bold text-center mb-12 md:mb-16 text-gray-900"
-          >
-            中小企業・個人事業主の悩みから生まれました
-          </h2>
+          <div className="text-center mb-12 md:mb-16">
+            <p className="text-sm font-semibold tracking-widest text-accent uppercase mb-2">
+              Problem
+            </p>
+            <h2
+              id="pain-heading"
+              className="text-2xl md:text-3xl lg:text-4xl font-bold"
+            >
+              中小企業・個人事業主の悩みから生まれました
+            </h2>
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
             {/* AI・DX活用 */}
@@ -320,20 +330,25 @@ export default function Home() {
       {/* Services Section（ホーム導線） */}
       <section
         id="services"
-        className="w-full py-16 md:py-24"
+        className="w-full bg-background py-16 md:py-24"
         aria-labelledby="services-heading"
       >
         <div className="max-w-7xl mx-auto px-4 md:px-6">
-          <h2
-            id="services-heading"
-            className="text-3xl md:text-4xl font-bold text-center mb-12 md:mb-16 text-gray-900"
-          >
-            Services
-          </h2>
+          <div className="text-center mb-12 md:mb-16">
+            <p className="text-sm font-semibold tracking-widest text-accent uppercase mb-2">
+              Services
+            </p>
+            <h2
+              id="services-heading"
+              className="text-3xl md:text-4xl font-bold"
+            >
+              サービス
+            </h2>
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
             {/* AI・DX活用支援 */}
-            <Card className="p-6 md:p-8 hover:shadow-lg transition-shadow duration-300 bg-white border border-gray-200">
+            <Card className="p-6 md:p-8 shadow-md hover:shadow-lg transition-shadow duration-300 bg-white border border-gray-200">
               <div className="flex justify-center mb-4">
                 <Brain className="w-10 h-10 text-sky-600" aria-hidden="true" />
               </div>
@@ -346,7 +361,7 @@ export default function Home() {
             </Card>
 
             {/* Webマーケティング */}
-            <Card className="p-6 md:p-8 hover:shadow-lg transition-shadow duration-300 bg-white border border-gray-200">
+            <Card className="p-6 md:p-8 shadow-md hover:shadow-lg transition-shadow duration-300 bg-white border border-gray-200">
               <div className="flex justify-center mb-4">
                 <BarChart3
                   className="w-10 h-10 text-sky-600"
@@ -362,7 +377,7 @@ export default function Home() {
             </Card>
 
             {/* ホームページ制作・アプリ開発 */}
-            <Card className="p-6 md:p-8 hover:shadow-lg transition-shadow duration-300 bg-white border border-gray-200">
+            <Card className="p-6 md:p-8 shadow-md hover:shadow-lg transition-shadow duration-300 bg-white border border-gray-200">
               <div className="flex justify-center mb-4">
                 <Code className="w-10 h-10 text-sky-600" aria-hidden="true" />
               </div>
@@ -389,16 +404,18 @@ export default function Home() {
       {/* Works Section */}
       <section
         id="works"
-        className="w-full bg-gray-50 py-16 md:py-24"
+        className="w-full bg-muted py-16 md:py-24"
         aria-labelledby="works-heading"
       >
         <div className="max-w-7xl mx-auto px-4 md:px-6">
-          <h2
-            id="works-heading"
-            className="text-3xl md:text-4xl font-bold text-center mb-12 md:mb-16 text-gray-900"
-          >
-            支援実績
-          </h2>
+          <div className="text-center mb-12 md:mb-16">
+            <p className="text-sm font-semibold tracking-widest text-accent uppercase mb-2">
+              Works
+            </p>
+            <h2 id="works-heading" className="text-3xl md:text-4xl font-bold">
+              支援実績
+            </h2>
+          </div>
 
           {/* スライダー */}
           <div className="relative">
@@ -406,7 +423,7 @@ export default function Home() {
               {visibleWorks.map((work) => (
                 <Card
                   key={work.title}
-                  className="overflow-hidden bg-white border border-gray-200"
+                  className="overflow-hidden bg-white border border-gray-200 shadow-md hover:shadow-lg transition-shadow"
                 >
                   {/* プレースホルダー画像 */}
                   <div className="w-full h-48 bg-gray-200 flex items-center justify-center">
@@ -434,11 +451,7 @@ export default function Home() {
             <div className="flex justify-center items-center gap-4">
               <button
                 type="button"
-                onClick={() =>
-                  setCurrentWork((prev) =>
-                    prev === 0 ? totalWorksPages - 1 : prev - 1,
-                  )
-                }
+                onClick={() => setCurrentWork((prev) => Math.max(prev - 1, 0))}
                 className="p-2 rounded-full border border-gray-300 hover:bg-gray-100 transition-colors duration-200 disabled:opacity-40"
                 aria-label="前の実績"
                 disabled={currentWork === 0}
@@ -452,7 +465,7 @@ export default function Home() {
                 type="button"
                 onClick={() =>
                   setCurrentWork((prev) =>
-                    prev === totalWorksPages - 1 ? 0 : prev + 1,
+                    Math.min(prev + 1, totalWorksPages - 1),
                   )
                 }
                 className="p-2 rounded-full border border-gray-300 hover:bg-gray-100 transition-colors duration-200 disabled:opacity-40"
@@ -478,16 +491,21 @@ export default function Home() {
       {/* Knowledge Section（プレースホルダー） */}
       <section
         id="knowledge"
-        className="w-full py-16 md:py-24 text-center"
+        className="w-full bg-background py-16 md:py-24 text-center"
         aria-labelledby="knowledge-heading"
       >
         <div className="max-w-7xl mx-auto px-4 md:px-6">
-          <h2
-            id="knowledge-heading"
-            className="text-3xl md:text-4xl font-bold mb-6 text-gray-900"
-          >
-            Knowledge
-          </h2>
+          <div className="text-center mb-6">
+            <p className="text-sm font-semibold tracking-widest text-accent uppercase mb-2">
+              Knowledge
+            </p>
+            <h2
+              id="knowledge-heading"
+              className="text-3xl md:text-4xl font-bold"
+            >
+              ナレッジ
+            </h2>
+          </div>
           <p className="text-gray-500 mb-6">準備中です。</p>
           <Button asChild variant="outline">
             <Link href="/knowledge">記事一覧を見る</Link>
@@ -498,16 +516,18 @@ export default function Home() {
       {/* Contact Section（プレースホルダー） */}
       <section
         id="contact"
-        className="w-full py-16 md:py-24 text-center bg-gray-50"
+        className="w-full bg-muted py-16 md:py-24 text-center"
         aria-labelledby="contact-heading"
       >
         <div className="max-w-7xl mx-auto px-4 md:px-6">
-          <h2
-            id="contact-heading"
-            className="text-3xl md:text-4xl font-bold mb-6 text-gray-900"
-          >
-            Contact
-          </h2>
+          <div className="text-center mb-6">
+            <p className="text-sm font-semibold tracking-widest text-accent uppercase mb-2">
+              Contact
+            </p>
+            <h2 id="contact-heading" className="text-3xl md:text-4xl font-bold">
+              お問い合わせ
+            </h2>
+          </div>
           <p className="text-gray-700 mb-8 text-lg md:text-xl">
             お気軽にご相談ください。
           </p>
