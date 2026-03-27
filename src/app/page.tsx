@@ -265,60 +265,77 @@ export default function Home() {
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-            {/* AI・DX活用 */}
-            <div className="bg-white rounded-xl p-6 md:p-8 shadow-sm">
-              <div className="flex justify-center mb-4">
-                <Brain className="w-12 h-12 text-sky-600" aria-hidden="true" />
+          <div className="space-y-16 md:space-y-24 mb-16">
+            {[
+              {
+                num: "01",
+                title: "AI・DX活用",
+                img: "/images/hero/pc/pc_tech.png",
+                alt: "AI・DX活用イメージ",
+                items: [
+                  "ChatGPTを触ったことはあるが、自社業務への活かし方がわからない",
+                  "自動化したい作業はあるが、どのツールを選べばいいか判断できない",
+                ],
+                reverse: false,
+              },
+              {
+                num: "02",
+                title: "Webマーケティング",
+                img: "/images/hero/pc/pc_business.png",
+                alt: "Webマーケティングイメージ",
+                items: [
+                  "広告費をかけているのに問い合わせが来ない・費用対効果が見えない",
+                  "SNSを更新しているが集客につながっている実感がない",
+                ],
+                reverse: true,
+              },
+              {
+                num: "03",
+                title: "Web・システム開発",
+                img: "/images/hero/pc/pc_president.png",
+                alt: "Web・システム開発イメージ",
+                items: [
+                  "制作会社に見積を取ったら数百万円と言われて断念した",
+                  "作ったWebサイトが古くなっているが更新できていない",
+                  "エンジニアに依頼しても話が噛み合わず、思った通りに仕上がらない",
+                ],
+                reverse: false,
+              },
+            ].map((item) => (
+              <div
+                key={item.num}
+                className={`flex flex-col ${item.reverse ? "md:flex-row-reverse" : "md:flex-row"} items-center gap-8 md:gap-16`}
+              >
+                <div className="w-full md:w-1/2">
+                  <Image
+                    src={item.img}
+                    alt={item.alt}
+                    width={600}
+                    height={400}
+                    className="rounded-xl w-full object-cover"
+                  />
+                </div>
+                <div className="w-full md:w-1/2">
+                  <p className="text-7xl font-bold text-primary/20 leading-none mb-3">
+                    {item.num}
+                  </p>
+                  <h3 className="text-xl md:text-2xl font-bold mb-4">
+                    {item.title}
+                  </h3>
+                  <ul className="space-y-3 text-muted-foreground">
+                    {item.items.map((text) => (
+                      <li key={text} className="flex items-start gap-2">
+                        <span
+                          className="mt-1.5 w-1.5 h-1.5 rounded-full bg-accent flex-shrink-0"
+                          aria-hidden="true"
+                        />
+                        {text}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
-              <h3 className="text-lg font-bold text-center mb-4 text-gray-900">
-                AI・DX活用
-              </h3>
-              <ul className="space-y-3 text-sm md:text-base text-gray-700 list-disc list-inside">
-                <li>
-                  ChatGPTを触ったことはあるが、自社業務への活かし方がわからない
-                </li>
-                <li>
-                  自動化したい作業はあるが、どのツールを選べばいいか判断できない
-                </li>
-              </ul>
-            </div>
-
-            {/* Webマーケティング */}
-            <div className="bg-white rounded-xl p-6 md:p-8 shadow-sm">
-              <div className="flex justify-center mb-4">
-                <BarChart3
-                  className="w-12 h-12 text-sky-600"
-                  aria-hidden="true"
-                />
-              </div>
-              <h3 className="text-lg font-bold text-center mb-4 text-gray-900">
-                Webマーケティング
-              </h3>
-              <ul className="space-y-3 text-sm md:text-base text-gray-700 list-disc list-inside">
-                <li>
-                  広告費をかけているのに問い合わせが来ない・費用対効果が見えない
-                </li>
-                <li>SNSを更新しているが集客につながっている実感がない</li>
-              </ul>
-            </div>
-
-            {/* Web・システム開発 */}
-            <div className="bg-white rounded-xl p-6 md:p-8 shadow-sm">
-              <div className="flex justify-center mb-4">
-                <Code className="w-12 h-12 text-sky-600" aria-hidden="true" />
-              </div>
-              <h3 className="text-lg font-bold text-center mb-4 text-gray-900">
-                Web・システム開発
-              </h3>
-              <ul className="space-y-3 text-sm md:text-base text-gray-700 list-disc list-inside">
-                <li>制作会社に見積を取ったら数百万円と言われて断念した</li>
-                <li>作ったWebサイトが古くなっているが更新できていない</li>
-                <li>
-                  エンジニアに依頼しても話が噛み合わず、思った通りに仕上がらない
-                </li>
-              </ul>
-            </div>
+            ))}
           </div>
 
           <p className="text-center text-lg md:text-xl font-bold text-gray-900">
