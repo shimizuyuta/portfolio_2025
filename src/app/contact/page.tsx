@@ -37,7 +37,9 @@ export default function ContactPage() {
   return (
     <main className="w-full py-16 md:py-24 px-6">
       <div className="max-w-2xl mx-auto">
-        <h1 className="text-3xl md:text-4xl font-bold mb-4 text-center">Contact</h1>
+        <h1 className="text-3xl md:text-4xl font-bold mb-4 text-center">
+          Contact
+        </h1>
         <p className="text-muted-foreground mb-10 text-lg text-center leading-relaxed">
           お仕事のご相談やお問い合わせは
           <br />
