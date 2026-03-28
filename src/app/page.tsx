@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -7,6 +8,21 @@ import { useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+
+const fadeInUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+};
+
+const staggerContainer = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.15 } },
+};
+
+const staggerItem = {
+  hidden: { opacity: 0, y: 24 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
+};
 
 // Hero スライドショーデータ
 const heroSlides = [
@@ -132,7 +148,12 @@ export default function Home() {
 
         {/* コピー（左揃え） */}
         <div className="relative z-10 h-full flex items-center px-8 md:px-16 lg:px-24">
-          <div className="max-w-2xl text-white">
+          <motion.div
+            className="max-w-2xl text-white"
+            variants={fadeInUp}
+            initial="hidden"
+            animate="visible"
+          >
             <h1
               id="hero-heading"
               className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6"
@@ -156,7 +177,7 @@ export default function Home() {
                 <ArrowRight className="w-5 h-5" aria-hidden="true" />
               </Link>
             </Button>
-          </div>
+          </motion.div>
         </div>
 
         {/* スライドインジケーター */}
@@ -184,10 +205,14 @@ export default function Home() {
       </section>
 
       {/* About Section */}
-      <section
+      <motion.section
         id="about"
         className="bg-background max-w-7xl mx-auto py-16 md:py-24 px-6"
         aria-labelledby="about-heading"
+        variants={fadeInUp}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-80px" }}
       >
         <div className="text-center mb-16 md:mb-20">
           <p className="text-sm font-semibold tracking-widest text-accent uppercase mb-2">
@@ -229,13 +254,17 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </section>
+      </motion.section>
 
       {/* お悩みセクション */}
-      <section
+      <motion.section
         id="pain"
         className="w-full bg-muted py-16 md:py-24"
         aria-labelledby="pain-heading"
+        variants={fadeInUp}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-80px" }}
       >
         <div className="max-w-7xl mx-auto px-4 md:px-6">
           <div className="text-center mb-12 md:mb-16">
@@ -250,7 +279,13 @@ export default function Home() {
             </h2>
           </div>
 
-          <div className="space-y-16 md:space-y-24 mb-16">
+          <motion.div
+            className="space-y-16 md:space-y-24 mb-16"
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-80px" }}
+          >
             {[
               {
                 num: "01",
@@ -287,9 +322,10 @@ export default function Home() {
                 reverse: false,
               },
             ].map((item) => (
-              <div
+              <motion.div
                 key={item.num}
                 className={`flex flex-col ${item.reverse ? "md:flex-row-reverse" : "md:flex-row"} items-center gap-8 md:gap-16`}
+                variants={staggerItem}
               >
                 <div className="w-full md:w-1/2">
                   <Image
@@ -319,21 +355,25 @@ export default function Home() {
                     ))}
                   </ul>
                 </div>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
 
           <p className="text-center text-lg md:text-xl font-bold text-gray-900">
             そんな課題を解決するため、伴走型で支援します。
           </p>
         </div>
-      </section>
+      </motion.section>
 
       {/* Services Section（ホーム導線） */}
-      <section
+      <motion.section
         id="services"
         className="w-full bg-background py-16 md:py-24"
         aria-labelledby="services-heading"
+        variants={fadeInUp}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-80px" }}
       >
         <div className="max-w-7xl mx-auto px-4 md:px-6">
           <div className="text-center mb-12 md:mb-16">
@@ -348,67 +388,91 @@ export default function Home() {
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+          <motion.div
+            className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12"
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-80px" }}
+          >
             {/* AI・DX活用支援 */}
-            <Card className="pt-0 overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300 bg-white border border-gray-200">
-              <div className="w-full h-48 relative mb-0">
-                <Image
-                  src="/images/services/ai.png"
-                  alt="AI・DX活用支援"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <div className="p-6 md:p-8">
-                <h3 className="text-lg font-bold text-center mb-4 text-gray-900">
-                  AI・DX活用支援
-                </h3>
-                <p className="text-sm md:text-base text-gray-700 leading-relaxed">
-                  毎日の繰り返し作業をAIで自動化。書類作成・データ集計・返信対応を仕組み化し、社員がコア業務に集中できる環境をつくります。
-                </p>
-              </div>
-            </Card>
+            <motion.div
+              variants={staggerItem}
+              whileHover={{ scale: 1.02, y: -4 }}
+              transition={{ duration: 0.2 }}
+            >
+              <Card className="pt-0 overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300 bg-white border border-gray-200">
+                <div className="w-full h-48 relative mb-0">
+                  <Image
+                    src="/images/services/ai.png"
+                    alt="AI・DX活用支援"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-6 md:p-8">
+                  <h3 className="text-lg font-bold text-center mb-4 text-gray-900">
+                    AI・DX活用支援
+                  </h3>
+                  <p className="text-sm md:text-base text-gray-700 leading-relaxed">
+                    毎日の繰り返し作業をAIで自動化。書類作成・データ集計・返信対応を仕組み化し、社員がコア業務に集中できる環境をつくります。
+                  </p>
+                </div>
+              </Card>
+            </motion.div>
 
             {/* Webマーケティング */}
-            <Card className="pt-0 overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300 bg-white border border-gray-200">
-              <div className="w-full h-48 relative mb-0">
-                <Image
-                  src="/images/services/マーケ.png"
-                  alt="Webマーケティング"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <div className="p-6 md:p-8">
-                <h3 className="text-lg font-bold text-center mb-4 text-gray-900">
-                  Webマーケティング
-                </h3>
-                <p className="text-sm md:text-base text-gray-700 leading-relaxed">
-                  数値を見ながら改善し続ける、ROIが見えるマーケ支援。集客からリピートまで一貫して支援します。
-                </p>
-              </div>
-            </Card>
+            <motion.div
+              variants={staggerItem}
+              whileHover={{ scale: 1.02, y: -4 }}
+              transition={{ duration: 0.2 }}
+            >
+              <Card className="pt-0 overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300 bg-white border border-gray-200">
+                <div className="w-full h-48 relative mb-0">
+                  <Image
+                    src="/images/services/マーケ.png"
+                    alt="Webマーケティング"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-6 md:p-8">
+                  <h3 className="text-lg font-bold text-center mb-4 text-gray-900">
+                    Webマーケティング
+                  </h3>
+                  <p className="text-sm md:text-base text-gray-700 leading-relaxed">
+                    数値を見ながら改善し続ける、ROIが見えるマーケ支援。集客からリピートまで一貫して支援します。
+                  </p>
+                </div>
+              </Card>
+            </motion.div>
 
             {/* ホームページ制作・アプリ開発 */}
-            <Card className="pt-0 overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300 bg-white border border-gray-200">
-              <div className="w-full h-48 relative mb-0">
-                <Image
-                  src="/images/services/開発.png"
-                  alt="ホームページ制作・アプリ開発"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <div className="p-6 md:p-8">
-                <h3 className="text-lg font-bold text-center mb-4 text-gray-900">
-                  ホームページ制作・アプリ開発
-                </h3>
-                <p className="text-sm md:text-base text-gray-700 leading-relaxed">
-                  要件を整理し、適正コストでスピーディに開発。事業視点で一緒に設計・開発するパートナーとして伴走します。
-                </p>
-              </div>
-            </Card>
-          </div>
+            <motion.div
+              variants={staggerItem}
+              whileHover={{ scale: 1.02, y: -4 }}
+              transition={{ duration: 0.2 }}
+            >
+              <Card className="pt-0 overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300 bg-white border border-gray-200">
+                <div className="w-full h-48 relative mb-0">
+                  <Image
+                    src="/images/services/開発.png"
+                    alt="ホームページ制作・アプリ開発"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-6 md:p-8">
+                  <h3 className="text-lg font-bold text-center mb-4 text-gray-900">
+                    ホームページ制作・アプリ開発
+                  </h3>
+                  <p className="text-sm md:text-base text-gray-700 leading-relaxed">
+                    要件を整理し、適正コストでスピーディに開発。事業視点で一緒に設計・開発するパートナーとして伴走します。
+                  </p>
+                </div>
+              </Card>
+            </motion.div>
+          </motion.div>
 
           <div className="text-center">
             <Button
@@ -419,13 +483,17 @@ export default function Home() {
             </Button>
           </div>
         </div>
-      </section>
+      </motion.section>
 
       {/* Works Section */}
-      <section
+      <motion.section
         id="works"
         className="w-full bg-muted py-16 md:py-24"
         aria-labelledby="works-heading"
+        variants={fadeInUp}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-80px" }}
       >
         <div className="max-w-7xl mx-auto px-4 md:px-6">
           <div className="text-center mb-12 md:mb-16">
@@ -441,29 +509,32 @@ export default function Home() {
           <div className="relative">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
               {visibleWorks.map((work) => (
-                <Card
+                <motion.div
                   key={work.title}
-                  className="overflow-hidden bg-white border border-gray-200 shadow-md hover:shadow-lg transition-shadow"
+                  whileHover={{ scale: 1.02, y: -4 }}
+                  transition={{ duration: 0.2 }}
                 >
-                  {/* プレースホルダー画像 */}
-                  <div className="w-full h-48 bg-gray-200 flex items-center justify-center">
-                    <span className="text-gray-400 text-sm">画像準備中</span>
-                  </div>
-                  <div className="p-6">
-                    <div className="flex items-center gap-2 mb-3">
-                      <Badge variant="secondary">{work.industry}</Badge>
+                  <Card className="overflow-hidden bg-white border border-gray-200 shadow-md hover:shadow-lg transition-shadow">
+                    {/* プレースホルダー画像 */}
+                    <div className="w-full h-48 bg-gray-200 flex items-center justify-center">
+                      <span className="text-gray-400 text-sm">画像準備中</span>
                     </div>
-                    <h3 className="font-bold text-lg text-gray-900 mb-2">
-                      {work.title}
-                    </h3>
-                    <p className="text-sm text-gray-700 leading-relaxed mb-3">
-                      {work.description}
-                    </p>
-                    <p className="text-sm font-bold text-sky-600">
-                      {work.result}
-                    </p>
-                  </div>
-                </Card>
+                    <div className="p-6">
+                      <div className="flex items-center gap-2 mb-3">
+                        <Badge variant="secondary">{work.industry}</Badge>
+                      </div>
+                      <h3 className="font-bold text-lg text-gray-900 mb-2">
+                        {work.title}
+                      </h3>
+                      <p className="text-sm text-gray-700 leading-relaxed mb-3">
+                        {work.description}
+                      </p>
+                      <p className="text-sm font-bold text-sky-600">
+                        {work.result}
+                      </p>
+                    </div>
+                  </Card>
+                </motion.div>
               ))}
             </div>
 
@@ -506,13 +577,17 @@ export default function Home() {
             </Button>
           </div>
         </div>
-      </section>
+      </motion.section>
 
       {/* Knowledge Section（プレースホルダー） */}
-      <section
+      <motion.section
         id="knowledge"
         className="w-full bg-background py-16 md:py-24 text-center"
         aria-labelledby="knowledge-heading"
+        variants={fadeInUp}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-80px" }}
       >
         <div className="max-w-7xl mx-auto px-4 md:px-6">
           <div className="text-center mb-6">
@@ -531,13 +606,17 @@ export default function Home() {
             <Link href="/knowledge">記事一覧を見る</Link>
           </Button>
         </div>
-      </section>
+      </motion.section>
 
       {/* Contact Section（プレースホルダー） */}
-      <section
+      <motion.section
         id="contact"
         className="w-full bg-muted py-16 md:py-24 text-center"
         aria-labelledby="contact-heading"
+        variants={fadeInUp}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-80px" }}
       >
         <div className="max-w-7xl mx-auto px-4 md:px-6">
           <div className="text-center mb-6">
@@ -559,7 +638,7 @@ export default function Home() {
             <Link href="/contact">お問い合わせはこちら</Link>
           </Button>
         </div>
-      </section>
+      </motion.section>
     </main>
   );
 }
