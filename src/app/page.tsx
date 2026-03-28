@@ -397,12 +397,13 @@ export default function Home() {
           >
             {/* AI・DX活用支援 */}
             <motion.div
+              className="h-full"
               variants={staggerItem}
               whileHover={{ scale: 1.02, y: -4 }}
               transition={{ duration: 0.2 }}
             >
-              <Card className="pt-0 overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300 bg-white border border-gray-200">
-                <div className="w-full h-48 relative mb-0">
+              <Card className="pt-0 overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300 bg-white border border-gray-200 h-full flex flex-col">
+                <div className="w-full h-48 relative mb-0 flex-shrink-0">
                   <Image
                     src="/images/services/ai.png"
                     alt="AI・DX活用支援"
@@ -410,11 +411,11 @@ export default function Home() {
                     className="object-cover"
                   />
                 </div>
-                <div className="p-6 md:p-8">
+                <div className="p-6 md:p-8 flex-1">
                   <h3 className="text-lg font-bold text-center mb-4 text-gray-900">
                     AI・DX活用支援
                   </h3>
-                  <p className="text-sm md:text-base text-gray-700 leading-relaxed">
+                  <p className="text-sm md:text-base text-gray-700 leading-relaxed line-clamp-4">
                     毎日の繰り返し作業をAIで自動化。書類作成・データ集計・返信対応を仕組み化し、社員がコア業務に集中できる環境をつくります。
                   </p>
                 </div>
@@ -423,12 +424,13 @@ export default function Home() {
 
             {/* Webマーケティング */}
             <motion.div
+              className="h-full"
               variants={staggerItem}
               whileHover={{ scale: 1.02, y: -4 }}
               transition={{ duration: 0.2 }}
             >
-              <Card className="pt-0 overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300 bg-white border border-gray-200">
-                <div className="w-full h-48 relative mb-0">
+              <Card className="pt-0 overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300 bg-white border border-gray-200 h-full flex flex-col">
+                <div className="w-full h-48 relative mb-0 flex-shrink-0">
                   <Image
                     src="/images/services/マーケ.png"
                     alt="Webマーケティング"
@@ -436,11 +438,11 @@ export default function Home() {
                     className="object-cover"
                   />
                 </div>
-                <div className="p-6 md:p-8">
+                <div className="p-6 md:p-8 flex-1">
                   <h3 className="text-lg font-bold text-center mb-4 text-gray-900">
                     Webマーケティング
                   </h3>
-                  <p className="text-sm md:text-base text-gray-700 leading-relaxed">
+                  <p className="text-sm md:text-base text-gray-700 leading-relaxed line-clamp-4">
                     数値を見ながら改善し続ける、ROIが見えるマーケ支援。集客からリピートまで一貫して支援します。
                   </p>
                 </div>
@@ -449,12 +451,13 @@ export default function Home() {
 
             {/* ホームページ制作・アプリ開発 */}
             <motion.div
+              className="h-full"
               variants={staggerItem}
               whileHover={{ scale: 1.02, y: -4 }}
               transition={{ duration: 0.2 }}
             >
-              <Card className="pt-0 overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300 bg-white border border-gray-200">
-                <div className="w-full h-48 relative mb-0">
+              <Card className="pt-0 overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300 bg-white border border-gray-200 h-full flex flex-col">
+                <div className="w-full h-48 relative mb-0 flex-shrink-0">
                   <Image
                     src="/images/services/開発.png"
                     alt="ホームページ制作・アプリ開発"
@@ -462,11 +465,11 @@ export default function Home() {
                     className="object-cover"
                   />
                 </div>
-                <div className="p-6 md:p-8">
+                <div className="p-6 md:p-8 flex-1">
                   <h3 className="text-lg font-bold text-center mb-4 text-gray-900">
                     ホームページ制作・アプリ開発
                   </h3>
-                  <p className="text-sm md:text-base text-gray-700 leading-relaxed">
+                  <p className="text-sm md:text-base text-gray-700 leading-relaxed line-clamp-4">
                     要件を整理し、適正コストでスピーディに開発。事業視点で一緒に設計・開発するパートナーとして伴走します。
                   </p>
                 </div>
@@ -511,25 +514,26 @@ export default function Home() {
               {visibleWorks.map((work) => (
                 <motion.div
                   key={work.title}
+                  className="h-full"
                   whileHover={{ scale: 1.02, y: -4 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <Card className="overflow-hidden bg-white border border-gray-200 shadow-md hover:shadow-lg transition-shadow">
+                  <Card className="overflow-hidden bg-white border border-gray-200 shadow-md hover:shadow-lg transition-shadow h-full flex flex-col">
                     {/* プレースホルダー画像 */}
-                    <div className="w-full h-48 bg-gray-200 flex items-center justify-center">
+                    <div className="w-full h-48 bg-gray-200 flex items-center justify-center flex-shrink-0">
                       <span className="text-gray-400 text-sm">画像準備中</span>
                     </div>
-                    <div className="p-6">
+                    <div className="p-6 flex-1 flex flex-col">
                       <div className="flex items-center gap-2 mb-3">
                         <Badge variant="secondary">{work.industry}</Badge>
                       </div>
                       <h3 className="font-bold text-lg text-gray-900 mb-2">
                         {work.title}
                       </h3>
-                      <p className="text-sm text-gray-700 leading-relaxed mb-3">
+                      <p className="text-sm text-gray-700 leading-relaxed mb-3 line-clamp-3">
                         {work.description}
                       </p>
-                      <p className="text-sm font-bold text-sky-600">
+                      <p className="text-sm font-bold text-sky-600 mt-auto">
                         {work.result}
                       </p>
                     </div>
