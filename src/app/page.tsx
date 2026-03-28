@@ -247,7 +247,7 @@ export default function Home() {
             <div className="pt-2">
               <Button
                 asChild
-                className="bg-sky-600 hover:bg-sky-700 text-white"
+                className="bg-sky-600 hover:bg-sky-700 text-white px-24 rounded-[100px]"
               >
                 <Link href="/service">サービスを見る</Link>
               </Button>
@@ -477,7 +477,7 @@ export default function Home() {
           <div className="text-center">
             <Button
               asChild
-              className="bg-sky-600 hover:bg-sky-700 text-white px-8"
+              className="bg-sky-600 hover:bg-sky-700 text-white px-24 rounded-[100px]"
             >
               <Link href="/service">詳しく見る</Link>
             </Button>
@@ -571,7 +571,7 @@ export default function Home() {
           <div className="text-center mt-10">
             <Button
               asChild
-              className="bg-sky-600 hover:bg-sky-700 text-white px-8"
+              className="bg-sky-600 hover:bg-sky-700 text-white px-24 rounded-[100px]"
             >
               <Link href="/contact">お問い合わせはこちら</Link>
             </Button>
@@ -602,7 +602,7 @@ export default function Home() {
             </h2>
           </div>
           <p className="text-gray-500 mb-6">準備中です。</p>
-          <Button asChild variant="outline">
+          <Button asChild variant="outline" className="px-24 rounded-[100px]">
             <Link href="/knowledge">記事一覧を見る</Link>
           </Button>
         </div>
@@ -632,8 +632,7 @@ export default function Home() {
           </p>
           <Button
             asChild
-            size="lg"
-            className="bg-sky-600 hover:bg-sky-700 text-white px-8"
+            className="bg-sky-600 hover:bg-sky-700 text-white px-24 rounded-[100px] h-auto"
           >
             <Link href="/contact">お問い合わせはこちら</Link>
           </Button>
