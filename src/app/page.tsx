@@ -1,7 +1,13 @@
 "use client";
 
 import { motion, type Variants } from "framer-motion";
-import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  ArrowRight,
+  BookOpen,
+  ChevronLeft,
+  ChevronRight,
+  Mail,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -170,7 +176,7 @@ export default function Home() {
             {/* CTA ボタン */}
             <Button
               asChild
-              className="bg-sky-600 hover:bg-sky-700 text-white font-semibold text-lg px-20 py-8 rounded-[100px] h-auto"
+              className="bg-sky-600 hover:bg-sky-700 text-white font-semibold text-lg px-20 py-4 rounded-[100px] h-auto"
             >
               <Link href="/contact" className="flex items-center gap-2">
                 お問い合わせはこちら
@@ -249,7 +255,10 @@ export default function Home() {
                 asChild
                 className="bg-sky-600 hover:bg-sky-700 text-white px-20 py-4 rounded-[100px] h-auto"
               >
-                <Link href="/service">サービスを見る</Link>
+                <Link href="/service" className="flex items-center gap-2">
+                  サービスを見る
+                  <ArrowRight className="w-5 h-5" aria-hidden="true" />
+                </Link>
               </Button>
             </div>
           </div>
@@ -479,7 +488,10 @@ export default function Home() {
               asChild
               className="bg-sky-600 hover:bg-sky-700 text-white px-20 py-4 rounded-[100px] h-auto"
             >
-              <Link href="/service">詳しく見る</Link>
+              <Link href="/service" className="flex items-center gap-2">
+                詳しく見る
+                <ArrowRight className="w-5 h-5" aria-hidden="true" />
+              </Link>
             </Button>
           </div>
         </div>
@@ -573,7 +585,10 @@ export default function Home() {
               asChild
               className="bg-sky-600 hover:bg-sky-700 text-white px-20 py-4 rounded-[100px] h-auto"
             >
-              <Link href="/contact">お問い合わせはこちら</Link>
+              <Link href="/contact" className="flex items-center gap-2">
+                お問い合わせはこちら
+                <Mail className="w-5 h-5" aria-hidden="true" />
+              </Link>
             </Button>
           </div>
         </div>
@@ -607,7 +622,10 @@ export default function Home() {
             variant="outline"
             className="px-20 py-4 rounded-[100px] h-auto"
           >
-            <Link href="/knowledge">記事一覧を見る</Link>
+            <Link href="/knowledge" className="flex items-center gap-2">
+              記事一覧を見る
+              <BookOpen className="w-5 h-5" aria-hidden="true" />
+            </Link>
           </Button>
         </div>
       </motion.section>
@@ -638,7 +656,10 @@ export default function Home() {
             asChild
             className="bg-sky-600 hover:bg-sky-700 text-white px-20 py-4 rounded-[100px] h-auto"
           >
-            <Link href="/contact">お問い合わせはこちら</Link>
+            <Link href="/contact" className="flex items-center gap-2">
+              お問い合わせはこちら
+              <Mail className="w-5 h-5" aria-hidden="true" />
+            </Link>
           </Button>
         </div>
       </motion.section>
