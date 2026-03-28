@@ -135,7 +135,7 @@ export default function Home() {
               src={slide.pcSrc}
               alt={slide.alt}
               fill
-              sizes="100vw"
+              sizes="(max-width: 767px) 0px, 100vw"
               className="object-cover hidden md:block"
               priority={index === 0}
             />
@@ -144,7 +144,7 @@ export default function Home() {
               src={slide.spSrc}
               alt={slide.alt}
               fill
-              sizes="100vw"
+              sizes="(max-width: 767px) 100vw, 0px"
               className="object-cover md:hidden"
               priority={index === 0}
             />
