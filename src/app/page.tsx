@@ -207,7 +207,7 @@ export default function Home() {
       {/* About Section */}
       <motion.section
         id="about"
-        className="bg-background max-w-7xl mx-auto py-16 md:py-24 px-6"
+        className="bg-background max-w-7xl mx-auto py-16 md:py-24 px-6 min-h-[80vh]"
         aria-labelledby="about-heading"
         variants={fadeInUp}
         initial="hidden"
@@ -259,7 +259,7 @@ export default function Home() {
       {/* お悩みセクション */}
       <motion.section
         id="pain"
-        className="w-full bg-muted py-16 md:py-24"
+        className="w-full bg-muted py-16 md:py-24 min-h-[80vh]"
         aria-labelledby="pain-heading"
         variants={fadeInUp}
         initial="hidden"
@@ -368,7 +368,7 @@ export default function Home() {
       {/* Services Section（ホーム導線） */}
       <motion.section
         id="services"
-        className="w-full bg-background py-16 md:py-24"
+        className="w-full bg-background py-16 md:py-24 min-h-[80vh]"
         aria-labelledby="services-heading"
         variants={fadeInUp}
         initial="hidden"
@@ -488,7 +488,7 @@ export default function Home() {
       {/* Works Section */}
       <motion.section
         id="works"
-        className="w-full bg-muted py-16 md:py-24"
+        className="w-full bg-muted py-16 md:py-24 min-h-[80vh]"
         aria-labelledby="works-heading"
         variants={fadeInUp}
         initial="hidden"
@@ -582,7 +582,7 @@ export default function Home() {
       {/* Knowledge Section（プレースホルダー） */}
       <motion.section
         id="knowledge"
-        className="w-full bg-background py-16 md:py-24 text-center"
+        className="w-full bg-background py-16 md:py-24 min-h-[80vh] text-center"
         aria-labelledby="knowledge-heading"
         variants={fadeInUp}
         initial="hidden"
@@ -611,7 +611,7 @@ export default function Home() {
       {/* Contact Section（プレースホルダー） */}
       <motion.section
         id="contact"
-        className="w-full bg-muted py-16 md:py-24 text-center"
+        className="w-full bg-muted py-16 md:py-24 min-h-[80vh] text-center"
         aria-labelledby="contact-heading"
         variants={fadeInUp}
         initial="hidden"
