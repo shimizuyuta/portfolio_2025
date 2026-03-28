@@ -27,9 +27,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               <Image
                 src="/images/header_logo.png"
                 alt="YS Development Logo"
-                width={50}
-                height={50}
-                className="mr-2 md:w-[60px] md:h-[60px]"
+                width={94}
+                height={40}
+                className="md:w-[113px] md:h-[48px]"
               />
               {/* <span className="hidden sm:block font-bold text-lg md:text-xl text-sky-600">
                 YSデベロップメント
