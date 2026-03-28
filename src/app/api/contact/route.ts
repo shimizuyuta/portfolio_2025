@@ -1,5 +1,5 @@
-import { Resend } from "resend";
 import { NextResponse } from "next/server";
+import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -7,7 +7,10 @@ export async function POST(request: Request) {
   const { name, email, message } = await request.json();
 
   if (!name || !email || !message) {
-    return NextResponse.json({ error: "必須項目が入力されていません" }, { status: 400 });
+    return NextResponse.json(
+      { error: "必須項目が入力されていません" },
+      { status: 400 },
+    );
   }
 
   const { error } = await resend.emails.send({
