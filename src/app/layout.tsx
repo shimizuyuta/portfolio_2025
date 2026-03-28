@@ -25,7 +25,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             {/* ロゴ */}
             <div className="flex items-center">
               <Image
-                src="/logo/logo2.png"
+                src="/images/header_logo.png"
                 alt="YS Development Logo"
                 width={50}
                 height={50}
