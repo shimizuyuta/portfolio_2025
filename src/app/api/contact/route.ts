@@ -12,15 +12,22 @@ export async function POST(request: Request) {
     );
   }
 
-  const { error } = await resend.emails.send({
-    from: "Portfolio Contact <onboarding@resend.dev>",
-    to: "shimizuyuta213@gmail.com",
-    replyTo: email,
-    subject: `【お問い合わせ】${name}様より`,
-    text: `名前: ${name}\nメール: ${email}\n\nメッセージ:\n${message}`,
-  });
+  try {
+    const { error } = await resend.emails.send({
+      from: "Portfolio Contact <onboarding@resend.dev>",
+      to: "shimizuyuta213@gmail.com",
+      replyTo: email,
+      subject: `【お問い合わせ】${name}様より`,
+      text: `名前: ${name}\nメール: ${email}\n\nメッセージ:\n${message}`,
+    });
 
-  if (error) {
+    if (error) {
+      return NextResponse.json(
+        { error: "送信に失敗しました" },
+        { status: 500 },
+      );
+    }
+  } catch {
     return NextResponse.json({ error: "送信に失敗しました" }, { status: 500 });
   }
 
