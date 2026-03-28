@@ -176,7 +176,7 @@ export default function Home() {
             {/* CTA ボタン */}
             <Button
               asChild
-              className="bg-sky-600 hover:bg-sky-700 text-white font-semibold text-base px-[37.5rem] py-4 rounded-[100px] h-auto"
+              className="bg-sky-600 hover:bg-sky-700 text-white font-semibold text-base  py-4 rounded-[100px] h-auto"
             >
               <Link href="/contact" className="flex items-center gap-2">
                 お問い合わせはこちら
@@ -253,7 +253,7 @@ export default function Home() {
             <div className="pt-2">
               <Button
                 asChild
-                className="bg-sky-600 hover:bg-sky-700 text-white text-base px-[37.5rem] py-4 rounded-[100px] h-auto"
+                className="bg-sky-600 hover:bg-sky-700 text-white text-base  py-4 rounded-[100px] h-auto"
               >
                 <Link href="/service" className="flex items-center gap-2">
                   サービスを見る
@@ -486,7 +486,7 @@ export default function Home() {
           <div className="text-center">
             <Button
               asChild
-              className="bg-sky-600 hover:bg-sky-700 text-white text-base px-[37.5rem] py-4 rounded-[100px] h-auto"
+              className="bg-sky-600 hover:bg-sky-700 text-white text-base  py-4 rounded-[100px] h-auto"
             >
               <Link href="/service" className="flex items-center gap-2">
                 詳しく見る
@@ -583,7 +583,7 @@ export default function Home() {
           <div className="text-center mt-10">
             <Button
               asChild
-              className="bg-sky-600 hover:bg-sky-700 text-white text-base px-[37.5rem] py-4 rounded-[100px] h-auto"
+              className="bg-sky-600 hover:bg-sky-700 text-white text-base  py-4 rounded-[100px] h-auto"
             >
               <Link href="/contact" className="flex items-center gap-2">
                 お問い合わせはこちら
@@ -620,7 +620,7 @@ export default function Home() {
           <Button
             asChild
             variant="outline"
-            className="text-base px-[37.5rem] py-4 rounded-[100px] h-auto"
+            className="text-base  py-4 rounded-[100px] h-auto px-8"
           >
             <Link href="/knowledge" className="flex items-center gap-2">
               記事一覧を見る
@@ -654,7 +654,7 @@ export default function Home() {
           </p>
           <Button
             asChild
-            className="bg-sky-600 hover:bg-sky-700 text-white text-base px-[37.5rem] py-4 rounded-[100px] h-auto"
+            className="bg-sky-600 hover:bg-sky-700 text-white text-base  py-4 rounded-[100px] h-auto"
           >
             <Link href="/contact" className="flex items-center gap-2">
               お問い合わせはこちら
