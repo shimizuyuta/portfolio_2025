@@ -38,7 +38,7 @@ export default function ServicePage() {
                   />
                   AI・DX活用支援
                 </h2>
-                <p className="text-muted-foreground leading-relaxed">
+                <p className="text-muted-foreground leading-relaxed min-h-[4.5rem]">
                   業務効率化、自動化の仕組みづくりを支援します。AIを活用した書類処理の自動化や、データ分析による業務改善をサポートします。
                 </p>
               </div>
@@ -64,7 +64,7 @@ export default function ServicePage() {
                   />
                   Webマーケティング
                 </h2>
-                <p className="text-muted-foreground leading-relaxed">
+                <p className="text-muted-foreground leading-relaxed min-h-[4.5rem]">
                   広告運用や効果測定を通じて売上向上をサポート。Meta広告やGoogle広告の最適化により、ROIの向上を実現します。
                 </p>
               </div>
@@ -90,7 +90,7 @@ export default function ServicePage() {
                   />
                   LINE公式構築
                 </h2>
-                <p className="text-muted-foreground leading-relaxed">
+                <p className="text-muted-foreground leading-relaxed min-h-[4.5rem]">
                   顧客対応や販促を効率化するLINE活用を実現。Lステップを活用した自動化でリピート率向上をサポートします。
                 </p>
               </div>
@@ -116,7 +116,7 @@ export default function ServicePage() {
                   />
                   ホームページ制作・アプリ開発
                 </h2>
-                <p className="text-muted-foreground leading-relaxed">
+                <p className="text-muted-foreground leading-relaxed min-h-[4.5rem]">
                   Webサイトやアプリの開発・リニューアルを対応。モダンな技術で高品質なサービスを提供します。
                 </p>
               </div>
