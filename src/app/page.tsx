@@ -150,7 +150,10 @@ export default function Home() {
         ))}
 
         {/* オーバーレイ */}
-        <div className="absolute inset-0 bg-black/60" aria-hidden="true" />
+        <div
+          className="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent"
+          aria-hidden="true"
+        />
 
         {/* コピー（左揃え） */}
         <div className="relative z-10 h-full flex items-center px-8 md:px-16 lg:px-24">
