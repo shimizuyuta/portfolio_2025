@@ -624,21 +624,31 @@ export default function Home() {
         viewport={{ once: false, margin: "-80px" }}
       >
         <div className="max-w-7xl mx-auto px-4 md:px-6">
+          {/* Section Title */}
+          <div className="text-center mb-12 md:mb-16">
+            <p className="text-sm font-semibold tracking-widest text-accent uppercase mb-2">
+              Knowledge
+            </p>
+            <h2
+              id="knowledge-heading"
+              className="text-3xl md:text-4xl font-bold"
+            >
+              ナレッジ
+            </h2>
+          </div>
+
           <div className="flex flex-col md:flex-row gap-6 md:gap-8">
             {/* Left: Section Header */}
-            <div className="w-full md:w-1/3 flex flex-col justify-between rounded-2xl border border-border p-8 md:p-10 min-h-[320px] md:min-h-[480px]">
+            <div className="w-full md:w-1/3 flex flex-col justify-between p-2 min-h-[240px] md:min-h-[360px]">
               <div>
-                <p className="text-6xl md:text-8xl font-bold text-foreground leading-none">
+                <p className="text-6xl md:text-8xl font-bold text-foreground/10 leading-none">
                   03
                 </p>
                 <div className="flex items-center gap-3 mt-3">
                   <span className="block w-px h-8 bg-foreground/30" />
-                  <h2
-                    id="knowledge-heading"
-                    className="text-2xl md:text-3xl font-bold"
-                  >
+                  <span className="text-2xl md:text-3xl font-bold">
                     ナレッジ
-                  </h2>
+                  </span>
                 </div>
               </div>
               <Button
@@ -654,7 +664,7 @@ export default function Home() {
             </div>
 
             {/* Right: Article List */}
-            <div className="w-full md:w-2/3 rounded-2xl border border-border overflow-hidden">
+            <div className="w-full md:w-2/3">
               {knowledgeArticles.length === 0 ? (
                 <div className="flex flex-col items-center justify-center h-full py-24 text-muted-foreground">
                   <p>記事を準備中です。</p>
