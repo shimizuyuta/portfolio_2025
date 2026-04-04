@@ -638,26 +638,15 @@ export default function Home() {
           </div>
 
           <div className="flex flex-col md:flex-row gap-6 md:gap-8">
-            {/* Left: Section Header */}
-            <div className="w-full md:w-1/3 flex flex-col justify-between p-2 min-h-[240px] md:min-h-[360px]">
-              <div>
-                <p className="text-6xl md:text-8xl font-bold text-foreground/10 leading-none">
-                  03
-                </p>
-                <div className="flex items-center gap-3 mt-3">
-                  <span className="block w-px h-8 bg-foreground/30" />
-                  <span className="text-2xl md:text-3xl font-bold">
-                    ナレッジ
-                  </span>
-                </div>
-              </div>
+            {/* Left: Button */}
+            <div className="w-full md:w-1/3 flex items-center justify-center">
               <Button
                 asChild
                 variant="outline"
-                className="text-base py-4 rounded-[100px] h-auto px-8 w-fit mt-8"
+                className="text-base py-4 rounded-[100px] h-auto px-8"
               >
                 <Link href="/knowledge" className="flex items-center gap-2">
-                  View All
+                  もっと見る
                   <ArrowRight className="w-5 h-5" aria-hidden="true" />
                 </Link>
               </Button>
