@@ -52,35 +52,44 @@ const heroSlides = [
 // Works データ
 const works = [
   {
-    industry: "製造業",
-    title: "業務自動化",
-    description: "書類処理・データ入力の自動化を実施。月40時間の工数を削減。",
-    result: "工数削減 40h/月",
-  },
-  {
-    industry: "EC・小売",
-    title: "Meta広告運用",
-    description: "ターゲット設定の見直しとクリエイティブのA/Bテストを実施。",
-    result: "CPA 50% 改善",
-  },
-  {
-    industry: "飲食",
-    title: "公式LINE構築・運用",
-    description: "顧客フォロー自動化とリピーター向けキャンペーン設計を実施。",
-    result: "リピート率 20% 向上",
-  },
-  {
-    industry: "士業",
-    title: "Webサイトリニューアル",
-    description: "既存サイトをモダンな技術でリニューアル。SEO対策も実施。",
-    result: "問い合わせ数 3倍",
-  },
-  {
-    industry: "物流",
-    title: "業務システム開発",
+    industry: "福祉",
+    title: "業務システムの法改正対応・運用保守",
     description:
-      "在庫管理システムをスクラッチ開発。現場の業務フローに合わせた設計。",
-    result: "作業時間 60% 削減",
+      "福祉業界向けSaaSの共通基盤を担当。3年ごとに行われる障害福祉サービスの法改正に備え、既存システムの改修・保守を継続的に実施。現場が止まらない安定稼働を維持。",
+    result: "法改正への確実な対応と安定稼働を実現",
+    period: "9ヶ月",
+  },
+  {
+    industry: "不動産",
+    title: "クラウドファンディングPFの運用保守・機能改善",
+    description:
+      "不動産クラウドファンディングプラットフォームの運用保守を担当。システムの安定稼働を維持しながら、書面作成のユーザー体験向上やメール運用の整備など、利用者の使いやすさを継続的に改善。",
+    result: "UX向上・メール運用の整備を実現",
+    period: "7ヶ月",
+  },
+  {
+    industry: "メディア",
+    title: "大規模サービスのバックエンドリプレース",
+    description:
+      "数百万ユーザーが利用する大規模メディアサービスのバックエンドシステムを現代的な構成に刷新。既存機能を維持しながら段階的にリプレースを進行中。",
+    result: "進行中",
+    period: "進行中",
+  },
+  {
+    industry: "スタートアップ支援",
+    title: "スタートアップ情報SaaSの0→1立ち上げ",
+    description:
+      "数万件のスタートアップデータを活用し、自社の強みや事業方針を入力することでマッチ度の高い事例・企業を探索できるSaaSプロダクトを立ち上げ。要件定義・設計・実装・運用まで一貫して担当。生成AIを活用した事業アイデア壁打ち機能も実現。",
+    result: "生成AI搭載プロダクトをリリース",
+    period: "1年",
+  },
+  {
+    industry: "歯科・美容",
+    title: "リップアートメイク集客支援（さくら歯科）",
+    description:
+      "公式LINEの構築・運用からインフルエンサーへの施策依頼、流入ユーザーの計測まで一貫してサポート。データをもとに施策を継続的に改善し、集客の仕組みを整備。",
+    result: "LINE登録数 月平均の2倍・売上 +30万円/月",
+    period: "進行中",
   },
 ];
 
@@ -543,6 +552,7 @@ export default function Home() {
                     <div className="p-6">
                       <div className="flex items-center gap-2 mb-3">
                         <Badge variant="secondary">{work.industry}</Badge>
+                        <span className="text-xs text-gray-400">{work.period}</span>
                       </div>
                       <h3 className="font-bold text-lg text-gray-900 mb-2">
                         {work.title}
