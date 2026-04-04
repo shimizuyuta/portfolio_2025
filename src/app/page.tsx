@@ -638,12 +638,11 @@ export default function Home() {
           </div>
 
           <div className="flex flex-col md:flex-row gap-6 md:gap-8">
-            {/* Left: Button */}
-            <div className="w-full md:w-1/3 flex items-center justify-center">
+            {/* Left: Button（SP では記事の下に表示） */}
+            <div className="w-full md:w-1/3 flex items-center justify-center order-last md:order-first">
               <Button
                 asChild
-                variant="outline"
-                className="text-base py-4 rounded-[100px] h-auto px-8"
+                className="text-base py-4 rounded-[100px] h-auto px-8 bg-sky-600 hover:bg-sky-700 text-white"
               >
                 <Link href="/knowledge" className="flex items-center gap-2">
                   もっと見る
@@ -653,7 +652,7 @@ export default function Home() {
             </div>
 
             {/* Right: Article List */}
-            <div className="w-full md:w-2/3">
+            <div className="w-full md:w-2/3 order-first md:order-last">
               {knowledgeArticles.length === 0 ? (
                 <div className="flex flex-col items-center justify-center h-full py-24 text-muted-foreground">
                   <p>記事を準備中です。</p>
