@@ -27,7 +27,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       lang="ja"
       className={`${notoSansJP.variable} ${zenKakuGothic.variable}`}
     >
-      <body className="min-h-screen bg-background text-foreground font-[family-name:var(--font-noto-sans-jp)]">
+      <body className="min-h-screen flex flex-col bg-background text-foreground font-[family-name:var(--font-noto-sans-jp)]">
         {/* ナビゲーション */}
         <header className="w-full border-b bg-white/80 backdrop-blur-md sticky top-0 z-50">
           <nav className="max-w-7xl mx-auto flex justify-between items-center py-3 px-4 md:py-4 md:px-6">
@@ -151,7 +151,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           </div>
         </header>
 
-        <main className="w-full">{children}</main>
+        <main className="w-full flex-1">{children}</main>
 
         <footer className="border-t py-8 bg-gray-50">
           <div className="max-w-7xl mx-auto px-4 md:px-6">
