@@ -7,9 +7,9 @@ import Link from "next/link";
 import { type ReactNode, useState } from "react";
 
 const NAV_LINKS = [
-  { label: "Services", href: "/#services" },
-  { label: "Works", href: "/#works" },
-  { label: "Knowledge", href: "/knowledge" },
+  { label: "サービス", href: "/#services" },
+  { label: "実績", href: "/#works" },
+  { label: "ナレッジ", href: "/knowledge" },
   { label: "お問い合わせ", href: "/contact" },
 ];
 
