@@ -3,7 +3,15 @@
 import "./globals.css";
 import { Menu, X } from "lucide-react";
 import { Noto_Sans_JP, Zen_Kaku_Gothic_New } from "next/font/google";
+import Link from "next/link";
 import { type ReactNode, useState } from "react";
+
+const NAV_LINKS = [
+  { label: "Services", href: "/#services" },
+  { label: "Works", href: "/#works" },
+  { label: "Knowledge", href: "/knowledge" },
+  { label: "お問い合わせ", href: "/contact" },
+];
 
 const notoSansJP = Noto_Sans_JP({
   subsets: ["latin"],
@@ -38,46 +46,16 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 
             {/* PC用ナビ */}
             <ul className="hidden md:flex gap-6 lg:gap-8 text-sm font-medium">
-              <li>
-                <a
-                  href="#about"
-                  className="hover:text-sky-600 transition-colors duration-200 py-2 px-1"
-                >
-                  About
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#services"
-                  className="hover:text-sky-600 transition-colors duration-200 py-2 px-1"
-                >
-                  services
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#portfolio"
-                  className="hover:text-sky-600 transition-colors duration-200 py-2 px-1"
-                >
-                  works
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#faq"
-                  className="hover:text-sky-600 transition-colors duration-200 py-2 px-1"
-                >
-                  FAQ
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#contact"
-                  className="hover:text-sky-600 transition-colors duration-200 py-2 px-1"
-                >
-                  contact
-                </a>
-              </li>
+              {NAV_LINKS.map(({ label, href }) => (
+                <li key={href}>
+                  <Link
+                    href={href}
+                    className="hover:text-sky-600 transition-colors duration-200 py-2 px-1"
+                  >
+                    {label}
+                  </Link>
+                </li>
+              ))}
             </ul>
 
             {/* モバイル用ハンバーガー */}
@@ -101,51 +79,17 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           >
             <div className="max-w-7xl mx-auto">
               <ul className="flex flex-col px-4 py-2 gap-1 text-sm font-medium">
-                <li>
-                  <a
-                    href="#about"
-                    onClick={() => setIsOpen(false)}
-                    className="block py-3 px-3 hover:bg-sky-50 hover:text-sky-600 rounded-lg transition-colors duration-200"
-                  >
-                    About
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#services"
-                    onClick={() => setIsOpen(false)}
-                    className="block py-3 px-3 hover:bg-sky-50 hover:text-sky-600 rounded-lg transition-colors duration-200"
-                  >
-                    サービス
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#portfolio"
-                    onClick={() => setIsOpen(false)}
-                    className="block py-3 px-3 hover:bg-sky-50 hover:text-sky-600 rounded-lg transition-colors duration-200"
-                  >
-                    実績
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#faq"
-                    onClick={() => setIsOpen(false)}
-                    className="block py-3 px-3 hover:bg-sky-50 hover:text-sky-600 rounded-lg transition-colors duration-200"
-                  >
-                    FAQ
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#contact"
-                    onClick={() => setIsOpen(false)}
-                    className="block py-3 px-3 hover:bg-sky-50 hover:text-sky-600 rounded-lg transition-colors duration-200"
-                  >
-                    お問い合わせ
-                  </a>
-                </li>
+                {NAV_LINKS.map(({ label, href }) => (
+                  <li key={href}>
+                    <Link
+                      href={href}
+                      onClick={() => setIsOpen(false)}
+                      className="block py-3 px-3 hover:bg-sky-50 hover:text-sky-600 rounded-lg transition-colors duration-200"
+                    >
+                      {label}
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </div>
           </div>
