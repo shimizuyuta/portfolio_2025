@@ -135,6 +135,7 @@ export default function Home() {
               src={slide.pcSrc}
               alt={slide.alt}
               fill
+              sizes="(max-width: 767px) 0px, 100vw"
               className="object-cover hidden md:block"
               priority={index === 0}
             />
@@ -143,6 +144,7 @@ export default function Home() {
               src={slide.spSrc}
               alt={slide.alt}
               fill
+              sizes="(max-width: 767px) 100vw, 0px"
               className="object-cover md:hidden"
               priority={index === 0}
             />
@@ -419,6 +421,7 @@ export default function Home() {
                     src="/images/services/ai.png"
                     alt="AI・DX活用支援"
                     fill
+                    sizes="(max-width: 768px) 100vw, 33vw"
                     className="object-cover"
                   />
                 </div>
@@ -445,6 +448,7 @@ export default function Home() {
                     src="/images/services/マーケ.png"
                     alt="Webマーケティング"
                     fill
+                    sizes="(max-width: 768px) 100vw, 33vw"
                     className="object-cover"
                   />
                 </div>
@@ -471,6 +475,7 @@ export default function Home() {
                     src="/images/services/開発.png"
                     alt="ホームページ制作・アプリ開発"
                     fill
+                    sizes="(max-width: 768px) 100vw, 33vw"
                     className="object-cover"
                   />
                 </div>

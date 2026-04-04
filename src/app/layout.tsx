@@ -2,8 +2,7 @@
 
 import "./globals.css";
 import { Menu, X } from "lucide-react";
-import { Noto_Sans_JP } from "next/font/google";
-import Image from "next/image";
+import { Noto_Sans_JP, Zen_Kaku_Gothic_New } from "next/font/google";
 import { type ReactNode, useState } from "react";
 
 const notoSansJP = Noto_Sans_JP({
@@ -13,28 +12,29 @@ const notoSansJP = Noto_Sans_JP({
   display: "swap",
 });
 
+const zenKakuGothic = Zen_Kaku_Gothic_New({
+  subsets: ["latin"],
+  weight: ["700"],
+  variable: "--font-zen-kaku",
+  display: "swap",
+});
+
 export default function RootLayout({ children }: { children: ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <html lang="ja" className={notoSansJP.variable}>
+    <html
+      lang="ja"
+      className={`${notoSansJP.variable} ${zenKakuGothic.variable}`}
+    >
       <body className="min-h-screen bg-background text-foreground font-[family-name:var(--font-noto-sans-jp)]">
         {/* ナビゲーション */}
         <header className="w-full border-b bg-white/80 backdrop-blur-md sticky top-0 z-50">
           <nav className="max-w-7xl mx-auto flex justify-between items-center py-3 px-4 md:py-4 md:px-6">
             {/* ロゴ */}
-            <div className="flex items-center">
-              <Image
-                src="/logo/logo2.png"
-                alt="YS Development Logo"
-                width={50}
-                height={50}
-                className="mr-2 md:w-[60px] md:h-[60px]"
-              />
-              {/* <span className="hidden sm:block font-bold text-lg md:text-xl text-sky-600">
-                YSデベロップメント
-              </span> */}
-            </div>
+            <span className="font-[family-name:var(--font-zen-kaku)] font-bold text-lg md:text-xl tracking-widest bg-gradient-to-r from-sky-600 to-indigo-500 bg-clip-text text-transparent">
+              YSデベロップメント
+            </span>
 
             {/* PC用ナビ */}
             <ul className="hidden md:flex gap-6 lg:gap-8 text-sm font-medium">
