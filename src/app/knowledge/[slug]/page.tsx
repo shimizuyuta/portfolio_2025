@@ -4,16 +4,11 @@ import ReactMarkdown from "react-markdown";
 import rehypeHighlight from "rehype-highlight";
 import remarkGfm from "remark-gfm";
 import { Badge } from "@/components/ui/badge";
-import { getArticleBySlug, getPublishedArticles } from "@/lib/knowledge";
+import { getArticleBySlug } from "@/lib/knowledge";
 
 type Props = {
   params: Promise<{ slug: string }>;
 };
-
-export async function generateStaticParams() {
-  const articles = await getPublishedArticles();
-  return articles.map((a) => ({ slug: a.slug }));
-}
 
 export default async function ArticlePage({ params }: Props) {
   const { slug } = await params;
