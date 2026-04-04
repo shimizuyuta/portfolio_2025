@@ -38,7 +38,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body className="min-h-screen flex flex-col bg-background text-foreground font-[family-name:var(--font-noto-sans-jp)]">
         {/* ナビゲーション */}
         <header className="w-full border-b bg-white/80 backdrop-blur-md sticky top-0 z-50">
-          <nav className="max-w-7xl mx-auto flex justify-between items-center py-3 px-4 md:py-4 md:px-6">
+          <nav className="max-w-7xl mx-auto flex justify-between items-center py-4 px-4 md:py-6 md:px-6">
             {/* ロゴ */}
             <span className="font-[family-name:var(--font-zen-kaku)] font-bold text-lg md:text-xl tracking-widest bg-gradient-to-r from-sky-600 to-indigo-500 bg-clip-text text-transparent">
               YSデベロップメント
