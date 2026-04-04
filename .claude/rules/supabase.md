@@ -60,6 +60,34 @@ supabase db diff
 5. supabase gen types typescript --linked > src/types/supabase.ts で型を再生成
 ```
 
+## Docker 未起動時のデータ操作（REST API）
+
+`supabase status` が Docker エラーを返す場合、CLI の DB 操作コマンドは使えない。
+また `supabase db execute` というコマンドは存在しない（CLI v2 系には未実装）。
+
+その場合は `.env.local` の値を使って REST API で直接操作する：
+
+```bash
+# .env.local から読み込む
+source .env.local  # または手動で変数をセット
+
+# SELECT
+curl -s "$NEXT_PUBLIC_SUPABASE_URL/rest/v1/<table>?select=*" \
+  -H "apikey: $SUPABASE_SERVICE_ROLE_KEY" \
+  -H "Authorization: Bearer $SUPABASE_SERVICE_ROLE_KEY"
+
+# INSERT（RLS をバイパスするため service_role キーを使う）
+curl -s -X POST "$NEXT_PUBLIC_SUPABASE_URL/rest/v1/<table>" \
+  -H "apikey: $SUPABASE_SERVICE_ROLE_KEY" \
+  -H "Authorization: Bearer $SUPABASE_SERVICE_ROLE_KEY" \
+  -H "Content-Type: application/json" \
+  -H "Prefer: return=representation" \
+  -d '[{ ... }]'
+```
+
+- `NEXT_PUBLIC_SUPABASE_URL` と `SUPABASE_SERVICE_ROLE_KEY` は `.env.local` に定義済み
+- upsert 時は `-H "Prefer: return=representation,resolution=ignore-duplicates"` を追加
+
 ## RLS ポリシーの方針
 
 - テーブルには必ず RLS を有効化する
