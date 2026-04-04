@@ -12,7 +12,10 @@
 1. `gh pr list` でオープン PR を確認
 2. 関連する PR は `gh pr view <番号>` でマージ済みかを確認
 3. `git log origin/main --oneline -5` で main の最新を確認
-4. `git fetch origin && git checkout -b <branch> origin/main` でブランチを作成
+4. worktree で作業ディレクトリを作成する（→ `worktree.md` 参照）
+
+並行開発は必ず **git worktree** を使う。`git checkout -b` は使わない。
+worktree を使うことでブランチごとに独立したディレクトリが作られ、変更が混ざらない。
 
 ## Issue 作成前のヒアリング（必須）
 
