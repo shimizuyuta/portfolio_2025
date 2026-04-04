@@ -9,7 +9,49 @@
 | URL | https://yjpbkeytzoyliozbzmhf.supabase.co |
 | リージョン | ap-northeast-1（東京） |
 
-## よく使う CLI コマンド
+## セットアップ
+
+### Agent Skills のインストール
+
+```
+/plugin marketplace add supabase/agent-skills
+/plugin install postgres-best-practices@supabase-agent-skills
+```
+
+### MCP Server の設定
+
+MCP Server を使うと Claude Code から直接 Supabase を操作できる。
+設定は `.claude/mcp.json` で管理する。
+
+```json
+{
+  "mcpServers": {
+    "supabase": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@supabase/mcp-server-supabase@latest",
+        "--project-ref",
+        "yjpbkeytzoyliozbzmhf"
+      ]
+    }
+  }
+}
+```
+
+CLI で毎回接続文字列を貼る運用はトラブルが多いため、**Supabase の操作は MCP 経由を基本とする**。
+
+## MCP でできること
+
+| 操作 | 方法 |
+|------|------|
+| テーブル設計・確認 | MCP |
+| マイグレーション生成 | MCP |
+| SQL 実行 | MCP |
+| TypeScript 型生成 | CLI（`supabase gen types`）|
+| リモートへの適用 | CLI（`supabase db push`）|
+
+## CLI コマンド（補助的に使う）
 
 ```bash
 # マイグレーション作成
@@ -68,10 +110,11 @@ export function createClient() {
 テーブルの変更は必ずマイグレーションファイルで管理する。Supabase の Table Editor から直接変更しない（履歴が残らないため）。
 
 ```
-1. supabase migration new <変更内容を表す名前>
-2. supabase/migrations/<timestamp>_<name>.sql を編集
-3. supabase db push でリモートに適用
-4. supabase gen types typescript ... で型を再生成
+1. MCP でテーブル設計・マイグレーション SQL を生成
+2. supabase migration new <変更内容を表す名前>
+3. supabase/migrations/<timestamp>_<name>.sql を編集
+4. supabase db push でリモートに適用
+5. supabase gen types typescript ... で型を再生成
 ```
 
 ## RLS ポリシーの方針
@@ -89,16 +132,3 @@ create policy "公開記事は誰でも読める"
   on articles for select
   using (published_at is not null and published_at <= now());
 ```
-
-## MCP でできること
-
-Supabase MCP（`@supabase/mcp-server-supabase`）を使うと Claude から直接以下が行える：
-
-- テーブル一覧・スキーマの確認
-- SQL の実行
-- マイグレーションの生成・適用
-- TypeScript 型の生成
-- Edge Functions の管理
-- プロジェクトのログ確認
-
-MCP はスキーマ設計・マイグレーション生成の補助として使う。本番データの直接操作は避ける。
