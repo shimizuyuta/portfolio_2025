@@ -132,29 +132,32 @@ export default function Home() {
         className="w-full overflow-hidden bg-white"
       >
         {/* PC レイアウト（2カラム） */}
-        <div className="hidden md:flex items-center min-h-[600px] lg:min-h-[680px] max-w-7xl mx-auto px-8 lg:px-16 py-16 gap-12 lg:gap-16">
+        <div className="hidden md:flex items-stretch min-h-[580px] lg:min-h-[640px]">
           {/* 左: テキスト */}
           <motion.div
-            className="flex-1"
+            className="flex-[9] flex flex-col justify-center pl-12 lg:pl-16 pr-8 py-12"
             variants={fadeInUp}
             initial="hidden"
             animate="visible"
           >
+            <p className="text-xl lg:text-2xl font-semibold text-sky-600 mb-4 tracking-wide">
+              AI・ITを活用したい。
+            </p>
             <h1
               id="hero-heading"
-              className="text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight mb-6 text-gray-900"
+              className="text-4xl lg:text-5xl font-bold leading-tight mb-6 text-gray-900 whitespace-nowrap"
             >
-              AI・ITを活用したい。
-              <br />
               でも、誰に頼めばいい？
             </h1>
-            <p className="text-base lg:text-lg leading-relaxed mb-8 text-muted-foreground max-w-lg">
+            <p className="text-base lg:text-lg leading-relaxed mb-8 text-muted-foreground">
               集客・採用・業務効率化・システム開発まで、
-              あなたのビジネスを一緒に作り上げるITパートナー。
+              <br />
+              あなたのビジネスを一緒に作り上げる
+              <span className="text-sky-600 font-semibold">ITパートナー</span>。
             </p>
             <Button
               asChild
-              className="bg-sky-600 hover:bg-sky-700 text-white font-semibold text-base py-4 rounded-[100px] h-auto"
+              className="bg-sky-600 hover:bg-sky-700 text-white font-semibold text-base py-4 rounded-[100px] h-auto w-fit"
             >
               <Link href="/contact" className="flex items-center gap-2">
                 お問い合わせはこちら
@@ -163,134 +166,85 @@ export default function Home() {
             </Button>
           </motion.div>
 
-          {/* 右: 画像カード（横スライド） */}
-          <div className="flex-1 relative pb-10">
-            {/* 装飾シェイプ */}
-            <div
-              className="absolute -bottom-2 -right-6 w-[88%] h-[88%] bg-sky-50 rounded-3xl"
-              aria-hidden="true"
-            />
-            {/* スライダー本体 */}
-            <div className="relative aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl">
-              <AnimatePresence initial={false} mode="popLayout">
-                <motion.div
-                  key={currentSlide}
-                  className="absolute inset-0"
-                  initial={{ x: "100%" }}
-                  animate={{ x: 0 }}
-                  exit={{ x: "-100%" }}
-                  transition={{ duration: 0.6, ease: "easeInOut" }}
-                >
-                  <Image
-                    src={heroSlides[currentSlide].pcSrc}
-                    alt={heroSlides[currentSlide].alt}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 1280px) 50vw, 640px"
-                    priority
-                  />
-                </motion.div>
-              </AnimatePresence>
-            </div>
-            {/* インジケーター */}
-            <div
-              className="absolute -bottom-1 left-1/2 -translate-x-1/2 flex gap-2"
-              role="tablist"
-              aria-label="スライドインジケーター"
-            >
-              {heroSlides.map((slide, index) => (
-                <button
-                  key={`indicator-pc-${slide.alt}`}
-                  type="button"
-                  role="tab"
-                  aria-selected={index === currentSlide}
-                  aria-label={`スライド ${index + 1}`}
-                  onClick={() => setCurrentSlide(index)}
-                  className={`h-2 rounded-full transition-all duration-300 ${
-                    index === currentSlide
-                      ? "bg-sky-600 w-6"
-                      : "bg-sky-200 w-2.5 hover:bg-sky-400"
-                  }`}
+          {/* 右: 画像（55%幅・左上角丸） */}
+          <div className="w-[55%] shrink-0 relative self-stretch overflow-hidden rounded-tl-[4rem]">
+            <AnimatePresence initial={false} mode="popLayout">
+              <motion.div
+                key={currentSlide}
+                className="absolute inset-0"
+                initial={{ x: "100%" }}
+                animate={{ x: 0 }}
+                exit={{ x: "-100%" }}
+                transition={{ duration: 1.2, ease: "easeInOut" }}
+              >
+                <Image
+                  src={heroSlides[currentSlide].pcSrc}
+                  alt={heroSlides[currentSlide].alt}
+                  fill
+                  className="object-cover"
+                  sizes="60vw"
+                  priority
                 />
-              ))}
-            </div>
+              </motion.div>
+            </AnimatePresence>
           </div>
         </div>
 
         {/* SP レイアウト（縦積み） */}
         <div className="md:hidden">
-          {/* 画像カード（上） */}
-          <div className="relative mx-4 mt-6">
-            <div
-              className="absolute -bottom-4 -right-4 w-full h-full bg-sky-50 rounded-3xl"
-              aria-hidden="true"
-            />
-            <div className="relative aspect-[4/3] rounded-3xl overflow-hidden shadow-xl">
-              {heroSlides.map((slide, index) => (
-                <div
-                  key={slide.alt}
-                  className={`absolute inset-0 transition-opacity duration-1000 ${
-                    index === currentSlide ? "opacity-100" : "opacity-0"
-                  }`}
-                  aria-hidden={index !== currentSlide}
-                >
-                  <Image
-                    src={slide.spSrc}
-                    alt={slide.alt}
-                    fill
-                    className="object-cover"
-                    sizes="calc(100vw - 2rem)"
-                    priority={index === 0}
-                  />
-                </div>
-              ))}
-            </div>
-            {/* インジケーター */}
-            <div
-              className="absolute -bottom-9 left-1/2 -translate-x-1/2 flex gap-2"
-              role="tablist"
-              aria-label="スライドインジケーター"
-            >
-              {heroSlides.map((slide, index) => (
-                <button
-                  key={`indicator-sp-${slide.alt}`}
-                  type="button"
-                  role="tab"
-                  aria-selected={index === currentSlide}
-                  aria-label={`スライド ${index + 1}`}
-                  onClick={() => setCurrentSlide(index)}
-                  className={`h-2 rounded-full transition-all duration-300 ${
-                    index === currentSlide
-                      ? "bg-sky-600 w-6"
-                      : "bg-sky-200 w-2.5 hover:bg-sky-400"
-                  }`}
+          {/* 画像（上・長方形・PC画像使用） */}
+          <div className="relative w-full aspect-[16/9] overflow-hidden">
+            {heroSlides.map((slide, index) => (
+              <div
+                key={slide.alt}
+                className={`absolute inset-0 transition-opacity duration-1000 ${
+                  index === currentSlide ? "opacity-100" : "opacity-0"
+                }`}
+                aria-hidden={index !== currentSlide}
+              >
+                <Image
+                  src={slide.pcSrc}
+                  alt={slide.alt}
+                  fill
+                  className="object-cover"
+                  sizes="100vw"
+                  priority={index === 0}
                 />
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
 
           {/* テキスト（下） */}
-          <div className="px-6 pt-14 pb-10">
+          <div className="px-6 pt-8 pb-10">
             <motion.div variants={fadeInUp} initial="hidden" animate="visible">
-              <h1 className="text-3xl font-bold leading-tight mb-4 text-gray-900">
+              <p className="text-base font-semibold text-sky-600 mb-3 tracking-wide">
                 AI・ITを活用したい。
-                <br />
-                でも、誰に頼めばいい？
+              </p>
+              <h1 className="text-2xl font-bold leading-tight mb-4 text-gray-900">
+                「でも、誰に頼めばいい？」
               </h1>
-              <p className="text-base leading-relaxed mb-8 text-muted-foreground">
+              <p className="text-base leading-relaxed mb-6 text-muted-foreground">
                 集客・採用・業務効率化・システム開発まで、
-                あなたのビジネスを一緒に作り上げるITパートナー。
+                <br />
+                <span className="text-[0px]">
+                  <span className="text-base text-muted-foreground">
+                    あなたのビジネスを一緒に作り上げる
+                  </span>
+                  <span className="text-base text-sky-600 font-semibold">
+                    ITパートナー。
+                  </span>
+                </span>
               </p>
               <Button
                 asChild
-                className="w-full bg-sky-600 hover:bg-sky-700 text-white font-semibold text-base py-4 rounded-[100px] h-auto"
+                className="bg-sky-600 hover:bg-sky-700 text-white font-semibold text-sm py-3 px-6 rounded-[100px] h-auto w-fit mx-auto block"
               >
                 <Link
                   href="/contact"
-                  className="flex items-center justify-center gap-2"
+                  className="flex items-center gap-2 justify-center"
                 >
                   お問い合わせはこちら
-                  <ArrowRight className="w-5 h-5" aria-hidden="true" />
+                  <ArrowRight className="w-4 h-4" aria-hidden="true" />
                 </Link>
               </Button>
             </motion.div>
