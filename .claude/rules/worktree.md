@@ -36,4 +36,15 @@ git worktree list
 
 - 新しい作業を始めるときは必ず worktree を作成する（既存ブランチ上で直接作業しない）
 - main ブランチの worktree（メインディレクトリ）では直接コミットしない
-- マージ済みの worktree は速やかに削除してディレクトリを整理する
+- **PR がマージされたら、対応する worktree とローカルブランチをその場で削除する**
+
+## PR マージ後の worktree 削除手順（必須）
+
+PR のマージが確認できたら、以下を実行する：
+
+```bash
+git worktree remove ../portfolio-<branch-name>
+git branch -d <branch-name>
+```
+
+Claude が PR マージを確認した場合（`gh pr view` の state が MERGED）、ユーザーへの報告時に削除コマンドも合わせて実行する。
