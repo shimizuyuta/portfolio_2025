@@ -11,13 +11,6 @@
 
 ## セットアップ
 
-### Agent Skills のインストール
-
-```
-/plugin marketplace add supabase/agent-skills
-/plugin install postgres-best-practices@supabase-agent-skills
-```
-
 ### MCP Server の設定
 
 MCP Server を使うと Claude Code から直接 Supabase を操作できる。
