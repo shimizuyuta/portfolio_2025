@@ -2,35 +2,13 @@
 
 ## プロジェクト情報
 
-| 項目 | 値 |
-|------|-----|
-| プロジェクト名 | portfolio-2025 |
-| Project Ref | yjpbkeytzoyliozbzmhf |
-| URL | https://yjpbkeytzoyliozbzmhf.supabase.co |
-| リージョン | ap-northeast-1（東京） |
+プロジェクト設定は `supabase/config.toml` を参照。
+接続情報（URL・キー）は `.env.local` を参照。
 
-## セットアップ
-
-### MCP Server の設定
+## MCP Server
 
 MCP Server を使うと Claude Code から直接 Supabase を操作できる。
 設定は `.claude/mcp.json` で管理する。
-
-```json
-{
-  "mcpServers": {
-    "supabase": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "@supabase/mcp-server-supabase@latest",
-        "--project-ref",
-        "yjpbkeytzoyliozbzmhf"
-      ]
-    }
-  }
-}
-```
 
 CLI で毎回接続文字列を貼る運用はトラブルが多いため、**Supabase の操作は MCP 経由を基本とする**。
 
@@ -53,8 +31,8 @@ supabase migration new <name>
 # リモートに適用
 supabase db push
 
-# TypeScript 型を自動生成
-supabase gen types typescript --project-id yjpbkeytzoyliozbzmhf > src/types/supabase.ts
+# TypeScript 型を自動生成（src/types/supabase.ts を上書き）
+supabase gen types typescript --linked > src/types/supabase.ts
 
 # リモートの変更をローカルに取り込む
 supabase db pull
@@ -65,38 +43,10 @@ supabase db diff
 
 ## クライアントの使い分け
 
-Server Components・Route Handlers では `createServerClient`、Client Components では `createBrowserClient` を使う。
+- **Server Components / Route Handlers** → `src/lib/supabase/server.ts` の `createClient()` を使う
+- **Client Components** → `src/lib/supabase/client.ts` の `createClient()` を使う（認証が必要になったとき）
 
-```ts
-// src/lib/supabase/server.ts — Server Components / Route Handlers
-import { createServerClient } from "@supabase/ssr";
-import { cookies } from "next/headers";
-import type { Database } from "@/types/supabase";
-
-export function createClient() {
-  const cookieStore = cookies();
-  return createServerClient<Database>(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    { cookies: { getAll: () => cookieStore.getAll() } },
-  );
-}
-```
-
-```ts
-// src/lib/supabase/client.ts — "use client" コンポーネント
-import { createBrowserClient } from "@supabase/ssr";
-import type { Database } from "@/types/supabase";
-
-export function createClient() {
-  return createBrowserClient<Database>(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-  );
-}
-```
-
-このプロジェクトでは記事データの取得のみのため、基本的に **Server Components + `createServerClient`** を使う。
+このプロジェクトでは記事データの取得のみのため、基本的に **Server Components + server.ts** を使う。
 
 ## マイグレーションの進め方
 
@@ -107,21 +57,12 @@ export function createClient() {
 2. supabase migration new <変更内容を表す名前>
 3. supabase/migrations/<timestamp>_<name>.sql を編集
 4. supabase db push でリモートに適用
-5. supabase gen types typescript ... で型を再生成
+5. supabase gen types typescript --linked > src/types/supabase.ts で型を再生成
 ```
 
 ## RLS ポリシーの方針
 
 - テーブルには必ず RLS を有効化する
-- `articles` テーブルは公開記事のみ anon で読み取り可能にする
+- `articles` テーブルは `status = 'published'` かつ `published_at <= now()` のもののみ anon で読み取り可能
 - 書き込み（INSERT / UPDATE / DELETE）は RLS で禁止（管理は Supabase Dashboard から行う）
-
-```sql
--- RLS 有効化
-alter table articles enable row level security;
-
--- 公開記事の読み取りのみ許可
-create policy "公開記事は誰でも読める"
-  on articles for select
-  using (published_at is not null and published_at <= now());
-```
+- ポリシーの実装はマイグレーションファイル（`supabase/migrations/`）を参照
