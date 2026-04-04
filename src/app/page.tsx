@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, type Variants } from "framer-motion";
+import { AnimatePresence, motion, type Variants } from "framer-motion";
 import {
   ArrowRight,
   BookOpen,
@@ -115,73 +115,36 @@ export default function Home() {
 
   return (
     <main className="">
-      {/* Hero Section - スライドショー */}
+      {/* Hero Section */}
       <section
         id="hero"
-        className="relative w-full h-screen min-h-[500px] overflow-hidden"
-        aria-labelledby="hero-heading"
+        aria-label="ヒーローセクション"
+        className="w-full overflow-hidden bg-white"
       >
-        {/* スライド画像 */}
-        {heroSlides.map((slide, index) => (
-          <div
-            key={slide.alt}
-            className={`absolute inset-0 transition-opacity duration-1000 ${
-              index === currentSlide ? "opacity-100" : "opacity-0"
-            }`}
-            aria-hidden={index !== currentSlide}
-          >
-            {/* PC 画像 */}
-            <Image
-              src={slide.pcSrc}
-              alt={slide.alt}
-              fill
-              sizes="(max-width: 767px) 0px, 100vw"
-              className="object-cover hidden md:block"
-              priority={index === 0}
-            />
-            {/* SP 画像 */}
-            <Image
-              src={slide.spSrc}
-              alt={slide.alt}
-              fill
-              sizes="(max-width: 767px) 100vw, 0px"
-              className="object-cover md:hidden"
-              priority={index === 0}
-            />
-          </div>
-        ))}
-
-        {/* オーバーレイ */}
-        <div
-          className="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent"
-          aria-hidden="true"
-        />
-
-        {/* コピー（左揃え） */}
-        <div className="relative z-10 h-full flex items-center px-8 md:px-16 lg:px-24">
+        {/* PC レイアウト（2カラム） */}
+        <div className="hidden md:flex items-center min-h-[600px] lg:min-h-[680px] max-w-7xl mx-auto px-8 lg:px-16 py-16 gap-12 lg:gap-16">
+          {/* 左: テキスト */}
           <motion.div
-            className="max-w-2xl text-white"
+            className="flex-1"
             variants={fadeInUp}
             initial="hidden"
             animate="visible"
           >
             <h1
               id="hero-heading"
-              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6"
+              className="text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight mb-6 text-gray-900"
             >
               AI・ITを活用したい。
-              <br className="hidden sm:block" />
+              <br />
               でも、誰に頼めばいい？
             </h1>
-            <p className="text-base md:text-lg leading-relaxed mb-8 text-white/90 max-w-xl">
+            <p className="text-base lg:text-lg leading-relaxed mb-8 text-muted-foreground max-w-lg">
               集客・採用・業務効率化・システム開発まで、
               あなたのビジネスを一緒に作り上げるITパートナー。
             </p>
-
-            {/* CTA ボタン */}
             <Button
               asChild
-              className="bg-sky-600 hover:bg-sky-700 text-white font-semibold text-base  py-4 rounded-[100px] h-auto"
+              className="bg-sky-600 hover:bg-sky-700 text-white font-semibold text-base py-4 rounded-[100px] h-auto"
             >
               <Link href="/contact" className="flex items-center gap-2">
                 お問い合わせはこちら
@@ -189,29 +152,139 @@ export default function Home() {
               </Link>
             </Button>
           </motion.div>
+
+          {/* 右: 画像カード（横スライド） */}
+          <div className="flex-1 relative pb-10">
+            {/* 装飾シェイプ */}
+            <div
+              className="absolute -bottom-2 -right-6 w-[88%] h-[88%] bg-sky-50 rounded-3xl"
+              aria-hidden="true"
+            />
+            {/* スライダー本体 */}
+            <div className="relative aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl">
+              <AnimatePresence initial={false} mode="popLayout">
+                <motion.div
+                  key={currentSlide}
+                  className="absolute inset-0"
+                  initial={{ x: "100%" }}
+                  animate={{ x: 0 }}
+                  exit={{ x: "-100%" }}
+                  transition={{ duration: 0.6, ease: "easeInOut" }}
+                >
+                  <Image
+                    src={heroSlides[currentSlide].pcSrc}
+                    alt={heroSlides[currentSlide].alt}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 1280px) 50vw, 640px"
+                    priority
+                  />
+                </motion.div>
+              </AnimatePresence>
+            </div>
+            {/* インジケーター */}
+            <div
+              className="absolute -bottom-1 left-1/2 -translate-x-1/2 flex gap-2"
+              role="tablist"
+              aria-label="スライドインジケーター"
+            >
+              {heroSlides.map((slide, index) => (
+                <button
+                  key={`indicator-pc-${slide.alt}`}
+                  type="button"
+                  role="tab"
+                  aria-selected={index === currentSlide}
+                  aria-label={`スライド ${index + 1}`}
+                  onClick={() => setCurrentSlide(index)}
+                  className={`h-2 rounded-full transition-all duration-300 ${
+                    index === currentSlide
+                      ? "bg-sky-600 w-6"
+                      : "bg-sky-200 w-2.5 hover:bg-sky-400"
+                  }`}
+                />
+              ))}
+            </div>
+          </div>
         </div>
 
-        {/* スライドインジケーター */}
-        <div
-          className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-10"
-          role="tablist"
-          aria-label="スライドインジケーター"
-        >
-          {heroSlides.map((slide, index) => (
-            <button
-              key={`indicator-${slide.alt}`}
-              type="button"
-              role="tab"
-              aria-selected={index === currentSlide}
-              aria-label={`スライド ${index + 1}`}
-              onClick={() => setCurrentSlide(index)}
-              className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
-                index === currentSlide
-                  ? "bg-white w-6"
-                  : "bg-white/50 hover:bg-white/75"
-              }`}
+        {/* SP レイアウト（縦積み） */}
+        <div className="md:hidden">
+          {/* 画像カード（上） */}
+          <div className="relative mx-4 mt-6">
+            <div
+              className="absolute -bottom-4 -right-4 w-full h-full bg-sky-50 rounded-3xl"
+              aria-hidden="true"
             />
-          ))}
+            <div className="relative aspect-[4/3] rounded-3xl overflow-hidden shadow-xl">
+              {heroSlides.map((slide, index) => (
+                <div
+                  key={slide.alt}
+                  className={`absolute inset-0 transition-opacity duration-1000 ${
+                    index === currentSlide ? "opacity-100" : "opacity-0"
+                  }`}
+                  aria-hidden={index !== currentSlide}
+                >
+                  <Image
+                    src={slide.spSrc}
+                    alt={slide.alt}
+                    fill
+                    className="object-cover"
+                    sizes="calc(100vw - 2rem)"
+                    priority={index === 0}
+                  />
+                </div>
+              ))}
+            </div>
+            {/* インジケーター */}
+            <div
+              className="absolute -bottom-9 left-1/2 -translate-x-1/2 flex gap-2"
+              role="tablist"
+              aria-label="スライドインジケーター"
+            >
+              {heroSlides.map((slide, index) => (
+                <button
+                  key={`indicator-sp-${slide.alt}`}
+                  type="button"
+                  role="tab"
+                  aria-selected={index === currentSlide}
+                  aria-label={`スライド ${index + 1}`}
+                  onClick={() => setCurrentSlide(index)}
+                  className={`h-2 rounded-full transition-all duration-300 ${
+                    index === currentSlide
+                      ? "bg-sky-600 w-6"
+                      : "bg-sky-200 w-2.5 hover:bg-sky-400"
+                  }`}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* テキスト（下） */}
+          <div className="px-6 pt-14 pb-10">
+            <motion.div variants={fadeInUp} initial="hidden" animate="visible">
+              <h1 className="text-3xl font-bold leading-tight mb-4 text-gray-900">
+                AI・ITを活用したい。
+                <br />
+                でも、誰に頼めばいい？
+              </h1>
+              <p className="text-base leading-relaxed mb-8 text-muted-foreground">
+                集客・採用・業務効率化・システム開発まで、
+                あなたのビジネスを一緒に作り上げるITパートナー。
+              </p>
+              <Button
+                asChild
+                className="w-full bg-sky-600 hover:bg-sky-700 text-white font-semibold text-base py-4 rounded-[100px] h-auto"
+              >
+                <Link
+                  href="/contact"
+                  className="flex items-center justify-center gap-2"
+                >
+                  お問い合わせはこちら
+                  <ArrowRight className="w-5 h-5" aria-hidden="true" />
+                </Link>
+              </Button>
+            </motion.div>
+          </div>
         </div>
       </section>
 
