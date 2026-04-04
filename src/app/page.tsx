@@ -710,22 +710,32 @@ export default function Home() {
             </h2>
           </div>
 
-          <div className="flex flex-col md:flex-row gap-6 md:gap-8">
-            {/* Left: Button（SP では記事の下に表示） */}
-            <div className="w-full md:w-1/3 flex items-center justify-center order-last md:order-first">
-              <Button
-                asChild
-                className="text-base py-4 rounded-[100px] h-auto px-8 bg-sky-600 hover:bg-sky-700 text-white"
+          <div className="flex flex-col md:flex-row gap-8 md:gap-12">
+            {/* Left: Image（PC のみ表示） */}
+            <motion.div
+              className="hidden md:block md:w-2/5"
+              initial={{ opacity: 0, x: -40 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.7, ease: "easeOut" }}
+              viewport={{ once: false, margin: "-80px" }}
+            >
+              <div
+                className="relative w-full h-[400px] overflow-hidden"
+                style={{
+                  clipPath: "polygon(12% 0%, 100% 0%, 88% 100%, 0% 100%)",
+                }}
               >
-                <Link href="/knowledge" className="flex items-center gap-2">
-                  もっと見る
-                  <ArrowRight className="w-5 h-5" aria-hidden="true" />
-                </Link>
-              </Button>
-            </div>
+                <Image
+                  src="/images/hero/pc/pc_tech.png"
+                  alt="ナレッジイメージ"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+            </motion.div>
 
             {/* Right: Article List */}
-            <div className="w-full md:w-2/3 order-first md:order-last">
+            <div className="w-full md:w-3/5">
               {knowledgeArticles.length === 0 ? (
                 <div className="flex flex-col items-center justify-center h-full py-24 text-muted-foreground">
                   <p>記事を準備中です。</p>
@@ -773,6 +783,19 @@ export default function Home() {
                 </ul>
               )}
             </div>
+          </div>
+
+          {/* Button: 中央下 */}
+          <div className="flex justify-center mt-10 md:mt-12">
+            <Button
+              asChild
+              className="text-base py-4 rounded-[100px] h-auto px-8 bg-sky-600 hover:bg-sky-700 text-white"
+            >
+              <Link href="/knowledge" className="flex items-center gap-2">
+                もっと見る
+                <ArrowRight className="w-5 h-5" aria-hidden="true" />
+              </Link>
+            </Button>
           </div>
         </div>
       </motion.section>
