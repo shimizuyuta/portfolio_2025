@@ -552,7 +552,9 @@ export default function Home() {
                     <div className="p-6">
                       <div className="flex items-center gap-2 mb-3">
                         <Badge variant="secondary">{work.industry}</Badge>
-                        <span className="text-xs text-gray-400">{work.period}</span>
+                        <span className="text-xs text-gray-400">
+                          {work.period}
+                        </span>
                       </div>
                       <h3 className="font-bold text-lg text-gray-900 mb-2">
                         {work.title}
