@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import type { Article } from "@/lib/knowledge";
 
 const fadeInUp: Variants = {
   hidden: { opacity: 0, y: 30 },
@@ -88,6 +89,7 @@ export default function Home() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [currentWork, setCurrentWork] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
+  const [knowledgeArticles, setKnowledgeArticles] = useState<Article[]>([]);
 
   // Hero スライドショー自動切り替え（4秒ごと）
   useEffect(() => {
@@ -95,6 +97,14 @@ export default function Home() {
       setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
     }, 4000);
     return () => clearInterval(timer);
+  }, []);
+
+  // ナレッジ記事取得
+  useEffect(() => {
+    fetch("/api/knowledge")
+      .then((res) => res.json())
+      .then((data: Article[]) => setKnowledgeArticles(data))
+      .catch(() => {});
   }, []);
 
   // モバイル判定
@@ -676,10 +686,10 @@ export default function Home() {
         </div>
       </motion.section>
 
-      {/* Knowledge Section（プレースホルダー） */}
+      {/* Knowledge Section */}
       <motion.section
         id="knowledge"
-        className="w-full bg-background py-16 md:py-24 text-center"
+        className="w-full bg-background py-16 md:py-24"
         aria-labelledby="knowledge-heading"
         variants={fadeInUp}
         initial="hidden"
@@ -687,7 +697,8 @@ export default function Home() {
         viewport={{ once: false, margin: "-80px" }}
       >
         <div className="max-w-7xl mx-auto px-4 md:px-6">
-          <div className="text-center mb-6">
+          {/* Section Title */}
+          <div className="text-center mb-12 md:mb-16">
             <p className="text-sm font-semibold tracking-widest text-accent uppercase mb-2">
               Knowledge
             </p>
@@ -698,17 +709,71 @@ export default function Home() {
               ナレッジ
             </h2>
           </div>
-          <p className="text-gray-500 mb-6">準備中です。</p>
-          <Button
-            asChild
-            variant="outline"
-            className="text-base  py-4 rounded-[100px] h-auto px-8"
-          >
-            <Link href="/knowledge" className="flex items-center gap-2">
-              記事一覧を見る
-              <BookOpen className="w-5 h-5" aria-hidden="true" />
-            </Link>
-          </Button>
+
+          <div className="flex flex-col md:flex-row gap-6 md:gap-8">
+            {/* Left: Button（SP では記事の下に表示） */}
+            <div className="w-full md:w-1/3 flex items-center justify-center order-last md:order-first">
+              <Button
+                asChild
+                className="text-base py-4 rounded-[100px] h-auto px-8 bg-sky-600 hover:bg-sky-700 text-white"
+              >
+                <Link href="/knowledge" className="flex items-center gap-2">
+                  もっと見る
+                  <ArrowRight className="w-5 h-5" aria-hidden="true" />
+                </Link>
+              </Button>
+            </div>
+
+            {/* Right: Article List */}
+            <div className="w-full md:w-2/3 order-first md:order-last">
+              {knowledgeArticles.length === 0 ? (
+                <div className="flex flex-col items-center justify-center h-full py-24 text-muted-foreground">
+                  <p>記事を準備中です。</p>
+                </div>
+              ) : (
+                <ul className="divide-y divide-border">
+                  {knowledgeArticles.map((article) => (
+                    <li key={article.id}>
+                      <Link
+                        href={`/knowledge/${article.slug}`}
+                        className="flex items-start gap-4 p-6 hover:bg-muted/50 transition-colors"
+                      >
+                        {/* Thumbnail placeholder */}
+                        <div className="flex-shrink-0 w-28 h-20 md:w-36 md:h-24 rounded-lg bg-muted overflow-hidden flex items-center justify-center">
+                          <BookOpen
+                            className="w-8 h-8 text-muted-foreground/40"
+                            aria-hidden="true"
+                          />
+                        </div>
+                        {/* Meta + Title */}
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 mb-2 flex-wrap">
+                            <Badge variant="outline" className="text-xs">
+                              {article.category}
+                            </Badge>
+                            {article.published_at && (
+                              <time className="text-xs text-muted-foreground">
+                                {new Date(
+                                  article.published_at,
+                                ).toLocaleDateString("ja-JP", {
+                                  year: "numeric",
+                                  month: "long",
+                                  day: "numeric",
+                                })}
+                              </time>
+                            )}
+                          </div>
+                          <p className="text-sm md:text-base font-semibold leading-snug line-clamp-2">
+                            {article.title}
+                          </p>
+                        </div>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </div>
         </div>
       </motion.section>
 
