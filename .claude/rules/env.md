@@ -14,9 +14,3 @@
 - `.env.example` には実際の値を絶対に書かない（プレースホルダーのみ）
 - Claude は `.env` および `.env.local` を絶対にコミットしない
 
-## セットアップ手順
-
-```bash
-cp .env.example .env
-# .env を開いて実際の値を設定する
-```
