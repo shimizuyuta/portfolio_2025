@@ -25,6 +25,7 @@ No test framework is configured.
 @.claude/rules/github.md
 @.claude/rules/workflow.md
 @.claude/rules/docs.md
+@.claude/rules/env.md
 
 ## Key Conventions
 
