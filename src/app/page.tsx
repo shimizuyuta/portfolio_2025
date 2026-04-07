@@ -50,6 +50,13 @@ const heroSlides = [
   },
 ];
 
+// Hero バッジデータ
+const heroBadges = [
+  { label: "Web・IT歴", value: "7年", unit: "以上" },
+  { label: "最短", value: "即日", unit: "対応" },
+  { label: "案件継続率", value: "100", unit: "%" },
+];
+
 // Works データ
 const works = [
   {
@@ -164,6 +171,26 @@ export default function Home() {
                 <ArrowRight className="w-5 h-5" aria-hidden="true" />
               </Link>
             </Button>
+
+            {/* Hero バッジ */}
+            <div className="flex gap-4 mt-8 relative z-10">
+              {heroBadges.map((badge) => (
+                <div
+                  key={badge.label}
+                  className="flex-1 max-w-[7.5rem] aspect-square rounded-full bg-sky-600 text-white flex flex-col items-center justify-center text-center shadow-lg"
+                >
+                  <span className="text-[0.65rem] font-medium leading-tight opacity-90">
+                    {badge.label}
+                  </span>
+                  <span className="text-2xl font-bold leading-none mt-0.5">
+                    {badge.value}
+                  </span>
+                  <span className="text-xs font-medium leading-tight opacity-90">
+                    {badge.unit}
+                  </span>
+                </div>
+              ))}
+            </div>
           </motion.div>
 
           {/* 右: 画像（55%幅・左上角丸） */}
@@ -247,6 +274,26 @@ export default function Home() {
                   <ArrowRight className="w-4 h-4" aria-hidden="true" />
                 </Link>
               </Button>
+
+              {/* Hero バッジ */}
+              <div className="flex justify-center gap-4 mt-8">
+                {heroBadges.map((badge) => (
+                  <div
+                    key={badge.label}
+                    className="w-24 h-24 rounded-full bg-sky-600 text-white flex flex-col items-center justify-center text-center shadow-lg"
+                  >
+                    <span className="text-[0.6rem] font-medium leading-tight opacity-90">
+                      {badge.label}
+                    </span>
+                    <span className="text-xl font-bold leading-none mt-0.5">
+                      {badge.value}
+                    </span>
+                    <span className="text-[0.65rem] font-medium leading-tight opacity-90">
+                      {badge.unit}
+                    </span>
+                  </div>
+                ))}
+              </div>
             </motion.div>
           </div>
         </div>
