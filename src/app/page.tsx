@@ -264,7 +264,7 @@ export default function Home() {
       >
         <div className="text-center mb-16 md:mb-20">
           <p className="text-sm font-semibold tracking-widest text-accent uppercase mb-2">
-            About
+            About Me
           </p>
           <h2 id="about-heading" className="text-3xl md:text-4xl font-bold">
             私について
@@ -274,35 +274,33 @@ export default function Home() {
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* 左側：画像 */}
           <div className="flex justify-center">
-            <Image
-              src="/images/profile.png"
-              alt="清水優太のプロフィール写真"
-              width={400}
-              height={400}
-              className="rounded-full shadow-lg w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 object-cover"
-            />
+            <div className="relative w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96">
+              {/* 右下にずれた影シェイプ */}
+              <div
+                className="absolute top-4 left-4 w-full h-full rounded-full bg-sky-100"
+                aria-hidden="true"
+              />
+              {/* プロフィール画像 */}
+              <Image
+                src="/images/profile.png"
+                alt="清水優太のプロフィール写真"
+                fill
+                className="rounded-full object-cover border-4 border-white relative"
+              />
+            </div>
           </div>
 
           {/* 右側：テキスト */}
           <div className="space-y-6 text-left">
             <p className="text-gray-800 leading-relaxed text-base md:text-lg">
-              SaaS 立ち上げ・大規模システム開発から、公式 LINE 導入・HP/LP
-              制作まで。 業界を問わず、開発にとどまらない幅広い支援を経験。
+              「人を支えたい」という思いから、福祉系大学へ進学し社会福祉士を取得。しかし、学生時代から独学でプログラムを書き始め、「技術でもっと多くの人を支えられる」と気づいたことがITの世界に飛び込むきっかけになりました。
             </p>
             <p className="text-gray-800 leading-relaxed text-base md:text-lg">
-              根底にあるのは「事業を作る力」。技術と事業視点で、あなたのビジネスを共に成長させます。
+              複数のスタートアップでエンジニアインターンを経験し、ハッカソン・アイデアソンにも積極的に参加。数々の表彰を受けました。新卒では新規事業の伴走支援を行う某コンサル企業に入社し、不動産クラウドファンディングや行政向けサービス、受託開発など幅広いプロジェクトに携わりました。
             </p>
-            <div className="pt-2">
-              <Button
-                asChild
-                className="bg-sky-600 hover:bg-sky-700 text-white text-base  py-4 rounded-[100px] h-auto"
-              >
-                <Link href="/service" className="flex items-center gap-2">
-                  サービスを見る
-                  <ArrowRight className="w-5 h-5" aria-hidden="true" />
-                </Link>
-              </Button>
-            </div>
+            <p className="text-gray-800 leading-relaxed text-base md:text-lg">
+              現在はフリーランスエンジニアとして、プライム上場企業や大手メディア企業のシステム開発に関わりながら、中小企業向けにAI活用・Web制作・マーケティング支援など、ビジネス全体を一緒に考えるパートナーとして伴走しています。
+            </p>
           </div>
         </div>
       </motion.section>
