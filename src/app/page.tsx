@@ -175,18 +175,9 @@ export default function Home() {
             initial="hidden"
             animate="visible"
           >
-            {/* Eyebrow */}
-            <div className="flex items-center gap-2 mb-7">
-              <span className="w-6 h-px bg-sky-500" aria-hidden="true" />
-              <p className="text-sm font-bold tracking-[0.2em] text-sky-600 uppercase">
-                IT Partner
-              </p>
-            </div>
-            {/* Sub-headline */}
-            <p className="text-xl lg:text-2xl font-semibold text-gray-500 mb-4 leading-relaxed">
+            <h2 className="text-xl lg:text-2xl font-semibold text-sky-600 mb-4 tracking-wide">
               AI・ITを活用したい。
-            </p>
-            {/* Main headline */}
+            </h2>
             <h1
               id="hero-heading"
               className="text-5xl lg:text-6xl font-bold leading-[1.15] mb-8 text-gray-900 whitespace-nowrap"
@@ -202,12 +193,6 @@ export default function Home() {
               </span>
               。
             </p>
-            <Button asChild className={`${btnPrimary} w-fit text-base`}>
-              <Link href="/contact" className="flex items-center gap-2">
-                お問い合わせはこちら
-                <ArrowRight className="w-5 h-5" aria-hidden="true" />
-              </Link>
-            </Button>
           </motion.div>
 
           {/* Right: slideshow */}
