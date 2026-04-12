@@ -31,6 +31,10 @@ const staggerItem: Variants = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
 };
 
+// ボタン共通スタイル
+const btnPrimary =
+  "bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-600 hover:to-indigo-700 text-white font-semibold shadow-lg shadow-sky-500/25 py-4 px-8 rounded-[100px] h-auto";
+
 // Hero スライドショーデータ
 const heroSlides = [
   {
@@ -125,40 +129,37 @@ export default function Home() {
 
   return (
     <main className="">
-      {/* Hero Section */}
+      {/* ─── Hero Section ─── */}
       <section
         id="hero"
         aria-label="ヒーローセクション"
         className="w-full overflow-hidden bg-white"
       >
         {/* PC レイアウト（2カラム） */}
-        <div className="hidden md:flex items-stretch min-h-[580px] lg:min-h-[640px]">
+        <div className="hidden md:flex items-stretch min-h-[600px] lg:min-h-[680px]">
           {/* 左: テキスト */}
           <motion.div
-            className="flex-[9] flex flex-col justify-center pl-12 lg:pl-16 pr-8 py-12"
+            className="flex-[9] flex flex-col justify-center pl-12 lg:pl-16 pr-8 py-16"
             variants={fadeInUp}
             initial="hidden"
             animate="visible"
           >
-            <p className="text-xl lg:text-2xl font-semibold text-sky-600 mb-4 tracking-wide">
+            <p className="text-xl lg:text-2xl font-semibold text-sky-600 mb-6 tracking-wide">
               AI・ITを活用したい。
             </p>
             <h1
               id="hero-heading"
-              className="text-4xl lg:text-5xl font-bold leading-tight mb-6 text-gray-900 whitespace-nowrap"
+              className="text-5xl lg:text-6xl font-bold leading-tight mb-8 text-gray-900 whitespace-nowrap"
             >
               でも、誰に頼めばいい？
             </h1>
-            <p className="text-base lg:text-lg leading-relaxed mb-8 text-muted-foreground">
+            <p className="text-base lg:text-lg leading-relaxed mb-10 text-muted-foreground">
               集客・採用・業務効率化・システム開発まで、
               <br />
               あなたのビジネスを一緒に作り上げる
               <span className="text-sky-600 font-semibold">ITパートナー</span>。
             </p>
-            <Button
-              asChild
-              className="bg-sky-600 hover:bg-sky-700 text-white font-semibold text-base py-4 rounded-[100px] h-auto w-fit"
-            >
+            <Button asChild className={`${btnPrimary} w-fit text-base`}>
               <Link href="/contact" className="flex items-center gap-2">
                 お問い合わせはこちら
                 <ArrowRight className="w-5 h-5" aria-hidden="true" />
@@ -192,7 +193,7 @@ export default function Home() {
 
         {/* SP レイアウト（縦積み） */}
         <div className="md:hidden">
-          {/* 画像（上・長方形・PC画像使用） */}
+          {/* 画像（上・長方形） */}
           <div className="relative w-full aspect-[16/9] overflow-hidden">
             {heroSlides.map((slide, index) => (
               <div
@@ -215,15 +216,15 @@ export default function Home() {
           </div>
 
           {/* テキスト（下） */}
-          <div className="px-6 pt-8 pb-10">
+          <div className="px-6 pt-10 pb-12">
             <motion.div variants={fadeInUp} initial="hidden" animate="visible">
-              <p className="text-base font-semibold text-sky-600 mb-3 tracking-wide">
+              <p className="text-base font-semibold text-sky-600 mb-4 tracking-wide">
                 AI・ITを活用したい。
               </p>
-              <h1 className="text-2xl font-bold leading-tight mb-4 text-gray-900">
+              <h1 className="text-3xl font-bold leading-tight mb-5 text-gray-900">
                 「でも、誰に頼めばいい？」
               </h1>
-              <p className="text-base leading-relaxed mb-6 text-muted-foreground">
+              <p className="text-base leading-relaxed mb-8 text-muted-foreground">
                 集客・採用・業務効率化・システム開発まで、
                 <br />
                 <span className="text-[0px]">
@@ -237,7 +238,7 @@ export default function Home() {
               </p>
               <Button
                 asChild
-                className="bg-sky-600 hover:bg-sky-700 text-white font-semibold text-sm py-3 px-6 rounded-[100px] h-auto w-fit mx-auto block"
+                className="bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-600 hover:to-indigo-700 text-white font-semibold shadow-lg shadow-sky-500/25 text-sm py-3 px-6 rounded-[100px] h-auto w-fit mx-auto block"
               >
                 <Link
                   href="/contact"
@@ -252,10 +253,10 @@ export default function Home() {
         </div>
       </section>
 
-      {/* About Section */}
+      {/* ─── 選ばれる理由（旧 About）Section ─── */}
       <motion.section
         id="about"
-        className="bg-background max-w-7xl mx-auto py-16 md:py-24 px-6"
+        className="bg-background max-w-7xl mx-auto py-20 md:py-32 px-6"
         aria-labelledby="about-heading"
         variants={fadeInUp}
         initial="hidden"
@@ -263,11 +264,11 @@ export default function Home() {
         viewport={{ once: false, margin: "-80px" }}
       >
         <div className="text-center mb-16 md:mb-20">
-          <p className="text-sm font-semibold tracking-widest text-accent uppercase mb-2">
-            About Me
+          <p className="text-sm font-semibold tracking-widest text-sky-600 uppercase mb-3">
+            Why Choose
           </p>
           <h2 id="about-heading" className="text-3xl md:text-4xl font-bold">
-            私について
+            選ばれる理由
           </h2>
         </div>
 
@@ -301,14 +302,22 @@ export default function Home() {
             <p className="text-gray-800 leading-relaxed text-base md:text-lg">
               現在はフリーランスエンジニアとして、プライム上場企業や大手メディア企業のシステム開発に関わりながら、中小企業向けにAI活用・Web制作・マーケティング支援など、ビジネス全体を一緒に考えるパートナーとして伴走しています。
             </p>
+            <div className="pt-2">
+              <Button asChild className={`${btnPrimary} text-base`}>
+                <Link href="/service" className="flex items-center gap-2">
+                  サービスを見る
+                  <ArrowRight className="w-5 h-5" aria-hidden="true" />
+                </Link>
+              </Button>
+            </div>
           </div>
         </div>
       </motion.section>
 
-      {/* お悩みセクション */}
+      {/* ─── お悩みセクション ─── */}
       <motion.section
         id="pain"
-        className="w-full bg-muted py-16 md:py-24"
+        className="w-full bg-slate-950 py-20 md:py-32"
         aria-labelledby="pain-heading"
         variants={fadeInUp}
         initial="hidden"
@@ -316,20 +325,20 @@ export default function Home() {
         viewport={{ once: false, margin: "-80px" }}
       >
         <div className="max-w-7xl mx-auto px-4 md:px-6">
-          <div className="text-center mb-12 md:mb-16">
-            <p className="text-sm font-semibold tracking-widest text-accent uppercase mb-2">
+          <div className="text-center mb-16 md:mb-20">
+            <p className="text-sm font-semibold tracking-widest text-sky-400 uppercase mb-3">
               Problem
             </p>
             <h2
               id="pain-heading"
-              className="text-2xl md:text-3xl lg:text-4xl font-bold"
+              className="text-2xl md:text-3xl lg:text-4xl font-bold text-white"
             >
               こんなお悩みありませんか？
             </h2>
           </div>
 
           <motion.div
-            className="space-y-16 md:space-y-24 mb-16"
+            className="space-y-20 md:space-y-28 mb-20"
             variants={staggerContainer}
             initial="hidden"
             whileInView="visible"
@@ -386,17 +395,17 @@ export default function Home() {
                   />
                 </div>
                 <div className="w-full md:w-1/2">
-                  <p className="text-5xl md:text-6xl font-bold text-primary/20 leading-none mb-2">
+                  <p className="text-5xl md:text-6xl font-bold text-white/10 leading-none mb-2">
                     {item.num}
                   </p>
-                  <h3 className="text-2xl md:text-3xl font-bold mb-4">
+                  <h3 className="text-2xl md:text-3xl font-bold mb-5 text-white">
                     {item.title}
                   </h3>
-                  <ul className="space-y-3 text-sm md:text-base text-muted-foreground">
+                  <ul className="space-y-4 text-sm md:text-base text-slate-300">
                     {item.items.map((text) => (
-                      <li key={text} className="flex items-start gap-2">
+                      <li key={text} className="flex items-start gap-3">
                         <span
-                          className="mt-1.5 w-1.5 h-1.5 rounded-full bg-accent flex-shrink-0"
+                          className="mt-1.5 w-1.5 h-1.5 rounded-full bg-sky-400 flex-shrink-0"
                           aria-hidden="true"
                         />
                         {text}
@@ -408,16 +417,16 @@ export default function Home() {
             ))}
           </motion.div>
 
-          <p className="text-center text-lg md:text-xl font-bold text-gray-900">
+          <p className="text-center text-lg md:text-xl font-bold text-white">
             そんな課題を解決するため、伴走型で支援します。
           </p>
         </div>
       </motion.section>
 
-      {/* Services Section（ホーム導線） */}
+      {/* ─── Services Section（ホーム導線） ─── */}
       <motion.section
         id="services"
-        className="w-full bg-background py-16 md:py-24"
+        className="w-full bg-background py-20 md:py-32"
         aria-labelledby="services-heading"
         variants={fadeInUp}
         initial="hidden"
@@ -425,8 +434,8 @@ export default function Home() {
         viewport={{ once: false, margin: "-80px" }}
       >
         <div className="max-w-7xl mx-auto px-4 md:px-6">
-          <div className="text-center mb-12 md:mb-16">
-            <p className="text-sm font-semibold tracking-widest text-accent uppercase mb-2">
+          <div className="text-center mb-14 md:mb-20">
+            <p className="text-sm font-semibold tracking-widest text-sky-600 uppercase mb-3">
               Services
             </p>
             <h2
@@ -438,7 +447,7 @@ export default function Home() {
           </div>
 
           <motion.div
-            className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12"
+            className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-14"
             variants={staggerContainer}
             initial="hidden"
             whileInView="visible"
@@ -450,7 +459,7 @@ export default function Home() {
               whileHover={{ scale: 1.02, y: -4 }}
               transition={{ duration: 0.2 }}
             >
-              <Card className="pt-0 overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300 bg-white border border-gray-200">
+              <Card className="pt-0 overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 bg-white border border-gray-200">
                 <div className="w-full h-48 relative mb-0">
                   <Image
                     src="/images/services/ai.png"
@@ -477,7 +486,7 @@ export default function Home() {
               whileHover={{ scale: 1.02, y: -4 }}
               transition={{ duration: 0.2 }}
             >
-              <Card className="pt-0 overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300 bg-white border border-gray-200">
+              <Card className="pt-0 overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 bg-white border border-gray-200">
                 <div className="w-full h-48 relative mb-0">
                   <Image
                     src="/images/services/マーケ.png"
@@ -505,7 +514,7 @@ export default function Home() {
               whileHover={{ scale: 1.02, y: -4 }}
               transition={{ duration: 0.2 }}
             >
-              <Card className="pt-0 overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300 bg-white border border-gray-200">
+              <Card className="pt-0 overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 bg-white border border-gray-200">
                 <div className="w-full h-48 relative mb-0">
                   <Image
                     src="/images/services/開発.png"
@@ -528,10 +537,7 @@ export default function Home() {
           </motion.div>
 
           <div className="text-center">
-            <Button
-              asChild
-              className="bg-sky-600 hover:bg-sky-700 text-white text-base  py-4 rounded-[100px] h-auto"
-            >
+            <Button asChild className={`${btnPrimary} text-base`}>
               <Link href="/service" className="flex items-center gap-2">
                 詳しく見る
                 <ArrowRight className="w-5 h-5" aria-hidden="true" />
@@ -541,10 +547,10 @@ export default function Home() {
         </div>
       </motion.section>
 
-      {/* Works Section */}
+      {/* ─── Works Section ─── */}
       <motion.section
         id="works"
-        className="w-full bg-muted py-16 md:py-24"
+        className="w-full bg-slate-950 py-20 md:py-32"
         aria-labelledby="works-heading"
         variants={fadeInUp}
         initial="hidden"
@@ -552,11 +558,14 @@ export default function Home() {
         viewport={{ once: false, margin: "-80px" }}
       >
         <div className="max-w-7xl mx-auto px-4 md:px-6">
-          <div className="text-center mb-12 md:mb-16">
-            <p className="text-sm font-semibold tracking-widest text-accent uppercase mb-2">
+          <div className="text-center mb-14 md:mb-20">
+            <p className="text-sm font-semibold tracking-widest text-sky-400 uppercase mb-3">
               Works
             </p>
-            <h2 id="works-heading" className="text-3xl md:text-4xl font-bold">
+            <h2
+              id="works-heading"
+              className="text-3xl md:text-4xl font-bold text-white"
+            >
               支援実績
             </h2>
           </div>
@@ -570,22 +579,24 @@ export default function Home() {
                   whileHover={{ scale: 1.02, y: -4 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <Card className="overflow-hidden bg-white border border-gray-200 shadow-md hover:shadow-lg transition-shadow">
+                  <Card className="overflow-hidden bg-slate-800 border border-slate-700 shadow-md hover:shadow-xl transition-shadow">
                     {/* プレースホルダー画像 */}
-                    <div className="w-full h-48 bg-gray-200 flex items-center justify-center">
-                      <span className="text-gray-400 text-sm">画像準備中</span>
+                    <div className="w-full h-48 bg-slate-700 flex items-center justify-center">
+                      <span className="text-slate-400 text-sm">画像準備中</span>
                     </div>
                     <div className="p-6">
                       <div className="flex items-center gap-2 mb-3">
-                        <Badge variant="secondary">{work.industry}</Badge>
+                        <Badge className="bg-slate-600 text-slate-200 hover:bg-slate-600 border-0">
+                          {work.industry}
+                        </Badge>
                       </div>
-                      <h3 className="font-bold text-lg text-gray-900 mb-2">
+                      <h3 className="font-bold text-lg text-white mb-2">
                         {work.title}
                       </h3>
-                      <p className="text-sm text-gray-700 leading-relaxed mb-3">
+                      <p className="text-sm text-slate-300 leading-relaxed mb-3">
                         {work.description}
                       </p>
-                      <p className="text-sm font-bold text-sky-600">
+                      <p className="text-sm font-bold text-sky-400">
                         {work.result}
                       </p>
                     </div>
@@ -599,13 +610,13 @@ export default function Home() {
               <button
                 type="button"
                 onClick={() => setCurrentWork((prev) => Math.max(prev - 1, 0))}
-                className="p-2 rounded-full border border-gray-300 hover:bg-gray-100 transition-colors duration-200 disabled:opacity-40"
+                className="p-2 rounded-full border border-slate-600 text-slate-300 hover:bg-slate-700 transition-colors duration-200 disabled:opacity-40"
                 aria-label="前の実績"
                 disabled={currentWork === 0}
               >
                 <ChevronLeft className="w-5 h-5" />
               </button>
-              <span className="text-sm text-gray-500">
+              <span className="text-sm text-slate-400">
                 {currentWork + 1} / {totalWorksPages}
               </span>
               <button
@@ -615,7 +626,7 @@ export default function Home() {
                     Math.min(prev + 1, totalWorksPages - 1),
                   )
                 }
-                className="p-2 rounded-full border border-gray-300 hover:bg-gray-100 transition-colors duration-200 disabled:opacity-40"
+                className="p-2 rounded-full border border-slate-600 text-slate-300 hover:bg-slate-700 transition-colors duration-200 disabled:opacity-40"
                 aria-label="次の実績"
                 disabled={currentWork === totalWorksPages - 1}
               >
@@ -624,11 +635,8 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="text-center mt-10">
-            <Button
-              asChild
-              className="bg-sky-600 hover:bg-sky-700 text-white text-base  py-4 rounded-[100px] h-auto"
-            >
+          <div className="text-center mt-12">
+            <Button asChild className={`${btnPrimary} text-base`}>
               <Link href="/contact" className="flex items-center gap-2">
                 お問い合わせはこちら
                 <Mail className="w-5 h-5" aria-hidden="true" />
@@ -638,10 +646,10 @@ export default function Home() {
         </div>
       </motion.section>
 
-      {/* Knowledge Section */}
+      {/* ─── Knowledge Section ─── */}
       <motion.section
         id="knowledge"
-        className="w-full bg-background py-16 md:py-24"
+        className="w-full bg-background py-20 md:py-32"
         aria-labelledby="knowledge-heading"
         variants={fadeInUp}
         initial="hidden"
@@ -650,8 +658,8 @@ export default function Home() {
       >
         <div className="max-w-7xl mx-auto px-4 md:px-6">
           {/* Section Title */}
-          <div className="text-center mb-12 md:mb-16">
-            <p className="text-sm font-semibold tracking-widest text-accent uppercase mb-2">
+          <div className="text-center mb-14 md:mb-20">
+            <p className="text-sm font-semibold tracking-widest text-sky-600 uppercase mb-3">
               Knowledge
             </p>
             <h2
@@ -738,11 +746,8 @@ export default function Home() {
           </div>
 
           {/* Button: 中央下 */}
-          <div className="flex justify-center mt-10 md:mt-12">
-            <Button
-              asChild
-              className="text-base py-4 rounded-[100px] h-auto px-8 bg-sky-600 hover:bg-sky-700 text-white"
-            >
+          <div className="flex justify-center mt-12 md:mt-16">
+            <Button asChild className={`${btnPrimary} text-base`}>
               <Link href="/knowledge" className="flex items-center gap-2">
                 もっと見る
                 <ArrowRight className="w-5 h-5" aria-hidden="true" />
@@ -752,10 +757,10 @@ export default function Home() {
         </div>
       </motion.section>
 
-      {/* Contact Section（プレースホルダー） */}
+      {/* ─── Contact Section ─── */}
       <motion.section
         id="contact"
-        className="w-full bg-muted py-16 md:py-24 text-center"
+        className="w-full bg-slate-950 py-20 md:py-32 text-center"
         aria-labelledby="contact-heading"
         variants={fadeInUp}
         initial="hidden"
@@ -763,21 +768,21 @@ export default function Home() {
         viewport={{ once: false, margin: "-80px" }}
       >
         <div className="max-w-7xl mx-auto px-4 md:px-6">
-          <div className="text-center mb-6">
-            <p className="text-sm font-semibold tracking-widest text-accent uppercase mb-2">
+          <div className="text-center mb-8">
+            <p className="text-sm font-semibold tracking-widest text-sky-400 uppercase mb-3">
               Contact
             </p>
-            <h2 id="contact-heading" className="text-3xl md:text-4xl font-bold">
+            <h2
+              id="contact-heading"
+              className="text-3xl md:text-4xl font-bold text-white"
+            >
               お問い合わせ
             </h2>
           </div>
-          <p className="text-gray-700 mb-8 text-lg md:text-xl">
+          <p className="text-slate-300 mb-10 text-lg md:text-xl">
             お気軽にご相談ください。
           </p>
-          <Button
-            asChild
-            className="bg-sky-600 hover:bg-sky-700 text-white text-base  py-4 rounded-[100px] h-auto"
-          >
+          <Button asChild className={`${btnPrimary} text-base`}>
             <Link href="/contact" className="flex items-center gap-2">
               お問い合わせはこちら
               <Mail className="w-5 h-5" aria-hidden="true" />
