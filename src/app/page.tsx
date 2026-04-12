@@ -68,25 +68,19 @@ function SectionLabel({
   );
 }
 
-// ─── Data ─────────────────────────────────────────────────────────────────────
-const heroSlides = [
-  {
-    pcSrc: "/images/hero/pc/pc_business.png",
-    spSrc: "/images/hero/sp/sp_business.png",
-    alt: "ビジネス支援イメージ",
-  },
-  {
-    pcSrc: "/images/hero/pc/pc_president.png",
-    spSrc: "/images/hero/sp/sp_president.png",
-    alt: "経営者支援イメージ",
-  },
-  {
-    pcSrc: "/images/hero/pc/pc_tech.png",
-    spSrc: "/images/hero/sp/sp_tech.png",
-    alt: "テクノロジー活用イメージ",
-  },
+// ─── Hero background images ───────────────────────────────────────────────────
+const pcHeroImages = [
+  "/images/hero/pc/pc_tech.png",
+  "/images/hero/pc/pc_business.png",
+  "/images/hero/pc/pc_president.png",
+];
+const spHeroImages = [
+  "/images/hero/sp/sp_tech.png",
+  "/images/hero/sp/sp_business.png",
+  "/images/hero/sp/sp_president.png",
 ];
 
+// ─── Data ─────────────────────────────────────────────────────────────────────
 const works = [
   {
     industry: "製造業",
@@ -123,17 +117,10 @@ const works = [
 
 // ─── Component ────────────────────────────────────────────────────────────────
 export default function Home() {
-  const [currentSlide, setCurrentSlide] = useState(0);
   const [currentWork, setCurrentWork] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const [knowledgeArticles, setKnowledgeArticles] = useState<Article[]>([]);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
-    }, 4000);
-    return () => clearInterval(timer);
-  }, []);
+  const [heroImageIndex, setHeroImageIndex] = useState(0);
 
   useEffect(() => {
     fetch("/api/knowledge")
@@ -149,6 +136,13 @@ export default function Home() {
     return () => window.removeEventListener("resize", check);
   }, []);
 
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setHeroImageIndex((prev) => (prev + 1) % pcHeroImages.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, []);
+
   const worksPerPage = isMobile ? 1 : 3;
   const totalWorksPages = Math.ceil(works.length / worksPerPage);
   const visibleWorks = works.slice(
@@ -158,126 +152,172 @@ export default function Home() {
 
   return (
     <main>
-      {/* ════════════════════════���══════════════════════════════
+      {/* ════════════════════════════════════════════════════════
           Hero
-      ═══════════════════════════════════════════════════════ */}
+      ════════════════════════════════════════════════════════ */}
       <section
         id="hero"
         aria-label="ヒーローセクション"
-        className="w-full overflow-hidden bg-white"
+        className="w-full overflow-hidden"
       >
-        {/* PC: 2-column */}
-        <div className="hidden md:flex items-stretch min-h-[620px] lg:min-h-[700px]">
-          {/* Left: text */}
+        {/* ── PC ─────────────────────────────────────────────── */}
+        <div className="hidden md:flex items-center relative bg-gradient-to-br from-sky-400/70 to-indigo-500/70 overflow-hidden min-h-[60svh]">
+          {/* 背景スライド画像 */}
+          <AnimatePresence mode="sync">
+            <motion.div
+              key={heroImageIndex}
+              className="absolute inset-0"
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "-100%" }}
+              transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+              aria-hidden="true"
+            >
+              <Image
+                src={pcHeroImages[heroImageIndex]}
+                alt=""
+                fill
+                className="object-cover opacity-30"
+                priority
+              />
+            </motion.div>
+          </AnimatePresence>
+
+          {/* 半透明ダークオーバーレイ */}
+          <div className="absolute inset-0 bg-black/40" aria-hidden="true" />
+
+          {/* 装飾ウォーターマーク */}
+          <p
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[280px] font-black text-white/5 select-none pointer-events-none leading-none tracking-tighter whitespace-nowrap"
+            aria-hidden="true"
+          >
+            AI DX
+          </p>
+
+          <div className="relative w-full max-w-4xl pl-20 lg:pl-24 pr-12 lg:pr-20 py-16 pb-24">
+            <motion.div variants={fadeInUp} initial="hidden" animate="visible">
+              <div className="flex items-center gap-3 mb-8">
+                <span className="w-8 h-px bg-white/50" aria-hidden="true" />
+                <p className="text-sm font-bold tracking-[0.25em] text-white/70 uppercase">
+                  IT Partner
+                </p>
+                <span className="w-8 h-px bg-white/50" aria-hidden="true" />
+              </div>
+              <p className="text-xl lg:text-2xl font-semibold text-white/80 mb-5 leading-relaxed">
+                AI・ITを活用したい。
+              </p>
+              <h1
+                id="hero-heading"
+                className="text-5xl lg:text-6xl font-bold leading-[1.1] mb-8 text-white whitespace-nowrap"
+              >
+                でも、誰に頼めばいい？
+              </h1>
+              <p className="text-base lg:text-lg leading-relaxed text-white/80 max-w-xl">
+                集客・採用・業務効率化・システム開発まで、
+                あなたのビジネスを一緒に作り上げる
+                <span className="font-semibold text-white">ITパートナー</span>。
+              </p>
+            </motion.div>
+          </div>
+
+          {/* 波形 SVG ディバイダー（アニメーション） */}
+          <div className="absolute bottom-0 left-0 w-full h-16 md:h-20 overflow-hidden">
+            <motion.svg
+              viewBox="0 0 2880 80"
+              preserveAspectRatio="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className="absolute bottom-0 left-0 h-full"
+              style={{ width: "200%" }}
+              animate={{ x: ["0%", "-50%"] }}
+              transition={{ repeat: Infinity, duration: 10, ease: "linear" }}
+              aria-hidden="true"
+            >
+              <path
+                fill="white"
+                d="M0,40 C240,80 480,0 720,40 C960,80 1200,0 1440,40 C1680,80 1920,0 2160,40 C2400,80 2640,0 2880,40 L2880,80 L0,80 Z"
+              />
+            </motion.svg>
+          </div>
+        </div>
+
+        {/* ── SP ─────────────────────────────────────────────── */}
+        <div className="md:hidden flex items-center relative bg-gradient-to-br from-sky-400/70 to-indigo-500/70 min-h-[60svh] px-6 overflow-hidden">
+          {/* 背景スライド画像 */}
+          <AnimatePresence mode="sync">
+            <motion.div
+              key={heroImageIndex}
+              className="absolute inset-0"
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "-100%" }}
+              transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+              aria-hidden="true"
+            >
+              <Image
+                src={spHeroImages[heroImageIndex]}
+                alt=""
+                fill
+                className="object-cover opacity-30"
+                priority
+              />
+            </motion.div>
+          </AnimatePresence>
+
+          {/* 半透明ダークオーバーレイ */}
+          <div className="absolute inset-0 bg-black/40" aria-hidden="true" />
+
+          {/* 装飾ウォーターマーク */}
+          <p
+            className="absolute inset-x-0 top-1/2 -translate-y-1/2 text-center text-[120px] font-black text-white/5 select-none pointer-events-none leading-none tracking-tighter whitespace-nowrap"
+            aria-hidden="true"
+          >
+            AI DX
+          </p>
+
+          {/* コンテンツ */}
           <motion.div
-            className="flex-[9] flex flex-col justify-center pl-12 lg:pl-20 pr-8 py-16"
+            className="relative w-full pb-16 pt-8"
             variants={fadeInUp}
             initial="hidden"
             animate="visible"
           >
-            <h2 className="text-xl lg:text-2xl font-semibold text-sky-600 mb-4 tracking-wide">
+            <div className="flex items-center gap-3 mb-6">
+              <span className="w-6 h-px bg-white/50" aria-hidden="true" />
+              <p className="text-sm font-bold tracking-[0.25em] text-white/70 uppercase">
+                IT Partner
+              </p>
+              <span className="w-6 h-px bg-white/50" aria-hidden="true" />
+            </div>
+            <p className="text-lg font-semibold text-white/80 mb-4 leading-relaxed">
               AI・ITを活用したい。
-            </h2>
-            <h1
-              id="hero-heading"
-              className="text-5xl lg:text-6xl font-bold leading-[1.15] mb-8 text-gray-900 whitespace-nowrap"
-            >
+            </p>
+            <h1 className="text-[7.5vw] font-bold text-white leading-[1.15] mb-6 whitespace-nowrap">
               でも、誰に頼めばいい？
             </h1>
-            <p className="text-base lg:text-lg leading-relaxed mb-10 text-gray-500 max-w-md">
+            <p className="text-base leading-relaxed text-white/75">
               集客・採用・業務効率化・システム開発まで、
-              <br />
               あなたのビジネスを一緒に作り上げる
-              <span className="font-semibold bg-gradient-to-r from-sky-600 to-indigo-600 bg-clip-text text-transparent">
-                ITパートナー
-              </span>
-              。
+              <span className="font-semibold text-white">ITパートナー</span>。
             </p>
           </motion.div>
 
-          {/* Right: slideshow */}
-          <div className="w-[55%] shrink-0 relative self-stretch overflow-hidden rounded-tl-[4rem]">
-            <AnimatePresence initial={false} mode="popLayout">
-              <motion.div
-                key={currentSlide}
-                className="absolute inset-0"
-                initial={{ x: "100%" }}
-                animate={{ x: 0 }}
-                exit={{ x: "-100%" }}
-                transition={{ duration: 1.2, ease: "easeInOut" }}
-              >
-                <Image
-                  src={heroSlides[currentSlide].pcSrc}
-                  alt={heroSlides[currentSlide].alt}
-                  fill
-                  className="object-cover"
-                  sizes="60vw"
-                  priority
-                />
-              </motion.div>
-            </AnimatePresence>
-          </div>
-        </div>
-
-        {/* SP: stacked */}
-        <div className="md:hidden">
-          <div className="relative w-full aspect-[16/9] overflow-hidden">
-            {heroSlides.map((slide, index) => (
-              <div
-                key={slide.alt}
-                className={`absolute inset-0 transition-opacity duration-1000 ${
-                  index === currentSlide ? "opacity-100" : "opacity-0"
-                }`}
-                aria-hidden={index !== currentSlide}
-              >
-                <Image
-                  src={slide.pcSrc}
-                  alt={slide.alt}
-                  fill
-                  className="object-cover"
-                  sizes="100vw"
-                  priority={index === 0}
-                />
-              </div>
-            ))}
-          </div>
-
-          <div className="px-6 pt-10 pb-12">
-            <motion.div variants={fadeInUp} initial="hidden" animate="visible">
-              <div className="flex items-center gap-2 mb-5">
-                <span className="w-5 h-px bg-sky-500" aria-hidden="true" />
-                <p className="text-xs font-bold tracking-[0.2em] text-sky-600 uppercase">
-                  IT Partner
-                </p>
-              </div>
-              <p className="text-base font-semibold text-gray-500 mb-3">
-                AI・ITを活用したい。
-              </p>
-              <h1 className="text-3xl font-bold leading-tight mb-5 text-gray-900 whitespace-nowrap">
-                でも、誰に頼めばいい？
-              </h1>
-              <p className="text-base leading-relaxed mb-8 text-gray-500">
-                集客・採用・業務効率化・システム開発まで、
-                <br />
-                あなたのビジネスを一緒に作り上げる
-                <span className="font-semibold bg-gradient-to-r from-sky-600 to-indigo-600 bg-clip-text text-transparent">
-                  ITパートナー
-                </span>
-                。
-              </p>
-              <Button
-                asChild
-                className="bg-gray-900 hover:bg-gray-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-200 text-sm py-3 px-6 rounded-[100px] h-auto w-fit mx-auto block"
-              >
-                <Link
-                  href="/contact"
-                  className="flex items-center gap-2 justify-center"
-                >
-                  お問い合わせはこちら
-                  <ArrowRight className="w-4 h-4" aria-hidden="true" />
-                </Link>
-              </Button>
-            </motion.div>
+          {/* 波形 SVG ディバイダー（アニメーション） */}
+          <div className="absolute bottom-0 left-0 w-full h-12 overflow-hidden">
+            <motion.svg
+              viewBox="0 0 780 60"
+              preserveAspectRatio="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className="absolute bottom-0 left-0 h-full"
+              style={{ width: "200%" }}
+              animate={{ x: ["0%", "-50%"] }}
+              transition={{ repeat: Infinity, duration: 8, ease: "linear" }}
+              aria-hidden="true"
+            >
+              <path
+                fill="white"
+                d="M0,30 C100,60 200,0 390,30 C490,60 580,0 780,30 L780,60 L0,60 Z"
+              />
+            </motion.svg>
           </div>
         </div>
       </section>
