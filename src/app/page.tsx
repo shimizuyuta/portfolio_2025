@@ -141,13 +141,13 @@ export default function Home() {
         className="w-full overflow-hidden"
       >
         {/* ── PC ─────────────────────────────────────────────── */}
-        <div className="hidden md:flex items-center relative bg-gradient-to-br from-sky-500 to-indigo-600 overflow-hidden min-h-[80svh]">
-          {/* 背景画像（薄） */}
+        <div className="hidden md:flex items-center relative bg-gradient-to-br from-sky-400/70 to-indigo-500/70 overflow-hidden min-h-[80svh]">
+          {/* 背景画像 */}
           <Image
             src="/images/hero/pc/pc_tech.png"
             alt=""
             fill
-            className="object-cover opacity-[0.08] mix-blend-luminosity"
+            className="object-cover opacity-30"
             priority
             aria-hidden="true"
           />
@@ -208,13 +208,13 @@ export default function Home() {
         </div>
 
         {/* ── SP ─────────────────────────────────────────────── */}
-        <div className="md:hidden flex items-center relative bg-gradient-to-br from-sky-500 to-indigo-600 min-h-[80svh] px-6 overflow-hidden">
-          {/* 背景画像（薄） */}
+        <div className="md:hidden flex items-center relative bg-gradient-to-br from-sky-400/70 to-indigo-500/70 min-h-[80svh] px-6 overflow-hidden">
+          {/* 背景画像 */}
           <Image
             src="/images/hero/sp/sp_tech.png"
             alt=""
             fill
-            className="object-cover opacity-[0.08] mix-blend-luminosity"
+            className="object-cover opacity-30"
             priority
             aria-hidden="true"
           />
