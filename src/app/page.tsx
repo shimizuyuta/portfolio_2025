@@ -241,18 +241,18 @@ export default function Home() {
           >
             <div className="flex items-center gap-3 mb-6">
               <span className="w-6 h-px bg-white/50" aria-hidden="true" />
-              <p className="text-xs font-bold tracking-[0.25em] text-white/70 uppercase">
+              <p className="text-sm font-bold tracking-[0.25em] text-white/70 uppercase">
                 IT Partner
               </p>
               <span className="w-6 h-px bg-white/50" aria-hidden="true" />
             </div>
-            <p className="text-base font-semibold text-white/80 mb-4 leading-relaxed">
+            <p className="text-lg font-semibold text-white/80 mb-4 leading-relaxed">
               AI・ITを活用したい。
             </p>
-            <h1 className="text-[7vw] font-bold text-white leading-[1.15] mb-6 whitespace-nowrap">
+            <h1 className="text-[9vw] font-bold text-white leading-[1.15] mb-6 whitespace-nowrap">
               でも、誰に頼めばいい？
             </h1>
-            <p className="text-sm leading-relaxed text-white/75">
+            <p className="text-base leading-relaxed text-white/75">
               集客・採用・業務効率化・システム開発まで、
               あなたのビジネスを一緒に作り上げる
               <span className="font-semibold text-white">ITパートナー</span>。
