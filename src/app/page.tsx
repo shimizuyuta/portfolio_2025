@@ -163,7 +163,7 @@ export default function Home() {
             AI DX
           </p>
 
-          <div className="relative w-full max-w-4xl mx-auto px-12 lg:px-20 py-16 pb-24">
+          <div className="relative w-full max-w-4xl pl-20 lg:pl-24 pr-12 lg:pr-20 py-16 pb-24">
             <motion.div variants={fadeInUp} initial="hidden" animate="visible">
               <div className="flex items-center gap-3 mb-8">
                 <span className="w-8 h-px bg-white/50" aria-hidden="true" />
