@@ -153,7 +153,7 @@ export default function Home() {
           />
 
           {/* 半透明ダークオーバーレイ */}
-          <div className="absolute inset-0 bg-black/30" aria-hidden="true" />
+          <div className="absolute inset-0 bg-black/40" aria-hidden="true" />
 
           {/* 装飾ウォーターマーク */}
           <p
@@ -222,7 +222,7 @@ export default function Home() {
           />
 
           {/* 半透明ダークオーバーレイ */}
-          <div className="absolute inset-0 bg-black/30" aria-hidden="true" />
+          <div className="absolute inset-0 bg-black/40" aria-hidden="true" />
 
           {/* 装飾ウォーターマーク */}
           <p
