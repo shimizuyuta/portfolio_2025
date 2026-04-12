@@ -141,7 +141,17 @@ export default function Home() {
         className="w-full overflow-hidden"
       >
         {/* ── PC ─────────────────────────────────────────────── */}
-        <div className="hidden md:block relative bg-gradient-to-br from-sky-500 to-indigo-600 overflow-hidden">
+        <div className="hidden md:flex items-center relative bg-gradient-to-br from-sky-500 to-indigo-600 overflow-hidden min-h-[80svh]">
+          {/* 背景画像（薄） */}
+          <Image
+            src="/images/hero/pc/pc_tech.png"
+            alt=""
+            fill
+            className="object-cover opacity-[0.08] mix-blend-luminosity"
+            priority
+            aria-hidden="true"
+          />
+
           {/* 装飾ウォーターマーク（中央背景） */}
           <p
             className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[280px] font-black text-white/5 select-none pointer-events-none leading-none tracking-tighter whitespace-nowrap"
@@ -150,7 +160,7 @@ export default function Home() {
             AI DX
           </p>
 
-          <div className="relative max-w-4xl mx-auto px-12 lg:px-20 py-24 lg:py-32">
+          <div className="relative w-full max-w-4xl mx-auto px-12 lg:px-20 py-20 pb-28">
             <motion.div variants={fadeInUp} initial="hidden" animate="visible">
               {/* eyebrow */}
               <div className="flex items-center gap-3 mb-8">
@@ -198,7 +208,17 @@ export default function Home() {
         </div>
 
         {/* ── SP ─────────────────────────────────────────────── */}
-        <div className="md:hidden relative bg-gradient-to-br from-sky-500 to-indigo-600 pt-14 pb-20 px-6 overflow-hidden">
+        <div className="md:hidden flex items-center relative bg-gradient-to-br from-sky-500 to-indigo-600 min-h-[80svh] px-6 overflow-hidden">
+          {/* 背景画像（薄） */}
+          <Image
+            src="/images/hero/sp/sp_tech.png"
+            alt=""
+            fill
+            className="object-cover opacity-[0.08] mix-blend-luminosity"
+            priority
+            aria-hidden="true"
+          />
+
           {/* 装飾ウォーターマーク */}
           <p
             className="absolute inset-x-0 top-1/2 -translate-y-1/2 text-center text-[120px] font-black text-white/5 select-none pointer-events-none leading-none tracking-tighter whitespace-nowrap"
@@ -209,7 +229,7 @@ export default function Home() {
 
           {/* コンテンツ */}
           <motion.div
-            className="relative"
+            className="relative w-full pb-16 pt-8"
             variants={fadeInUp}
             initial="hidden"
             animate="visible"
