@@ -151,11 +151,7 @@ export default function Home() {
           </p>
 
           <div className="relative max-w-4xl mx-auto px-12 lg:px-20 py-24 lg:py-32">
-            <motion.div
-              variants={fadeInUp}
-              initial="hidden"
-              animate="visible"
-            >
+            <motion.div variants={fadeInUp} initial="hidden" animate="visible">
               {/* eyebrow */}
               <div className="flex items-center gap-3 mb-8">
                 <span className="w-8 h-px bg-white/50" aria-hidden="true" />
@@ -176,8 +172,7 @@ export default function Home() {
               <p className="text-base lg:text-lg leading-relaxed text-white/80 max-w-xl">
                 集客・採用・業務効率化・システム開発まで、
                 あなたのビジネスを一緒に作り上げる
-                <span className="font-semibold text-white">ITパートナー</span>
-                。
+                <span className="font-semibold text-white">ITパートナー</span>。
               </p>
             </motion.div>
           </div>
