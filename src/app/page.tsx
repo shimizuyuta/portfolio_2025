@@ -140,9 +140,9 @@ export default function Home() {
             initial="hidden"
             animate="visible"
           >
-            <p className="text-xl lg:text-2xl font-semibold text-sky-600 mb-4 tracking-wide">
+            <h2 className="text-xl lg:text-2xl font-semibold text-sky-600 mb-4 tracking-wide">
               AI・ITを活用したい。
-            </p>
+            </h2>
             <h1
               id="hero-heading"
               className="text-4xl lg:text-5xl font-bold leading-tight mb-6 text-gray-900 whitespace-nowrap"
@@ -155,15 +155,6 @@ export default function Home() {
               あなたのビジネスを一緒に作り上げる
               <span className="text-sky-600 font-semibold">ITパートナー</span>。
             </p>
-            <Button
-              asChild
-              className="bg-sky-600 hover:bg-sky-700 text-white font-semibold text-base py-4 rounded-[100px] h-auto w-fit"
-            >
-              <Link href="/contact" className="flex items-center gap-2">
-                お問い合わせはこちら
-                <ArrowRight className="w-5 h-5" aria-hidden="true" />
-              </Link>
-            </Button>
           </motion.div>
 
           {/* 右: 画像（55%幅・左上角丸） */}
