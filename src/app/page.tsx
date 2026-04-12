@@ -141,8 +141,8 @@ export default function Home() {
         className="w-full overflow-hidden"
       >
         {/* ── PC ─────────────────────────────────────────────── */}
-        <div className="hidden md:flex items-center relative bg-gradient-to-br from-sky-400/70 to-indigo-500/70 overflow-hidden min-h-[80svh]">
-          {/* 背景画像 */}
+        <div className="hidden md:flex items-center relative bg-gradient-to-br from-sky-400/70 to-indigo-500/70 overflow-hidden min-h-[60svh]">
+          {/* 背景テクスチャ画像 */}
           <Image
             src="/images/hero/pc/pc_tech.png"
             alt=""
@@ -152,7 +152,7 @@ export default function Home() {
             aria-hidden="true"
           />
 
-          {/* 装飾ウォーターマーク（中央背景） */}
+          {/* 装飾ウォーターマーク */}
           <p
             className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[280px] font-black text-white/5 select-none pointer-events-none leading-none tracking-tighter whitespace-nowrap"
             aria-hidden="true"
@@ -160,9 +160,10 @@ export default function Home() {
             AI DX
           </p>
 
-          <div className="relative w-full max-w-4xl mx-auto px-12 lg:px-20 py-20 pb-28">
+          {/* 2カラム: 左テキスト・右画像 */}
+          <div className="relative w-full max-w-6xl mx-auto px-12 lg:px-20 py-16 pb-24 grid grid-cols-2 gap-12 items-center">
+            {/* 左: テキスト */}
             <motion.div variants={fadeInUp} initial="hidden" animate="visible">
-              {/* eyebrow */}
               <div className="flex items-center gap-3 mb-8">
                 <span className="w-8 h-px bg-white/50" aria-hidden="true" />
                 <p className="text-sm font-bold tracking-[0.25em] text-white/70 uppercase">
@@ -179,11 +180,27 @@ export default function Home() {
               >
                 でも、誰に頼めばいい？
               </h1>
-              <p className="text-base lg:text-lg leading-relaxed text-white/80 max-w-xl">
+              <p className="text-base lg:text-lg leading-relaxed text-white/80 max-w-lg">
                 集客・採用・業務効率化・システム開発まで、
                 あなたのビジネスを一緒に作り上げる
                 <span className="font-semibold text-white">ITパートナー</span>。
               </p>
+            </motion.div>
+
+            {/* 右: 画像 */}
+            <motion.div
+              className="relative h-[360px] lg:h-[420px] rounded-2xl overflow-hidden shadow-2xl"
+              variants={fadeInUp}
+              initial="hidden"
+              animate="visible"
+            >
+              <Image
+                src="/images/hero/pc/pc_president.png"
+                alt="代表者の写真"
+                fill
+                className="object-cover"
+                priority
+              />
             </motion.div>
           </div>
 
@@ -208,7 +225,7 @@ export default function Home() {
         </div>
 
         {/* ── SP ─────────────────────────────────────────────── */}
-        <div className="md:hidden flex items-center relative bg-gradient-to-br from-sky-400/70 to-indigo-500/70 min-h-[80svh] px-6 overflow-hidden">
+        <div className="md:hidden flex items-center relative bg-gradient-to-br from-sky-400/70 to-indigo-500/70 min-h-[60svh] px-6 overflow-hidden">
           {/* 背景画像 */}
           <Image
             src="/images/hero/sp/sp_tech.png"
