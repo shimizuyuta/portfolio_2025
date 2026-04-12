@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, type Variants } from "framer-motion";
+import { AnimatePresence, motion, type Variants } from "framer-motion";
 import {
   ArrowRight,
   BookOpen,
@@ -68,6 +68,18 @@ function SectionLabel({
   );
 }
 
+// ─── Hero background images ───────────────────────────────────────────────────
+const pcHeroImages = [
+  "/images/hero/pc/pc_tech.png",
+  "/images/hero/pc/pc_business.png",
+  "/images/hero/pc/pc_president.png",
+];
+const spHeroImages = [
+  "/images/hero/sp/sp_tech.png",
+  "/images/hero/sp/sp_business.png",
+  "/images/hero/sp/sp_president.png",
+];
+
 // ─── Data ─────────────────────────────────────────────────────────────────────
 const works = [
   {
@@ -108,6 +120,7 @@ export default function Home() {
   const [currentWork, setCurrentWork] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const [knowledgeArticles, setKnowledgeArticles] = useState<Article[]>([]);
+  const [heroImageIndex, setHeroImageIndex] = useState(0);
 
   useEffect(() => {
     fetch("/api/knowledge")
@@ -121,6 +134,13 @@ export default function Home() {
     check();
     window.addEventListener("resize", check);
     return () => window.removeEventListener("resize", check);
+  }, []);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setHeroImageIndex((prev) => (prev + 1) % pcHeroImages.length);
+    }, 5000);
+    return () => clearInterval(timer);
   }, []);
 
   const worksPerPage = isMobile ? 1 : 3;
@@ -142,15 +162,26 @@ export default function Home() {
       >
         {/* ── PC ─────────────────────────────────────────────── */}
         <div className="hidden md:flex items-center relative bg-gradient-to-br from-sky-400/70 to-indigo-500/70 overflow-hidden min-h-[60svh]">
-          {/* 背景テクスチャ画像 */}
-          <Image
-            src="/images/hero/pc/pc_tech.png"
-            alt=""
-            fill
-            className="object-cover opacity-30"
-            priority
-            aria-hidden="true"
-          />
+          {/* 背景スライド画像 */}
+          <AnimatePresence mode="sync">
+            <motion.div
+              key={heroImageIndex}
+              className="absolute inset-0"
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "-100%" }}
+              transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+              aria-hidden="true"
+            >
+              <Image
+                src={pcHeroImages[heroImageIndex]}
+                alt=""
+                fill
+                className="object-cover opacity-30"
+                priority
+              />
+            </motion.div>
+          </AnimatePresence>
 
           {/* 半透明ダークオーバーレイ */}
           <div className="absolute inset-0 bg-black/40" aria-hidden="true" />
@@ -211,15 +242,26 @@ export default function Home() {
 
         {/* ── SP ─────────────────────────────────────────────── */}
         <div className="md:hidden flex items-center relative bg-gradient-to-br from-sky-400/70 to-indigo-500/70 min-h-[60svh] px-6 overflow-hidden">
-          {/* 背景画像 */}
-          <Image
-            src="/images/hero/sp/sp_tech.png"
-            alt=""
-            fill
-            className="object-cover opacity-30"
-            priority
-            aria-hidden="true"
-          />
+          {/* 背景スライド画像 */}
+          <AnimatePresence mode="sync">
+            <motion.div
+              key={heroImageIndex}
+              className="absolute inset-0"
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "-100%" }}
+              transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+              aria-hidden="true"
+            >
+              <Image
+                src={spHeroImages[heroImageIndex]}
+                alt=""
+                fill
+                className="object-cover opacity-30"
+                priority
+              />
+            </motion.div>
+          </AnimatePresence>
 
           {/* 半透明ダークオーバーレイ */}
           <div className="absolute inset-0 bg-black/40" aria-hidden="true" />
