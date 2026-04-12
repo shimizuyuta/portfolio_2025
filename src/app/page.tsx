@@ -249,7 +249,7 @@ export default function Home() {
             <p className="text-lg font-semibold text-white/80 mb-4 leading-relaxed">
               AI・ITを活用したい。
             </p>
-            <h1 className="text-[9vw] font-bold text-white leading-[1.15] mb-6 whitespace-nowrap">
+            <h1 className="text-[7.5vw] font-bold text-white leading-[1.15] mb-6 whitespace-nowrap">
               でも、誰に頼めばいい？
             </h1>
             <p className="text-base leading-relaxed text-white/75">
