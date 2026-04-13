@@ -368,27 +368,43 @@ export default function Home() {
               大学を卒業後、新規事業支援のコンサル会社にてエンジニアとして、クラウドファンディングシステムや行政向けサービス、新規SaaSの立ち上げなど多様なプロジェクトを経験。
               現在はフリーランスとして、プライム上場企業や大手メディア企業のシステム開発に携わる傍ら、地元の千葉を中心に中小企業向けにAI活用・システム開発・HP制作／保守運用をワンストップで提供しています。
             </p>
-            <motion.p
-              className="font-[family-name:var(--font-zen-kaku)] text-gray-800 leading-[2] text-base md:text-lg font-bold"
-              variants={charContainer}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-60px" }}
-              aria-label="「作って終わり」ではなく、お客様のビジネスを長期的に伸ばすことを第一に、お客様が迷うすべての局面で、隣に立てるパートナーであり続けます。"
-            >
-              {"「作って終わり」ではなく、お客様のビジネスを長期的に伸ばすことを第一に、お客様が迷うすべての局面で、隣に立てるパートナーであり続けます。"
-                .split("")
-                .map((char, i) => (
-                  <motion.span
-                    // biome-ignore lint/suspicious/noArrayIndexKey: 固定テキストのため index を key に使用
-                    key={i}
-                    variants={charItem}
-                    aria-hidden="true"
-                  >
-                    {char}
-                  </motion.span>
-                ))}
-            </motion.p>
+            <div className="relative">
+              {/* マーカー（左→右スイープ） */}
+              <motion.span
+                className="absolute inset-0 origin-left rounded-sm bg-yellow-200/60"
+                initial={{ scaleX: 0 }}
+                whileInView={{ scaleX: 1 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{
+                  delay: 0.4,
+                  duration: 1.6,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
+                aria-hidden="true"
+              />
+              {/* 文字アニメーション */}
+              <motion.p
+                className="relative font-[family-name:var(--font-zen-kaku)] text-gray-800 leading-[2] text-base md:text-lg font-bold"
+                variants={charContainer}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-60px" }}
+                aria-label="「作って終わり」ではなく、お客様のビジネスを長期的に伸ばすことを第一に、お客様が迷うすべての局面で、隣に立てるパートナーであり続けます。"
+              >
+                {"「作って終わり」ではなく、お客様のビジネスを長期的に伸ばすことを第一に、お客様が迷うすべての局面で、隣に立てるパートナーであり続けます。"
+                  .split("")
+                  .map((char, i) => (
+                    <motion.span
+                      // biome-ignore lint/suspicious/noArrayIndexKey: 固定テキストのため index を key に使用
+                      key={i}
+                      variants={charItem}
+                      aria-hidden="true"
+                    >
+                      {char}
+                    </motion.span>
+                  ))}
+              </motion.p>
+            </div>
             <div className="pt-2">
               <Button
                 className={`${btnPrimary} text-base`}
