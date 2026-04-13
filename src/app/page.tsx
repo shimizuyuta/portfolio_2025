@@ -158,6 +158,13 @@ export default function Home() {
     return () => clearInterval(timer);
   }, []);
 
+  useEffect(() => {
+    document.body.style.overflow = isAboutModalOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isAboutModalOpen]);
+
   const worksPerPage = isMobile ? 1 : 3;
   const totalWorksPages = Math.ceil(works.length / worksPerPage);
   const visibleWorks = works.slice(
@@ -369,9 +376,9 @@ export default function Home() {
               現在はフリーランスとして、プライム上場企業や大手メディア企業のシステム開発に携わる傍ら、地元の千葉を中心に中小企業向けにAI活用・システム開発・HP制作／保守運用をワンストップで提供しています。
             </p>
             <div className="relative">
-              {/* マーカー（左→右スイープ） */}
+              {/* マーカー（左→右スイープ・下線スタイル） */}
               <motion.span
-                className="absolute inset-0 origin-left rounded-sm bg-yellow-200/60"
+                className="absolute bottom-[0.1em] left-0 h-[0.18em] w-full origin-left rounded-full bg-sky-400/70"
                 initial={{ scaleX: 0 }}
                 whileInView={{ scaleX: 1 }}
                 viewport={{ once: true, margin: "-60px" }}
