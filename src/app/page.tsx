@@ -31,6 +31,20 @@ const staggerContainer: Variants = {
   visible: { transition: { staggerChildren: 0.12 } },
 };
 
+const charContainer: Variants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.04, delayChildren: 0.1 } },
+};
+
+const charItem: Variants = {
+  hidden: { opacity: 0, y: 8 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.35, ease: [0.16, 1, 0.3, 1] },
+  },
+};
+
 const staggerItem: Variants = {
   hidden: { opacity: 0, y: 28 },
   visible: {
@@ -354,9 +368,27 @@ export default function Home() {
               大学を卒業後、新規事業支援のコンサル会社にてエンジニアとして、クラウドファンディングシステムや行政向けサービス、新規SaaSの立ち上げなど多様なプロジェクトを経験。
               現在はフリーランスとして、プライム上場企業や大手メディア企業のシステム開発に携わる傍ら、地元の千葉を中心に中小企業向けにAI活用・システム開発・HP制作／保守運用をワンストップで提供しています。
             </p>
-            <p className="text-gray-700 leading-[1.9] text-base md:text-lg">
-              「作って終わり」ではなく、お客様のビジネスを長期的に伸ばすことを第一に、お客様が迷うすべての局面で、隣に立てるパートナーであり続けます。
-            </p>
+            <motion.p
+              className="font-[family-name:var(--font-zen-kaku)] text-gray-800 leading-[2] text-base md:text-lg font-bold"
+              variants={charContainer}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-60px" }}
+              aria-label="「作って終わり」ではなく、お客様のビジネスを長期的に伸ばすことを第一に、お客様が迷うすべての局面で、隣に立てるパートナーであり続けます。"
+            >
+              {"「作って終わり」ではなく、お客様のビジネスを長期的に伸ばすことを第一に、お客様が迷うすべての局面で、隣に立てるパートナーであり続けます。"
+                .split("")
+                .map((char, i) => (
+                  <motion.span
+                    // biome-ignore lint/suspicious/noArrayIndexKey: 固定テキストのため index を key に使用
+                    key={i}
+                    variants={charItem}
+                    aria-hidden="true"
+                  >
+                    {char}
+                  </motion.span>
+                ))}
+            </motion.p>
             <div className="pt-2">
               <Button
                 className={`${btnPrimary} text-base`}
