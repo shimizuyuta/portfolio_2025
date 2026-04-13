@@ -121,6 +121,7 @@ export default function Home() {
   const [isMobile, setIsMobile] = useState(false);
   const [knowledgeArticles, setKnowledgeArticles] = useState<Article[]>([]);
   const [heroImageIndex, setHeroImageIndex] = useState(0);
+  const [isAboutModalOpen, setIsAboutModalOpen] = useState(false);
 
   useEffect(() => {
     fetch("/api/knowledge")
@@ -161,7 +162,7 @@ export default function Home() {
         className="w-full overflow-hidden"
       >
         {/* ── PC ─────────────────────────────────────────────── */}
-        <div className="hidden md:flex items-center relative bg-gradient-to-br from-sky-400/70 to-indigo-500/70 overflow-hidden min-h-[60svh]">
+        <div className="hidden md:flex items-center relative bg-gradient-to-br from-sky-400/70 to-indigo-500/70 overflow-hidden min-h-[70svh]">
           {/* 背景スライド画像 */}
           <AnimatePresence mode="sync">
             <motion.div
@@ -196,13 +197,6 @@ export default function Home() {
 
           <div className="relative w-full max-w-4xl pl-20 lg:pl-24 pr-12 lg:pr-20 py-16 pb-24">
             <motion.div variants={fadeInUp} initial="hidden" animate="visible">
-              <div className="flex items-center gap-3 mb-8">
-                <span className="w-8 h-px bg-white/50" aria-hidden="true" />
-                <p className="text-sm font-bold tracking-[0.25em] text-white/70 uppercase">
-                  IT Partner
-                </p>
-                <span className="w-8 h-px bg-white/50" aria-hidden="true" />
-              </div>
               <p className="text-xl lg:text-2xl font-semibold text-white/80 mb-5 leading-relaxed">
                 AI・ITを活用したい。
               </p>
@@ -210,12 +204,12 @@ export default function Home() {
                 id="hero-heading"
                 className="text-5xl lg:text-6xl font-bold leading-[1.1] mb-8 text-white whitespace-nowrap"
               >
-                でも、誰に頼めばいい？
+                「でも、誰に頼めばいい？」
               </h1>
-              <p className="text-base lg:text-lg leading-relaxed text-white/80 max-w-xl">
-                集客・採用・業務効率化・システム開発まで、
+              <p className="text-base lg:text-xl leading-relaxed text-white/80 max-w-xl">
+                ホームページ制作・業務効率化・システム開発など<br></br>
                 あなたのビジネスを一緒に作り上げる
-                <span className="font-semibold text-white">ITパートナー</span>。
+                <span className="font-semibold text-white">ITパートナー</span>
               </p>
             </motion.div>
           </div>
@@ -241,7 +235,7 @@ export default function Home() {
         </div>
 
         {/* ── SP ─────────────────────────────────────────────── */}
-        <div className="md:hidden flex items-center relative bg-gradient-to-br from-sky-400/70 to-indigo-500/70 min-h-[60svh] px-6 overflow-hidden">
+        <div className="md:hidden flex items-center relative bg-gradient-to-br from-sky-400/70 to-indigo-500/70 min-h-[70svh] px-6 overflow-hidden">
           {/* 背景スライド画像 */}
           <AnimatePresence mode="sync">
             <motion.div
@@ -281,13 +275,6 @@ export default function Home() {
             initial="hidden"
             animate="visible"
           >
-            <div className="flex items-center gap-3 mb-6">
-              <span className="w-6 h-px bg-white/50" aria-hidden="true" />
-              <p className="text-sm font-bold tracking-[0.25em] text-white/70 uppercase">
-                IT Partner
-              </p>
-              <span className="w-6 h-px bg-white/50" aria-hidden="true" />
-            </div>
             <p className="text-lg font-semibold text-white/80 mb-4 leading-relaxed">
               AI・ITを活用したい。
             </p>
@@ -295,9 +282,9 @@ export default function Home() {
               でも、誰に頼めばいい？
             </h1>
             <p className="text-base leading-relaxed text-white/75">
-              集客・採用・業務効率化・システム開発まで、
-              あなたのビジネスを一緒に作り上げる
-              <span className="font-semibold text-white">ITパートナー</span>。
+              ホームページ制作・DX・AI活用支援・システム開発など
+              経営の課題解決をサポートする
+              <span className="font-semibold text-white">ITパートナー</span>
             </p>
           </motion.div>
 
@@ -335,12 +322,12 @@ export default function Home() {
         viewport={{ once: false, margin: "-80px" }}
       >
         <div className="text-center mb-16 md:mb-20">
-          <SectionLabel label="Why Choose" />
+          <SectionLabel label="About Me" />
           <h2
             id="about-heading"
             className="text-3xl md:text-4xl font-bold text-gray-900"
           >
-            選ばれる理由
+            私について
           </h2>
         </div>
 
@@ -364,20 +351,21 @@ export default function Home() {
           {/* 右: テキスト */}
           <div className="space-y-6 text-left">
             <p className="text-gray-700 leading-[1.9] text-base md:text-lg">
-              「人を支えたい」という思いから、福祉系大学へ進学し社会福祉士を取得。しかし、学生時代から独学でプログラムを書き始め、「技術でもっと多くの人を支えられる」と気づいたことがITの世界に飛び込むきっかけになりました。
+              大学を卒業後、新規事業支援のコンサル会社にてエンジニアとして、クラウドファンディングシステムや行政向けサービス、新規SaaSの立ち上げなど多様なプロジェクトを経験。
+              現在はフリーランスとして、プライム上場企業や大手メディア企業のシステム開発に携わる傍ら、地元の千葉を中心に中小企業向けにAI活用・システム開発・HP制作／保守運用をワンストップで提供しています。
             </p>
             <p className="text-gray-700 leading-[1.9] text-base md:text-lg">
-              複数のスタートアップでエンジニアインターンを経験し、ハッカソン・アイデアソンにも積極的に参加。数々の表彰を受けました。新卒では新規事業の伴走支援を行う某コンサル企業に入社し、不動産クラウドファンディングや行政向けサービス、受託開発など幅広いプロジェクトに携わりました。
-            </p>
-            <p className="text-gray-700 leading-[1.9] text-base md:text-lg">
-              現在はフリーランスエンジニアとして、プライム上場企業や大手メディア企業のシステム開発に関わりながら、中小企業向けにAI活用・Web制作・マーケティング支援など、ビジネス全体を一緒に考えるパートナーとして伴走しています。
+              「作って終わり」ではなく、お客様のビジネスを長期的に伸ばすことを第一に、お客様が迷うすべての局面で、隣に立てるパートナーであり続けます。
             </p>
             <div className="pt-2">
-              <Button asChild className={`${btnPrimary} text-base`}>
-                <Link href="/service" className="flex items-center gap-2">
-                  サービスを見る
+              <Button
+                className={`${btnPrimary} text-base`}
+                onClick={() => setIsAboutModalOpen(true)}
+              >
+                <span className="flex items-center gap-2">
+                  続きを読む
                   <ArrowRight className="w-5 h-5" aria-hidden="true" />
-                </Link>
+                </span>
               </Button>
             </div>
           </div>
@@ -439,7 +427,7 @@ export default function Home() {
               },
               {
                 num: "03",
-                title: "Web・システム開発",
+                title: "HP/LP作成・システム開発",
                 img: "/images/problem/03.png",
                 alt: "Web・システム開発イメージ",
                 items: [
@@ -694,12 +682,12 @@ export default function Home() {
       >
         <div className="max-w-7xl mx-auto px-4 md:px-6">
           <div className="text-center mb-14 md:mb-20">
-            <SectionLabel label="Knowledge" />
+            <SectionLabel label="Blog" />
             <h2
               id="knowledge-heading"
               className="text-3xl md:text-4xl font-bold text-gray-900"
             >
-              ナレッジ
+              ブログ
             </h2>
           </div>
 
@@ -823,6 +811,102 @@ export default function Home() {
           </Button>
         </div>
       </motion.section>
+
+      {/* ═══════════════════════════════════════════════════════
+          私についてモーダル
+      ═══════════════════════════════════════════════════════ */}
+      <AnimatePresence>
+        {isAboutModalOpen && (
+          <>
+            {/* オーバーレイ */}
+            <motion.div
+              key="about-overlay"
+              className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              onClick={() => setIsAboutModalOpen(false)}
+              aria-hidden="true"
+            />
+
+            {/* モーダル本体 */}
+            <motion.div
+              key="about-modal"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="about-modal-title"
+              className="fixed inset-0 z-50 flex items-center justify-center px-4 pointer-events-none"
+              initial={{ opacity: 0, scale: 0.95, y: 16 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 16 }}
+              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <div className="relative bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[85vh] overflow-y-auto pointer-events-auto">
+                {/* 閉じるボタン */}
+                <button
+                  type="button"
+                  onClick={() => setIsAboutModalOpen(false)}
+                  className="absolute top-4 right-4 p-2 rounded-full text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors"
+                  aria-label="閉じる"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-5 h-5"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    <line x1="18" y1="6" x2="6" y2="18" />
+                    <line x1="6" y1="6" x2="18" y2="18" />
+                  </svg>
+                </button>
+
+                {/* コンテンツ */}
+                <div className="px-8 pt-10 pb-10">
+                  <p
+                    id="about-modal-title"
+                    className="text-xs font-bold tracking-[0.25em] text-sky-600 uppercase mb-2"
+                  >
+                    About Me
+                  </p>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-8">
+                    私について
+                  </h3>
+
+                  <div className="space-y-6">
+                    <p className="text-gray-700 leading-[1.9] text-base">
+                      「人の役に立ちたい」という原点から福祉系大学に進学し、社会福祉士を取得。また、学生時代に独学でプログラミングを始め、「技術の力ならもっと多くの人の役に立てる」と確信し、ITの世界へ。在学中から複数のスタートアップでエンジニアインターンを経験。趣味では、プログラミング技術をビジネスに活かすアイデアや実装力を競う大会（ハッカソン・アイデアソン）にも積極的に参加し、複数の受賞歴があります。（
+                      <a
+                        href="https://tornado-official.jp/student/1040/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sky-600 underline underline-offset-2 hover:text-sky-800 transition-colors"
+                      >
+                        特集記事はこちら
+                      </a>
+                      ）
+                    </p>
+                    <p className="text-gray-700 leading-[1.9] text-base">
+                      新卒では新規事業の伴走支援を行うコンサル企業に入社。約3年間にわたり、クラウドファンディングシステムや行政向けサービス、新規SaaSの立ち上げなど、自社サービス・受託開発の双方で幅広いプロジェクトに従事しました。要件定義から設計・開発・保守運用まで、すべての工程を一気通貫で経験してきました。
+                    </p>
+                    <p className="text-gray-700 leading-[1.9] text-base">
+                      現在はフリーランスエンジニアとして、プライム上場企業や大手メディア企業のシステム開発に携わりながら、中小企業のお客様に向けてAI活用支援、システム開発、HP制作・保守運用、Webマーケティング支援まで幅広く対応しています。
+                    </p>
+                    <p className="text-gray-700 leading-[1.9] text-base">
+                      大切にしているのは、「お客様のビジネスを伸ばすこと」を最優先に考えること。目先の納品だけでなく、事業の成長にずっと寄り添える"伴走パートナー"であり続けます。まずはお気軽にご相談ください。
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </main>
   );
 }
