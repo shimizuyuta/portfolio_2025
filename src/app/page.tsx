@@ -376,22 +376,18 @@ export default function Home() {
               現在はフリーランスとして、プライム上場企業や大手メディア企業のシステム開発に携わる傍ら、地元の千葉を中心に中小企業向けにAI活用・システム開発・HP制作／保守運用をワンストップで提供しています。
             </p>
             <div className="relative">
-              {/* マーカー（文字アニメーションと同期・下線スタイル） */}
+              {/* マーカー（全文字出現後にフェードイン） */}
               <motion.span
-                className="absolute bottom-[0.1em] left-0 h-[0.18em] w-full origin-left rounded-full bg-sky-400/70"
-                initial={{ scaleX: 0 }}
-                whileInView={{ scaleX: 1 }}
+                className="absolute -inset-x-1 inset-y-[0.15em] rounded-sm bg-sky-400/15"
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
                 viewport={{ once: true, margin: "-60px" }}
-                transition={{
-                  delay: 0.1,
-                  duration: 2.68,
-                  ease: "linear",
-                }}
+                transition={{ delay: 3.13, duration: 0.6, ease: "easeOut" }}
                 aria-hidden="true"
               />
               {/* 文字アニメーション */}
               <motion.p
-                className="relative font-[family-name:var(--font-zen-kaku)] text-gray-800 leading-[2] text-base md:text-lg font-bold"
+                className="relative font-[family-name:var(--font-zen-kaku)] text-gray-800 leading-[2] text-[1.3rem] font-bold"
                 variants={charContainer}
                 initial="hidden"
                 whileInView="visible"
