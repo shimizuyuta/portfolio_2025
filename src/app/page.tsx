@@ -376,16 +376,16 @@ export default function Home() {
               現在はフリーランスとして、プライム上場企業や大手メディア企業のシステム開発に携わる傍ら、地元の千葉を中心に中小企業向けにAI活用・システム開発・HP制作／保守運用をワンストップで提供しています。
             </p>
             <div className="relative">
-              {/* マーカー（左→右スイープ・下線スタイル） */}
+              {/* マーカー（文字アニメーションと同期・下線スタイル） */}
               <motion.span
                 className="absolute bottom-[0.1em] left-0 h-[0.18em] w-full origin-left rounded-full bg-sky-400/70"
                 initial={{ scaleX: 0 }}
                 whileInView={{ scaleX: 1 }}
                 viewport={{ once: true, margin: "-60px" }}
                 transition={{
-                  delay: 0.4,
-                  duration: 1.6,
-                  ease: [0.16, 1, 0.3, 1],
+                  delay: 0.1,
+                  duration: 2.68,
+                  ease: "linear",
                 }}
                 aria-hidden="true"
               />
