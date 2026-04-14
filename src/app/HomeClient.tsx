@@ -728,11 +728,20 @@ export default function HomeClient({ articles }: { articles: Article[] }) {
                         href={`/knowledge/${article.slug}`}
                         className="flex items-start gap-4 py-5 px-2 hover:bg-gray-50 rounded-lg transition-colors"
                       >
-                        <div className="flex-shrink-0 w-28 h-20 md:w-36 md:h-24 rounded-xl bg-gray-100 overflow-hidden flex items-center justify-center">
-                          <BookOpen
-                            className="w-8 h-8 text-gray-300"
-                            aria-hidden="true"
-                          />
+                        <div className="flex-shrink-0 w-28 h-20 md:w-36 md:h-24 rounded-xl bg-gray-100 overflow-hidden relative flex items-center justify-center">
+                          {article.thumbnail_url ? (
+                            <Image
+                              src={article.thumbnail_url}
+                              alt={article.title}
+                              fill
+                              className="object-cover"
+                            />
+                          ) : (
+                            <BookOpen
+                              className="w-8 h-8 text-gray-300"
+                              aria-hidden="true"
+                            />
+                          )}
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 mb-2 flex-wrap">
