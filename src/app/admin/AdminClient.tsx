@@ -31,8 +31,165 @@ const EMPTY_FORM: ArticleInput = {
   category: "",
   status: "draft",
   published_at: null,
+  tagNames: [],
 };
 
+// ─── inputCls ────────────────────────────────────────────────────────────────
+const inputCls =
+  "w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-400";
+
+// ─── Field（コンポーネント外に定義してフォーカス問題を回避） ──────────────────
+function Field({
+  label,
+  children,
+}: {
+  label: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="space-y-1">
+      <p className="text-sm font-medium text-gray-700">{label}</p>
+      {children}
+    </div>
+  );
+}
+
+// ─── ArticleForm（コンポーネント外に定義） ────────────────────────────────────
+function ArticleForm({
+  form,
+  setForm,
+  onSubmit,
+  onCancel,
+  submitLabel,
+  isPending,
+  error,
+}: {
+  form: ArticleInput;
+  setForm: (f: ArticleInput) => void;
+  onSubmit: () => void;
+  onCancel: () => void;
+  submitLabel: string;
+  isPending: boolean;
+  error: string | null;
+}) {
+  return (
+    <div className="space-y-5">
+      <Field label="タイトル *">
+        <input
+          className={inputCls}
+          value={form.title}
+          onChange={(e) => setForm({ ...form, title: e.target.value })}
+        />
+      </Field>
+
+      <Field label="スラッグ *">
+        <input
+          className={inputCls}
+          value={form.slug}
+          onChange={(e) => setForm({ ...form, slug: e.target.value })}
+        />
+      </Field>
+
+      <Field label="カテゴリ *">
+        <input
+          className={inputCls}
+          value={form.category}
+          onChange={(e) => setForm({ ...form, category: e.target.value })}
+        />
+      </Field>
+
+      <Field label="タグ（カンマ区切り）">
+        <input
+          className={inputCls}
+          placeholder="例: SEO, マーケティング, Web制作"
+          value={form.tagNames.join(", ")}
+          onChange={(e) =>
+            setForm({
+              ...form,
+              tagNames: e.target.value
+                .split(",")
+                .map((t) => t.trim())
+                .filter(Boolean),
+            })
+          }
+        />
+      </Field>
+
+      <Field label="概要 *">
+        <textarea
+          className={`${inputCls} resize-none`}
+          rows={2}
+          value={form.excerpt}
+          onChange={(e) => setForm({ ...form, excerpt: e.target.value })}
+        />
+      </Field>
+
+      <Field label="本文（Markdown） *">
+        <textarea
+          className={`${inputCls} resize-y font-mono text-xs`}
+          rows={16}
+          value={form.content}
+          onChange={(e) => setForm({ ...form, content: e.target.value })}
+        />
+      </Field>
+
+      <div className="flex gap-4">
+        <Field label="ステータス">
+          <select
+            className={inputCls}
+            value={form.status}
+            onChange={(e) =>
+              setForm({
+                ...form,
+                status: e.target.value as "draft" | "published",
+              })
+            }
+          >
+            <option value="draft">下書き</option>
+            <option value="published">公開</option>
+          </select>
+        </Field>
+
+        <Field label="公開日時">
+          <input
+            type="datetime-local"
+            className={inputCls}
+            value={form.published_at?.slice(0, 16) ?? ""}
+            onChange={(e) =>
+              setForm({
+                ...form,
+                published_at: e.target.value
+                  ? new Date(e.target.value).toISOString()
+                  : null,
+              })
+            }
+          />
+        </Field>
+      </div>
+
+      {error && <p className="text-sm text-red-600">{error}</p>}
+
+      <div className="flex gap-3 pt-2">
+        <Button
+          onClick={onSubmit}
+          disabled={isPending}
+          className="bg-gray-900 hover:bg-gray-700 text-white rounded-lg px-5 py-2 h-auto text-sm"
+        >
+          {isPending ? "保存中…" : submitLabel}
+        </Button>
+        <Button
+          variant="outline"
+          onClick={onCancel}
+          className="rounded-lg h-auto text-sm"
+        >
+          キャンセル
+        </Button>
+      </div>
+    </div>
+  );
+}
+
+// ─── AdminClient ──────────────────────────────────────────────────────────────
 export default function AdminClient({
   initialArticles,
 }: {
@@ -45,16 +202,11 @@ export default function AdminClient({
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
 
-  // ─── 一覧を再取得（Server Action 後） ─────────────────────
   async function refreshList() {
     const res = await fetch("/api/admin/articles");
-    if (res.ok) {
-      const data = await res.json();
-      setArticles(data);
-    }
+    if (res.ok) setArticles(await res.json());
   }
 
-  // ─── 作成 ─────────────────────────────────────────────────
   function handleCreate() {
     setForm(EMPTY_FORM);
     setEditingId(null);
@@ -74,7 +226,6 @@ export default function AdminClient({
     });
   }
 
-  // ─── 編集 ─────────────────────────────────────────────────
   async function handleEdit(id: string) {
     setError(null);
     const article = await getAdminArticleById(id);
@@ -87,6 +238,7 @@ export default function AdminClient({
       category: article.category ?? "",
       status: article.status as "draft" | "published",
       published_at: article.published_at ?? null,
+      tagNames: article.tagNames ?? [],
     });
     setEditingId(id);
     setView("edit");
@@ -105,7 +257,6 @@ export default function AdminClient({
     });
   }
 
-  // ─── 削除 ─────────────────────────────────────────────────
   function handleDelete(id: string, title: string) {
     if (!window.confirm(`「${title}」を削除しますか？`)) return;
     startTransition(async () => {
@@ -118,127 +269,6 @@ export default function AdminClient({
     });
   }
 
-  // ─── フォーム共通 ──────────────────────────────────────────
-  function Field({
-    label,
-    children,
-  }: {
-    label: string;
-    children: React.ReactNode;
-  }) {
-    return (
-      <div className="space-y-1">
-        <p className="text-sm font-medium text-gray-700">{label}</p>
-        {children}
-      </div>
-    );
-  }
-
-  const inputCls =
-    "w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-400";
-
-  function ArticleForm({
-    onSubmit,
-    submitLabel,
-  }: {
-    onSubmit: () => void;
-    submitLabel: string;
-  }) {
-    return (
-      <div className="space-y-5">
-        <Field label="タイトル">
-          <input
-            className={inputCls}
-            value={form.title}
-            onChange={(e) => setForm({ ...form, title: e.target.value })}
-          />
-        </Field>
-        <Field label="スラッグ">
-          <input
-            className={inputCls}
-            value={form.slug}
-            onChange={(e) => setForm({ ...form, slug: e.target.value })}
-          />
-        </Field>
-        <Field label="カテゴリ">
-          <input
-            className={inputCls}
-            value={form.category}
-            onChange={(e) => setForm({ ...form, category: e.target.value })}
-          />
-        </Field>
-        <Field label="概要">
-          <textarea
-            className={`${inputCls} resize-none`}
-            rows={2}
-            value={form.excerpt}
-            onChange={(e) => setForm({ ...form, excerpt: e.target.value })}
-          />
-        </Field>
-        <Field label="本文（Markdown）">
-          <textarea
-            className={`${inputCls} resize-y font-mono text-xs`}
-            rows={16}
-            value={form.content}
-            onChange={(e) => setForm({ ...form, content: e.target.value })}
-          />
-        </Field>
-        <div className="flex gap-4">
-          <Field label="ステータス">
-            <select
-              className={inputCls}
-              value={form.status}
-              onChange={(e) =>
-                setForm({
-                  ...form,
-                  status: e.target.value as "draft" | "published",
-                })
-              }
-            >
-              <option value="draft">下書き</option>
-              <option value="published">公開</option>
-            </select>
-          </Field>
-          <Field label="公開日時">
-            <input
-              type="datetime-local"
-              className={inputCls}
-              value={form.published_at?.slice(0, 16) ?? ""}
-              onChange={(e) =>
-                setForm({
-                  ...form,
-                  published_at: e.target.value
-                    ? new Date(e.target.value).toISOString()
-                    : null,
-                })
-              }
-            />
-          </Field>
-        </div>
-
-        {error && <p className="text-sm text-red-600">{error}</p>}
-
-        <div className="flex gap-3 pt-2">
-          <Button
-            onClick={onSubmit}
-            disabled={isPending}
-            className="bg-gray-900 hover:bg-gray-700 text-white rounded-lg px-5 py-2 h-auto text-sm"
-          >
-            {isPending ? "保存中…" : submitLabel}
-          </Button>
-          <Button
-            variant="outline"
-            onClick={() => setView("list")}
-            className="rounded-lg h-auto text-sm"
-          >
-            キャンセル
-          </Button>
-        </div>
-      </div>
-    );
-  }
-
-  // ─── 描画 ──────────────────────────────────────────────────
   return (
     <div className="min-h-screen bg-gray-50">
       <header className="bg-white border-b px-6 py-4 flex items-center justify-between">
@@ -259,7 +289,7 @@ export default function AdminClient({
       </header>
 
       <main className="max-w-4xl mx-auto px-6 py-10">
-        {/* ─── 一覧 ─── */}
+        {/* 一覧 */}
         {view === "list" && (
           <div className="space-y-3">
             {articles.length === 0 && (
@@ -278,11 +308,11 @@ export default function AdminClient({
                   </p>
                   <div className="flex items-center gap-2 mt-1 flex-wrap">
                     <Badge
-                      className={`text-xs ${
+                      className={`text-xs border ${
                         a.status === "published"
                           ? "bg-sky-50 text-sky-700 border-sky-200"
                           : "bg-gray-100 text-gray-500 border-gray-200"
-                      } border`}
+                      }`}
                     >
                       {a.status === "published" ? "公開" : "下書き"}
                     </Badge>
@@ -320,19 +350,35 @@ export default function AdminClient({
           </div>
         )}
 
-        {/* ─── 作成 ─── */}
+        {/* 作成 */}
         {view === "create" && (
           <div>
             <h2 className="text-lg font-bold text-gray-900 mb-6">新規作成</h2>
-            <ArticleForm onSubmit={handleSubmitCreate} submitLabel="作成する" />
+            <ArticleForm
+              form={form}
+              setForm={setForm}
+              onSubmit={handleSubmitCreate}
+              onCancel={() => setView("list")}
+              submitLabel="作成する"
+              isPending={isPending}
+              error={error}
+            />
           </div>
         )}
 
-        {/* ─── 編集 ─── */}
+        {/* 編集 */}
         {view === "edit" && (
           <div>
             <h2 className="text-lg font-bold text-gray-900 mb-6">記事を編集</h2>
-            <ArticleForm onSubmit={handleSubmitEdit} submitLabel="更新する" />
+            <ArticleForm
+              form={form}
+              setForm={setForm}
+              onSubmit={handleSubmitEdit}
+              onCancel={() => setView("list")}
+              submitLabel="更新する"
+              isPending={isPending}
+              error={error}
+            />
           </div>
         )}
       </main>
