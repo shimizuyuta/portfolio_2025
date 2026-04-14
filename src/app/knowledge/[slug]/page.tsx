@@ -5,18 +5,13 @@ import rehypeHighlight from "rehype-highlight";
 import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
 import { Badge } from "@/components/ui/badge";
-import { getAllArticleSlugs, getArticleBySlug } from "@/lib/knowledge";
+import { getArticleBySlug } from "@/lib/knowledge";
 
 type Props = {
   params: Promise<{ slug: string }>;
 };
 
 export const revalidate = 3600;
-// ★ 追加：ビルド時に全記事の静的HTMLを生成
-export async function generateStaticParams() {
-  const slugs = await getAllArticleSlugs();
-  return slugs.map((slug) => ({ slug }));
-}
 
 // Markdownの見出し（## / ###）を抽出してToCを生成
 function extractHeadings(markdown: string) {

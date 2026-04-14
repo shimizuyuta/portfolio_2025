@@ -1,13 +1,4 @@
-import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase/server";
-
-// cookies不要のビルド時クライアント（generateStaticParams用）
-function createStaticClient() {
-  return createSupabaseClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL as string,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string,
-  );
-}
 
 export type Article = {
   id: string;
@@ -63,18 +54,4 @@ export async function getArticleBySlug(
       .map((at: { tags: { id: string; name: string } | null }) => at.tags)
       .filter(Boolean) as { id: string; name: string }[],
   };
-}
-
-export async function getAllArticleSlugs(): Promise<string[]> {
-  const supabase = createStaticClient();
-
-  const { data, error } = await supabase
-    .from("articles")
-    .select("slug")
-    .eq("status", "published")
-    .lte("published_at", new Date().toISOString());
-
-  if (error || !data) return [];
-
-  return data.map((row) => row.slug);
 }
