@@ -50,6 +50,11 @@ export async function createArticle(input: ArticleInput) {
   const supabase = createServiceClient();
   const { tagNames, ...articleData } = input;
 
+  // published かつ published_at 未設定の場合は現在時刻を自動セット
+  if (articleData.status === "published" && !articleData.published_at) {
+    articleData.published_at = new Date().toISOString();
+  }
+
   const { data, error } = await supabase
     .from("articles")
     .insert([articleData])
@@ -67,6 +72,11 @@ export async function createArticle(input: ArticleInput) {
 export async function updateArticle(id: string, input: ArticleInput) {
   const supabase = createServiceClient();
   const { tagNames, ...articleData } = input;
+
+  // published かつ published_at 未設定の場合は現在時刻を自動セット
+  if (articleData.status === "published" && !articleData.published_at) {
+    articleData.published_at = new Date().toISOString();
+  }
 
   const { error } = await supabase
     .from("articles")
