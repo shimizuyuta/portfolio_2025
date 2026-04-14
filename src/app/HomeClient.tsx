@@ -89,35 +89,28 @@ const spHeroImages = [
 // ─── Data ─────────────────────────────────────────────────────────────────────
 const works = [
   {
-    industry: "製造業",
-    title: "業務自動化",
-    description: "書類処理・データ入力の自動化を実施。月40時間の工数を削減。",
-    result: "工数削減 40h/月",
-  },
-  {
-    industry: "EC・小売",
-    title: "Meta広告運用",
-    description: "ターゲット設定の見直しとクリエイティブのA/Bテストを実施。",
-    result: "CPA 50% 改善",
-  },
-  {
-    industry: "飲食",
-    title: "公式LINE構築・運用",
-    description: "顧客フォロー自動化とリピーター向けキャンペーン設計を実施。",
-    result: "リピート率 20% 向上",
-  },
-  {
-    industry: "士業",
-    title: "Webサイトリニューアル",
-    description: "既存サイトをモダンな技術でリニューアル。SEO対策も実施。",
-    result: "問い合わせ数 3倍",
-  },
-  {
-    industry: "物流",
-    title: "業務システム開発",
+    industry: "医療",
+    title: "新規事業の立ち上げ支援",
     description:
-      "在庫管理システムをスクラッチ開発。現場の業務フローに合わせた設計。",
-    result: "作業時間 60% 削減",
+      "歯科医院が新たに展開するリップアート事業において、補助金の申請支援からターゲット調査、LP企画・制作、公式LINEの構築・運用、インフルエンサーへの依頼までをワンストップで対応しました。",
+    result: "初月で30名の来院獲得につながる",
+    thumbnail: "/images/works/shikai.png",
+  },
+  {
+    industry: "福祉",
+    title: "AIを活用し記録業務の効率化",
+    description:
+      "相談員が面談内容を手書きでメモし、行政提出用フォーマットへ転記するという工程に多大な時間がかかっていました。これに対し、面談の録音データから提出用Excelが自動生成されるフローを構築。個人情報の取り扱いに配慮したセキュリティ設計も施しました。",
+    result: "1人あたり約6時間の作業が約10分で完結",
+    thumbnail: "/images/works/shougai.png",
+  },
+  {
+    industry: "スポーツ・教育",
+    title: "ホームページの運用改善と自走化支援",
+    description:
+      "メンテナンスが行き届かず有効活用できていないホームページに対し、CMSのカスタマイズによる大会情報の更新簡易化、申し込み導線の見直し・修正、セキュリティ強化などWeb運営全般を改善しました。",
+    result: "1人で運用・更新できる基盤を実現",
+    thumbnail: "/images/works/tennis.png",
   },
 ];
 
@@ -587,7 +580,7 @@ export default function HomeClient({ articles }: { articles: Article[] }) {
               </motion.div>
             ))}
           </motion.div>
-          一旦見せない
+          {/* 一旦見せない */}
           {/* <div className="text-center">
             <Button asChild className={`${btnPrimary} text-base`}>
               <Link href="/service" className="flex items-center gap-2">
@@ -640,8 +633,21 @@ export default function HomeClient({ articles }: { articles: Article[] }) {
               ].map((work) => (
                 <div key={work._key} className="w-[390px] shrink-0">
                   <Card className="overflow-hidden bg-white border border-gray-200 shadow-md hover:shadow-xl hover:border-gray-300 transition-all duration-300 h-full">
-                    <div className="w-full h-48 bg-gray-100 flex items-center justify-center">
-                      <span className="text-gray-400 text-sm">画像準備中</span>
+                    <div className="w-full h-48 bg-gray-100 relative overflow-hidden">
+                      {work.thumbnail ? (
+                        <Image
+                          src={work.thumbnail}
+                          alt={work.title}
+                          fill
+                          className="object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center">
+                          <span className="text-gray-400 text-sm">
+                            画像準備中
+                          </span>
+                        </div>
+                      )}
                     </div>
                     <div className="p-6">
                       <div className="flex items-center gap-2 mb-3">
