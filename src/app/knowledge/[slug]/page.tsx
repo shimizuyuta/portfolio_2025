@@ -13,11 +13,11 @@ type Props = {
   params: Promise<{ slug: string }>;
 };
 
-// generateStaticParams でのビルド時 Supabase 接続を回避するため常に空配列を返す。
-// ページはリクエスト時にオンデマンドで SSR される。
-export function generateStaticParams() {
-  return [];
-}
+// force-dynamic で SSR を強制する。
+// generateStaticParams を使うと on-demand ISR（静的コンテキスト）になり
+// cookies() が例外になるため、force-dynamic で明示的に SSR に固定する。
+// ビルド時の Supabase 接続もスキップされるため generateStaticParams は不要。
+export const dynamic = "force-dynamic";
 
 // Markdownの見出し（## / ###）を抽出してToCを生成
 function extractHeadings(markdown: string) {
