@@ -12,6 +12,7 @@ export type ArticleInput = {
   status: "draft" | "published";
   published_at: string | null;
   tagNames: string[];
+  thumbnail_url: string | null;
 };
 
 // タグを upsert して ID を返す
@@ -49,6 +50,11 @@ export async function createArticle(input: ArticleInput) {
   const supabase = createServiceClient();
   const { tagNames, ...articleData } = input;
 
+  // published かつ published_at 未設定の場合は現在時刻を自動セット
+  if (articleData.status === "published" && !articleData.published_at) {
+    articleData.published_at = new Date().toISOString();
+  }
+
   const { data, error } = await supabase
     .from("articles")
     .insert([articleData])
@@ -66,6 +72,11 @@ export async function createArticle(input: ArticleInput) {
 export async function updateArticle(id: string, input: ArticleInput) {
   const supabase = createServiceClient();
   const { tagNames, ...articleData } = input;
+
+  // published かつ published_at 未設定の場合は現在時刻を自動セット
+  if (articleData.status === "published" && !articleData.published_at) {
+    articleData.published_at = new Date().toISOString();
+  }
 
   const { error } = await supabase
     .from("articles")
@@ -96,6 +107,22 @@ export async function getAdminArticles() {
     .order("updated_at", { ascending: false });
   if (error) throw new Error(error.message);
   return data ?? [];
+}
+
+export async function uploadThumbnail(formData: FormData): Promise<string> {
+  const supabase = createServiceClient();
+  const file = formData.get("file") as File;
+  const bytes = await file.arrayBuffer();
+  const ext = file.name.split(".").pop() ?? "jpg";
+  const path = `${Date.now()}.${ext}`;
+
+  const { error } = await supabase.storage
+    .from("blog-images")
+    .upload(path, bytes, { contentType: file.type, upsert: false });
+  if (error) throw new Error(error.message);
+
+  const { data } = supabase.storage.from("blog-images").getPublicUrl(path);
+  return data.publicUrl;
 }
 
 export async function getAdminArticleById(id: string) {

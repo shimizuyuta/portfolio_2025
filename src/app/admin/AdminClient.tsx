@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState, useTransition } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -9,6 +10,7 @@ import {
   deleteArticle,
   getAdminArticleById,
   updateArticle,
+  uploadThumbnail,
 } from "./actions";
 
 type Article = {
@@ -32,6 +34,7 @@ const EMPTY_FORM: ArticleInput = {
   status: "draft",
   published_at: null,
   tagNames: [],
+  thumbnail_url: null,
 };
 
 // ─── inputCls ────────────────────────────────────────────────────────────────
@@ -54,12 +57,77 @@ function Field({
   );
 }
 
+// ─── ImageUploader ────────────────────────────────────────────────────────────
+function ImageUploader() {
+  const [url, setUrl] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
+  const [isPending, startTransition] = useTransition();
+
+  function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    startTransition(async () => {
+      const fd = new FormData();
+      fd.append("file", file);
+      const uploaded = await uploadThumbnail(fd);
+      setUrl(uploaded);
+      setCopied(false);
+    });
+    e.target.value = "";
+  }
+
+  function handleCopy() {
+    if (!url) return;
+    navigator.clipboard.writeText(`![](${url})`);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  }
+
+  return (
+    <div className="rounded-lg border border-dashed border-gray-300 bg-gray-50 px-4 py-3 space-y-2">
+      <p className="text-xs font-medium text-gray-500">
+        本文用 画像アップロード
+      </p>
+      <div className="flex items-center gap-3 flex-wrap">
+        <label className="cursor-pointer">
+          <span className="text-xs px-3 py-1.5 rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 transition-colors">
+            {isPending ? "アップロード中…" : "ファイルを選択"}
+          </span>
+          <input
+            type="file"
+            accept="image/jpeg,image/png,image/webp,image/gif"
+            className="hidden"
+            onChange={handleFile}
+            disabled={isPending}
+          />
+        </label>
+        {url && (
+          <div className="flex items-center gap-2 flex-1 min-w-0">
+            <code className="text-xs text-gray-500 truncate flex-1 bg-white border border-gray-200 rounded px-2 py-1">
+              {`![](${url})`}
+            </code>
+            <button
+              type="button"
+              onClick={handleCopy}
+              className="shrink-0 text-xs px-3 py-1.5 rounded-lg bg-sky-500 text-white hover:bg-sky-600 transition-colors"
+            >
+              {copied ? "コピー済み ✓" : "コピー"}
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 // ─── ArticleForm（コンポーネント外に定義） ────────────────────────────────────
 function ArticleForm({
   form,
   setForm,
   tagsInput,
   setTagsInput,
+  thumbnailFile,
+  setThumbnailFile,
   onSubmit,
   onCancel,
   submitLabel,
@@ -70,12 +138,19 @@ function ArticleForm({
   setForm: (f: ArticleInput) => void;
   tagsInput: string;
   setTagsInput: (v: string) => void;
+  thumbnailFile: File | null;
+  setThumbnailFile: (f: File | null) => void;
   onSubmit: () => void;
   onCancel: () => void;
   submitLabel: string;
   isPending: boolean;
   error: string | null;
 }) {
+  // ローカルプレビュー URL（選択直後）
+  const previewUrl = thumbnailFile
+    ? URL.createObjectURL(thumbnailFile)
+    : (form.thumbnail_url ?? null);
+
   return (
     <div className="space-y-5">
       <Field label="タイトル *">
@@ -111,6 +186,46 @@ function ArticleForm({
         />
       </Field>
 
+      <Field label="サムネイル">
+        <div className="space-y-2">
+          {previewUrl && (
+            <div className="relative w-40 h-24 rounded-lg overflow-hidden border border-gray-200">
+              <Image
+                src={previewUrl}
+                alt="サムネイルプレビュー"
+                fill
+                className="object-cover"
+                unoptimized={!!thumbnailFile}
+              />
+              <button
+                type="button"
+                onClick={() => {
+                  setThumbnailFile(null);
+                  setForm({ ...form, thumbnail_url: null });
+                }}
+                className="absolute top-1 right-1 bg-black/50 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs hover:bg-black/70"
+              >
+                ×
+              </button>
+            </div>
+          )}
+          <input
+            type="file"
+            accept="image/jpeg,image/png,image/webp,image/gif"
+            className="text-sm text-gray-600 file:mr-3 file:py-1 file:px-3 file:rounded-lg file:border file:border-gray-300 file:text-xs file:font-medium file:bg-white file:text-gray-700 hover:file:bg-gray-50"
+            onChange={(e) => {
+              const file = e.target.files?.[0] ?? null;
+              setThumbnailFile(file);
+            }}
+          />
+          {form.thumbnail_url && !thumbnailFile && (
+            <p className="text-xs text-gray-400 truncate">
+              {form.thumbnail_url}
+            </p>
+          )}
+        </div>
+      </Field>
+
       <Field label="概要 *">
         <textarea
           className={`${inputCls} resize-none`}
@@ -129,39 +244,23 @@ function ArticleForm({
         />
       </Field>
 
-      <div className="flex gap-4">
-        <Field label="ステータス">
-          <select
-            className={inputCls}
-            value={form.status}
-            onChange={(e) =>
-              setForm({
-                ...form,
-                status: e.target.value as "draft" | "published",
-              })
-            }
-          >
-            <option value="draft">下書き</option>
-            <option value="published">公開</option>
-          </select>
-        </Field>
+      <ImageUploader />
 
-        <Field label="公開日時">
-          <input
-            type="datetime-local"
-            className={inputCls}
-            value={form.published_at?.slice(0, 16) ?? ""}
-            onChange={(e) =>
-              setForm({
-                ...form,
-                published_at: e.target.value
-                  ? new Date(e.target.value).toISOString()
-                  : null,
-              })
-            }
-          />
-        </Field>
-      </div>
+      <Field label="ステータス">
+        <select
+          className={inputCls}
+          value={form.status}
+          onChange={(e) =>
+            setForm({
+              ...form,
+              status: e.target.value as "draft" | "published",
+            })
+          }
+        >
+          <option value="draft">下書き</option>
+          <option value="published">公開</option>
+        </select>
+      </Field>
 
       {error && <p className="text-sm text-red-600">{error}</p>}
 
@@ -195,6 +294,7 @@ export default function AdminClient({
   const [articles, setArticles] = useState(initialArticles);
   const [form, setForm] = useState<ArticleInput>(EMPTY_FORM);
   const [tagsInput, setTagsInput] = useState("");
+  const [thumbnailFile, setThumbnailFile] = useState<File | null>(null);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
@@ -211,9 +311,17 @@ export default function AdminClient({
       .filter(Boolean);
   }
 
+  async function resolveThumbUrl(): Promise<string | null> {
+    if (!thumbnailFile) return form.thumbnail_url;
+    const fd = new FormData();
+    fd.append("file", thumbnailFile);
+    return await uploadThumbnail(fd);
+  }
+
   function handleCreate() {
     setForm(EMPTY_FORM);
     setTagsInput("");
+    setThumbnailFile(null);
     setEditingId(null);
     setError(null);
     setView("create");
@@ -222,7 +330,12 @@ export default function AdminClient({
   function handleSubmitCreate() {
     startTransition(async () => {
       try {
-        await createArticle({ ...form, tagNames: parseTagsInput() });
+        const thumbnail_url = await resolveThumbUrl();
+        await createArticle({
+          ...form,
+          tagNames: parseTagsInput(),
+          thumbnail_url,
+        });
         await refreshList();
         setView("list");
       } catch (e) {
@@ -245,8 +358,10 @@ export default function AdminClient({
       status: article.status as "draft" | "published",
       published_at: article.published_at ?? null,
       tagNames: tags,
+      thumbnail_url: article.thumbnail_url ?? null,
     });
     setTagsInput(tags.join(", "));
+    setThumbnailFile(null);
     setEditingId(id);
     setView("edit");
   }
@@ -255,7 +370,12 @@ export default function AdminClient({
     if (!editingId) return;
     startTransition(async () => {
       try {
-        await updateArticle(editingId, { ...form, tagNames: parseTagsInput() });
+        const thumbnail_url = await resolveThumbUrl();
+        await updateArticle(editingId, {
+          ...form,
+          tagNames: parseTagsInput(),
+          thumbnail_url,
+        });
         await refreshList();
         setView("list");
       } catch (e) {
@@ -366,6 +486,8 @@ export default function AdminClient({
               setForm={setForm}
               tagsInput={tagsInput}
               setTagsInput={setTagsInput}
+              thumbnailFile={thumbnailFile}
+              setThumbnailFile={setThumbnailFile}
               onSubmit={handleSubmitCreate}
               onCancel={() => setView("list")}
               submitLabel="作成する"
@@ -384,6 +506,8 @@ export default function AdminClient({
               setForm={setForm}
               tagsInput={tagsInput}
               setTagsInput={setTagsInput}
+              thumbnailFile={thumbnailFile}
+              setThumbnailFile={setThumbnailFile}
               onSubmit={handleSubmitEdit}
               onCancel={() => setView("list")}
               submitLabel="更新する"
