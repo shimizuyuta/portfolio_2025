@@ -1,13 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion, type Variants } from "framer-motion";
-import {
-  ArrowRight,
-  BookOpen,
-  ChevronLeft,
-  ChevronRight,
-  Mail,
-} from "lucide-react";
+import { ArrowRight, BookOpen, Mail } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -131,8 +125,6 @@ const works = [
 
 // ─── Component ────────────────────────────────────────────────────────────────
 export default function Home() {
-  const [currentWork, setCurrentWork] = useState(0);
-  const [isMobile, setIsMobile] = useState(false);
   const [knowledgeArticles, setKnowledgeArticles] = useState<Article[]>([]);
   const [heroImageIndex, setHeroImageIndex] = useState(0);
   const [isAboutModalOpen, setIsAboutModalOpen] = useState(false);
@@ -142,13 +134,6 @@ export default function Home() {
       .then((res) => res.json())
       .then((data: Article[]) => setKnowledgeArticles(data))
       .catch(() => {});
-  }, []);
-
-  useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth < 768);
-    check();
-    window.addEventListener("resize", check);
-    return () => window.removeEventListener("resize", check);
   }, []);
 
   useEffect(() => {
@@ -164,13 +149,6 @@ export default function Home() {
       document.body.style.overflow = "";
     };
   }, [isAboutModalOpen]);
-
-  const worksPerPage = isMobile ? 1 : 3;
-  const totalWorksPages = Math.ceil(works.length / worksPerPage);
-  const visibleWorks = works.slice(
-    currentWork * worksPerPage,
-    currentWork * worksPerPage + worksPerPage,
-  );
 
   return (
     <main>
@@ -478,7 +456,7 @@ export default function Home() {
               },
               {
                 num: "03",
-                title: "HP/LP作成・システム開発",
+                title: "ホームページ制作・システム開発",
                 img: "/images/problem/03.png",
                 alt: "Web・システム開発イメージ",
                 items: [
@@ -654,15 +632,15 @@ export default function Home() {
             </h2>
           </div>
 
-          <div className="relative">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-              {visibleWorks.map((work) => (
-                <motion.div
-                  key={work.title}
-                  whileHover={{ scale: 1.02, y: -5 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <Card className="overflow-hidden bg-white border border-gray-200 shadow-md hover:shadow-xl hover:border-gray-300 transition-all duration-300">
+          {/* Marquee */}
+          <div className="relative overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
+            <div className="flex gap-6 w-max animate-marquee hover:[animation-play-state:paused]">
+              {[
+                ...works.map((w) => ({ ...w, _key: `a-${w.title}` })),
+                ...works.map((w) => ({ ...w, _key: `b-${w.title}` })),
+              ].map((work) => (
+                <div key={work._key} className="w-[390px] shrink-0">
+                  <Card className="overflow-hidden bg-white border border-gray-200 shadow-md hover:shadow-xl hover:border-gray-300 transition-all duration-300 h-full">
                     <div className="w-full h-48 bg-gray-100 flex items-center justify-center">
                       <span className="text-gray-400 text-sm">画像準備中</span>
                     </div>
@@ -683,37 +661,8 @@ export default function Home() {
                       </p>
                     </div>
                   </Card>
-                </motion.div>
+                </div>
               ))}
-            </div>
-
-            {/* pagination */}
-            <div className="flex justify-center items-center gap-4">
-              <button
-                type="button"
-                onClick={() => setCurrentWork((prev) => Math.max(prev - 1, 0))}
-                className="p-2 rounded-full border border-gray-300 text-gray-500 hover:bg-gray-100 hover:border-gray-400 transition-all duration-200 disabled:opacity-30"
-                aria-label="前の実績"
-                disabled={currentWork === 0}
-              >
-                <ChevronLeft className="w-5 h-5" />
-              </button>
-              <span className="text-sm text-gray-400 tabular-nums">
-                {currentWork + 1} / {totalWorksPages}
-              </span>
-              <button
-                type="button"
-                onClick={() =>
-                  setCurrentWork((prev) =>
-                    Math.min(prev + 1, totalWorksPages - 1),
-                  )
-                }
-                className="p-2 rounded-full border border-gray-300 text-gray-500 hover:bg-gray-100 hover:border-gray-400 transition-all duration-200 disabled:opacity-30"
-                aria-label="次の実績"
-                disabled={currentWork === totalWorksPages - 1}
-              >
-                <ChevronRight className="w-5 h-5" />
-              </button>
             </div>
           </div>
         </div>
@@ -931,14 +880,14 @@ export default function Home() {
 
                   <div className="space-y-6">
                     <p className="text-gray-700 leading-[1.9] text-base">
-                      「人の役に立ちたい」という原点から福祉系大学に進学し、社会福祉士を取得。また、学生時代に独学でプログラミングを始め、「技術の力ならもっと多くの人の役に立てる」と確信し、ITの世界へ。在学中から複数のスタートアップでエンジニアインターンを経験。趣味では、プログラミング技術をビジネスに活かすアイデアや実装力を競う大会（ハッカソン・アイデアソン）にも積極的に参加し、複数の受賞歴があります。（
+                      「人の役に立ちたい」という原点から福祉系大学に進学し、社会福祉士を取得。また、学生時代に独学でプログラミングを始め、「技術の力ならもっと多くの人の役に立てる」と確信し、ITの世界へ。在学中から複数のスタートアップでエンジニアインターンを経験。趣味では、プログラミング技術をビジネスに活かすアイデアや実装力を競う大会（ハッカソン・アイデアソン）にも積極的に参加してきました。（
                       <a
                         href="https://tornado-official.jp/student/1040/"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-sky-600 underline underline-offset-2 hover:text-sky-800 transition-colors"
                       >
-                        特集記事はこちら
+                        インタビュー記事
                       </a>
                       ）
                     </p>

@@ -45,6 +45,7 @@
   --animate-bounce: bounce 1s infinite;
   --animate-spin: spin 1s linear infinite;
   --animate-ping: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+  --animate-marquee: marquee 50s linear infinite;
 }
 
 :root {
@@ -147,6 +148,10 @@
     animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
   }
 
+  .animate-marquee {
+    animation: marquee 50s linear infinite;
+  }
+
   .animate-fade-in {
     animation: fadeIn 0.5s ease-in-out;
   }
@@ -220,6 +225,15 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
   }
 }
 
