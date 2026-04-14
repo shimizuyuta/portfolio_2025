@@ -56,6 +56,16 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                   </Link>
                 </li>
               ))}
+              {process.env.NEXT_PUBLIC_ADMIN_ENABLED && (
+                <li>
+                  <Link
+                    href="/admin"
+                    className="text-xs font-medium text-gray-400 border border-gray-200 rounded-md px-2.5 py-1.5 hover:border-sky-400 hover:text-sky-600 transition-colors duration-200"
+                  >
+                    記事編集
+                  </Link>
+                </li>
+              )}
             </ul>
 
             {/* モバイル用ハンバーガー */}
