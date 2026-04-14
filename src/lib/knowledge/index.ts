@@ -1,4 +1,5 @@
-import { createClient } from "@/lib/supabase/server";
+import { unstable_cache } from "next/cache";
+import { createServiceClient } from "@/lib/supabase/service";
 
 export type Article = {
   id: string;
@@ -15,55 +16,58 @@ export type Article = {
   tags: { id: string; name: string }[];
 };
 
-export async function getPublishedArticles(): Promise<Article[]> {
-  const supabase = await createClient();
+export const getPublishedArticles = unstable_cache(
+  async (limit?: number): Promise<Article[]> => {
+    const supabase = createServiceClient();
 
-  const { data, error } = await supabase
-    .from("articles")
-    .select("*, article_tags(tags(id, name))")
-    .eq("status", "published")
-    .lte("published_at", new Date().toISOString())
-    .order("published_at", { ascending: false });
+    let query = supabase
+      .from("articles")
+      .select("*, article_tags(tags(id, name))")
+      .eq("status", "published")
+      .lte("published_at", new Date().toISOString())
+      .order("published_at", { ascending: false });
 
-  if (error || !data) return [];
+    if (limit !== undefined) {
+      query = query.limit(limit);
+    }
 
-  return data.map((row) => ({
-    ...row,
-    thumbnail_url: row.thumbnail_url ?? null,
-    tags: row.article_tags
-      .map((at: { tags: { id: string; name: string } | null }) => at.tags)
-      .filter(Boolean) as { id: string; name: string }[],
-  }));
-}
+    const { data, error } = await query;
 
-export async function getAllArticleSlugs(): Promise<string[]> {
-  const supabase = await createClient();
-  const { data } = await supabase
-    .from("articles")
-    .select("slug")
-    .eq("status", "published");
-  return data?.map((r) => r.slug) ?? [];
-}
+    if (error || !data) return [];
 
-export async function getArticleBySlug(
-  slug: string,
-): Promise<Article | undefined> {
-  const supabase = await createClient();
+    return data.map((row) => ({
+      ...row,
+      thumbnail_url: row.thumbnail_url ?? null,
+      tags: row.article_tags
+        .map((at: { tags: { id: string; name: string } | null }) => at.tags)
+        .filter(Boolean) as { id: string; name: string }[],
+    }));
+  },
+  ["published-articles"],
+  { revalidate: 86400, tags: ["published-articles"] },
+);
 
-  const { data, error } = await supabase
-    .from("articles")
-    .select("*, article_tags(tags(id, name))")
-    .eq("slug", slug)
-    .eq("status", "published")
-    .single();
+export const getArticleBySlug = unstable_cache(
+  async (slug: string): Promise<Article | undefined> => {
+    const supabase = createServiceClient();
 
-  if (error || !data) return undefined;
+    const { data, error } = await supabase
+      .from("articles")
+      .select("*, article_tags(tags(id, name))")
+      .eq("slug", slug)
+      .eq("status", "published")
+      .single();
 
-  return {
-    ...data,
-    thumbnail_url: data.thumbnail_url ?? null,
-    tags: data.article_tags
-      .map((at: { tags: { id: string; name: string } | null }) => at.tags)
-      .filter(Boolean) as { id: string; name: string }[],
-  };
-}
+    if (error || !data) return undefined;
+
+    return {
+      ...data,
+      thumbnail_url: data.thumbnail_url ?? null,
+      tags: data.article_tags
+        .map((at: { tags: { id: string; name: string } | null }) => at.tags)
+        .filter(Boolean) as { id: string; name: string }[],
+    };
+  },
+  ["article-by-slug"],
+  { revalidate: 86400, tags: ["published-articles"] },
+);

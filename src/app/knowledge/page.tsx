@@ -2,6 +2,8 @@ import Link from "next/link";
 import { getPublishedArticles } from "@/lib/knowledge";
 import { KnowledgeClient } from "./KnowledgeClient";
 
+export const dynamic = "force-dynamic";
+
 export default async function KnowledgePage() {
   const articles = await getPublishedArticles();
 

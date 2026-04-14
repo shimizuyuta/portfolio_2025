@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { createServiceClient } from "@/lib/supabase/service";
 
 export type ArticleInput = {
@@ -65,6 +65,7 @@ export async function createArticle(input: ArticleInput) {
   const tagIds = await upsertTags(supabase, tagNames);
   await syncArticleTags(supabase, data.id, tagIds);
 
+  revalidateTag("published-articles");
   revalidatePath("/admin");
   revalidatePath("/knowledge");
 }
@@ -87,6 +88,7 @@ export async function updateArticle(id: string, input: ArticleInput) {
   const tagIds = await upsertTags(supabase, tagNames);
   await syncArticleTags(supabase, id, tagIds);
 
+  revalidateTag("published-articles");
   revalidatePath("/admin");
   revalidatePath("/knowledge");
 }
@@ -95,6 +97,7 @@ export async function deleteArticle(id: string) {
   const supabase = createServiceClient();
   const { error } = await supabase.from("articles").delete().eq("id", id);
   if (error) throw new Error(error.message);
+  revalidateTag("published-articles");
   revalidatePath("/admin");
   revalidatePath("/knowledge");
 }
