@@ -17,14 +17,14 @@ export function generateStaticParams() {
   return [];
 }
 
-// Markdownの見出し（## / ###）を抽出してToCを生成
+// Markdownの見出し（#）を抽出してToCを生成
 function extractHeadings(markdown: string) {
   const lines = markdown.split("\n");
   return lines
-    .filter((line) => /^#{2,3}\s/.test(line))
+    .filter((line) => /^#\s/.test(line))
     .map((line) => {
-      const level = line.match(/^(#{2,3})/)?.[1].length ?? 2;
-      const text = line.replace(/^#{2,3}\s+/, "").trim();
+      const level = 1;
+      const text = line.replace(/^#\s+/, "").trim();
       const id = text
         .toLowerCase()
         .replace(/[^\w\u3040-\u30FF\u4E00-\u9FFF\u3400-\u4DBF]/g, "-")
@@ -124,21 +124,18 @@ export default async function ArticlePage({ params }: Props) {
             className="mb-10 rounded-xl border border-gray-200 bg-gray-50 px-6 py-5"
           >
             <p className="text-sm font-bold text-gray-700 mb-3">目次</p>
-            <ol className="space-y-2">
-              {headings.map((h, i) => (
-                <li key={h.id} className={h.level === 3 ? "pl-4" : ""}>
+            <ul className="space-y-2">
+              {headings.map((h) => (
+                <li key={h.id}>
                   <a
                     href={`#${h.id}`}
-                    className="text-sm text-sky-600 hover:text-sky-800 hover:underline transition-colors flex gap-2"
+                    className="text-sm text-sky-600 hover:text-sky-800 hover:underline transition-colors"
                   >
-                    <span className="text-gray-400 shrink-0 tabular-nums">
-                      {i + 1}.
-                    </span>
                     {h.text}
                   </a>
                 </li>
               ))}
-            </ol>
+            </ul>
           </nav>
         )}
 
