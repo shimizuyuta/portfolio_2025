@@ -2,7 +2,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 import rehypeHighlight from "rehype-highlight";
+import rehypeRaw from "rehype-raw";
 import rehypeSlug from "rehype-slug";
+import remarkFootnotes from "remark-footnotes";
 import remarkGfm from "remark-gfm";
 import { Badge } from "@/components/ui/badge";
 import { getArticleBySlug } from "@/lib/knowledge";
@@ -11,19 +13,20 @@ type Props = {
   params: Promise<{ slug: string }>;
 };
 
-// ビルド時の Supabase 接続を回避しつつ、cookies() が使えるよう SSR を強制する。
-// generateStaticParams だけだと on-demand ISR（静的コンテキスト）になり
-// cookies() が例外になるため、force-dynamic で明示的に SSR に固定する。
-export const dynamic = "force-dynamic";
+// generateStaticParams でのビルド時 Supabase 接続を回避するため常に空配列を返す。
+// ページはリクエスト時にオンデマンドで SSR される。
+export function generateStaticParams() {
+  return [];
+}
 
-// Markdownの見出し（#）を抽出してToCを生成
+// Markdownの見出し（## / ###）を抽出してToCを生成
 function extractHeadings(markdown: string) {
   const lines = markdown.split("\n");
   return lines
-    .filter((line) => /^#\s/.test(line))
+    .filter((line) => /^#{2,3}\s/.test(line))
     .map((line) => {
-      const level = 1;
-      const text = line.replace(/^#\s+/, "").trim();
+      const level = line.match(/^(#{2,3})/)?.[1].length ?? 2;
+      const text = line.replace(/^#{2,3}\s+/, "").trim();
       const id = text
         .toLowerCase()
         .replace(/[^\w\u3040-\u30FF\u4E00-\u9FFF\u3400-\u4DBF]/g, "-")
@@ -123,26 +126,29 @@ export default async function ArticlePage({ params }: Props) {
             className="mb-10 rounded-xl border border-gray-200 bg-gray-50 px-6 py-5"
           >
             <p className="text-sm font-bold text-gray-700 mb-3">目次</p>
-            <ul className="space-y-2">
-              {headings.map((h) => (
-                <li key={h.id}>
+            <ol className="space-y-2">
+              {headings.map((h, i) => (
+                <li key={h.id} className={h.level === 3 ? "pl-4" : ""}>
                   <a
                     href={`#${h.id}`}
-                    className="text-sm text-sky-600 hover:text-sky-800 hover:underline transition-colors"
+                    className="text-sm text-sky-600 hover:text-sky-800 hover:underline transition-colors flex gap-2"
                   >
+                    <span className="text-gray-400 shrink-0 tabular-nums">
+                      {i + 1}.
+                    </span>
                     {h.text}
                   </a>
                 </li>
               ))}
-            </ul>
+            </ol>
           </nav>
         )}
 
         {/* 記事本文 */}
         <div className="prose prose-neutral prose-headings:font-bold prose-headings:text-gray-900 prose-a:text-sky-600 prose-a:no-underline hover:prose-a:underline prose-code:text-sky-700 prose-code:bg-sky-50 prose-code:px-1 prose-code:rounded max-w-none">
           <ReactMarkdown
-            remarkPlugins={[remarkGfm]}
-            rehypePlugins={[rehypeHighlight, rehypeSlug]}
+            remarkPlugins={[remarkGfm, remarkFootnotes as never]}
+            rehypePlugins={[rehypeSlug, rehypeHighlight, rehypeRaw]}
           >
             {article.content}
           </ReactMarkdown>
