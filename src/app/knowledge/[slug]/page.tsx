@@ -137,21 +137,17 @@ export default async function ArticlePage({ params }: Props) {
             className="mb-10 rounded-xl border border-gray-200 bg-gray-50 px-6 py-5"
           >
             <p className="text-sm font-bold text-gray-700 mb-3">目次</p>
-            <ol className="space-y-2">
-              {headings.map((h, i) => (
-                <li key={h.id} className={h.level === 3 ? "pl-4" : ""}>
-                  <a
-                    href={`#${h.id}`}
-                    className="text-sm text-sky-600 hover:text-sky-800 hover:underline transition-colors flex gap-2"
-                  >
-                    <span className="text-gray-400 shrink-0 tabular-nums">
-                      {i + 1}.
-                    </span>
-                    {h.text}
-                  </a>
-                </li>
+            <div className="space-y-2">
+              {headings.map((h) => (
+                <a
+                  key={h.id}
+                  href={`#${h.id}`}
+                  className={`block text-sm text-sky-600 hover:text-sky-800 hover:underline transition-colors${h.level === 3 ? " pl-4" : ""}`}
+                >
+                  {h.text}
+                </a>
               ))}
-            </ol>
+            </div>
           </nav>
         )}
 
