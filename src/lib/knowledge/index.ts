@@ -38,7 +38,7 @@ export const getPublishedArticles = unstable_cache(
     }));
   },
   ["published-articles"],
-  { revalidate: 86400 },
+  { revalidate: 86400, tags: ["published-articles"] },
 );
 
 export async function getAllArticleSlugs(): Promise<string[]> {
@@ -72,5 +72,5 @@ export const getArticleBySlug = unstable_cache(
     };
   },
   ["article-by-slug"],
-  { revalidate: 86400 },
+  { revalidate: 86400, tags: ["published-articles"] },
 );
