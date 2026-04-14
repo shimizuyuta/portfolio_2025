@@ -351,6 +351,7 @@ export default function Home() {
           <div className="space-y-6 text-left">
             <p className="text-gray-700 leading-[1.9] text-base md:text-lg">
               大学を卒業後、新規事業支援のコンサル会社にてエンジニアとして、クラウドファンディングシステムや行政向けサービス、新規SaaSの立ち上げなど多様なプロジェクトを経験。
+              <br></br>
               現在はフリーランスとして、プライム上場企業や大手メディア企業のシステム開発に携わる傍ら、地元の千葉を中心に中小企業向けにAI活用・システム開発・HP制作／保守運用をワンストップで提供しています。
             </p>
             <div className="relative">
@@ -537,7 +538,6 @@ export default function Home() {
               サービス
             </h2>
           </div>
-
           <motion.div
             className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-14"
             variants={staggerContainer}
@@ -597,15 +597,15 @@ export default function Home() {
               </motion.div>
             ))}
           </motion.div>
-
-          <div className="text-center">
+          一旦見せない
+          {/* <div className="text-center">
             <Button asChild className={`${btnPrimary} text-base`}>
               <Link href="/service" className="flex items-center gap-2">
                 詳しく見る
                 <ArrowRight className="w-5 h-5" aria-hidden="true" />
               </Link>
             </Button>
-          </div>
+          </div> */}
         </div>
       </motion.section>
 
