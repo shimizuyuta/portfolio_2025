@@ -55,3 +55,17 @@ export async function getArticleBySlug(
       .filter(Boolean) as { id: string; name: string }[],
   };
 }
+
+export async function getAllArticleSlugs(): Promise<string[]> {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase
+    .from("articles")
+    .select("slug")
+    .eq("status", "published")
+    .lte("published_at", new Date().toISOString());
+
+  if (error || !data) return [];
+
+  return data.map((row) => row.slug);
+}
