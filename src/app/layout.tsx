@@ -38,40 +38,55 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body className="min-h-screen flex flex-col bg-background text-foreground font-[family-name:var(--font-noto-sans-jp)]">
         {/* ナビゲーション */}
         <header className="w-full border-b bg-white/80 backdrop-blur-md sticky top-0 z-50">
-          <nav className="max-w-7xl mx-auto flex justify-between items-center py-4 px-4 md:py-6 md:px-6">
-            {/* ロゴ */}
-            <span className="font-[family-name:var(--font-zen-kaku)] font-bold text-lg md:text-xl tracking-widest bg-gradient-to-r from-sky-600 to-indigo-500 bg-clip-text text-transparent">
+          <nav className="max-w-7xl mx-auto flex items-center py-4 px-4 md:py-6 md:px-6">
+            {/* ロゴ（クリックでトップへ） */}
+            <Link
+              href="/"
+              className="font-[family-name:var(--font-zen-kaku)] font-bold text-base md:text-xl tracking-wide md:tracking-widest whitespace-nowrap shrink-0 bg-gradient-to-r from-sky-600 to-indigo-500 bg-clip-text text-transparent"
+            >
               YSデベロップメント
-            </span>
+            </Link>
 
             {/* PC用ナビ */}
-            <ul className="hidden md:flex gap-6 lg:gap-8 text-sm font-medium">
-              {NAV_LINKS.map(({ label, href }) => (
-                <li key={href}>
-                  <Link
-                    href={href}
-                    className="hover:text-sky-600 transition-colors duration-200 py-2 px-1"
-                  >
-                    {label}
-                  </Link>
-                </li>
-              ))}
-              {process.env.NEXT_PUBLIC_ADMIN_ENABLED && (
-                <li>
-                  <Link
-                    href="/admin"
-                    className="text-xs font-medium text-gray-400 border border-gray-200 rounded-md px-2.5 py-1.5 hover:border-sky-400 hover:text-sky-600 transition-colors duration-200"
-                  >
-                    記事編集
-                  </Link>
-                </li>
-              )}
+            <ul className="hidden md:flex items-center gap-1 text-sm font-medium ml-auto">
+              <li>
+                <Link
+                  href="/#services"
+                  className="hover:text-sky-600 transition-colors duration-200 py-2 px-3"
+                >
+                  サービス
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/#works"
+                  className="hover:text-sky-600 transition-colors duration-200 py-2 px-3"
+                >
+                  実績
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/knowledge"
+                  className="hover:text-sky-600 transition-colors duration-200 py-2 px-3"
+                >
+                  ブログ
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/contact"
+                  className="bg-sky-600 text-white rounded-lg hover:bg-sky-700 transition-colors duration-200 py-2 px-4"
+                >
+                  お問い合わせ
+                </Link>
+              </li>
             </ul>
 
             {/* モバイル用ハンバーガー */}
             <button
               type="button"
-              className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200"
+              className="md:hidden shrink-0 ml-auto p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200"
               onClick={() => setIsOpen(!isOpen)}
               aria-label="メニュー切替"
             >
