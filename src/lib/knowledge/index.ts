@@ -1,5 +1,5 @@
 import { unstable_cache } from "next/cache";
-import { createClient } from "@/lib/supabase/server";
+import { createServiceClient } from "@/lib/supabase/service";
 
 export type Article = {
   id: string;
@@ -18,7 +18,7 @@ export type Article = {
 
 export const getPublishedArticles = unstable_cache(
   async (limit?: number): Promise<Article[]> => {
-    const supabase = await createClient();
+    const supabase = createServiceClient();
 
     let query = supabase
       .from("articles")
@@ -49,7 +49,7 @@ export const getPublishedArticles = unstable_cache(
 
 export const getArticleBySlug = unstable_cache(
   async (slug: string): Promise<Article | undefined> => {
-    const supabase = await createClient();
+    const supabase = createServiceClient();
 
     const { data, error } = await supabase
       .from("articles")
