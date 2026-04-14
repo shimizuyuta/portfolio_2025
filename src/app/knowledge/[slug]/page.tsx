@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
@@ -86,12 +87,22 @@ export default async function ArticlePage({ params }: Props) {
 
       <main className="max-w-4xl mx-auto px-4 md:px-6 py-10 md:py-16">
         {/* ヒーロー画像 */}
-        <div className="w-full aspect-video rounded-2xl overflow-hidden bg-gray-100 mb-8 shadow-sm">
-          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-sky-50 to-indigo-100">
-            <span className="text-4xl font-bold text-sky-300/60 tracking-wider">
-              {article.category}
-            </span>
-          </div>
+        <div className="relative w-full aspect-video rounded-2xl overflow-hidden bg-gray-100 mb-8 shadow-sm">
+          {article.thumbnail_url ? (
+            <Image
+              src={article.thumbnail_url}
+              alt={article.title}
+              fill
+              className="object-cover"
+              priority
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-sky-50 to-indigo-100">
+              <span className="text-4xl font-bold text-sky-300/60 tracking-wider">
+                {article.category}
+              </span>
+            </div>
+          )}
         </div>
 
         {/* メタ情報 */}

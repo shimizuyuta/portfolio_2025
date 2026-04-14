@@ -12,6 +12,7 @@ export type ArticleInput = {
   status: "draft" | "published";
   published_at: string | null;
   tagNames: string[];
+  thumbnail_url: string | null;
 };
 
 // タグを upsert して ID を返す
@@ -96,6 +97,22 @@ export async function getAdminArticles() {
     .order("updated_at", { ascending: false });
   if (error) throw new Error(error.message);
   return data ?? [];
+}
+
+export async function uploadThumbnail(formData: FormData): Promise<string> {
+  const supabase = createServiceClient();
+  const file = formData.get("file") as File;
+  const bytes = await file.arrayBuffer();
+  const ext = file.name.split(".").pop() ?? "jpg";
+  const path = `${Date.now()}.${ext}`;
+
+  const { error } = await supabase.storage
+    .from("blog-images")
+    .upload(path, bytes, { contentType: file.type, upsert: false });
+  if (error) throw new Error(error.message);
+
+  const { data } = supabase.storage.from("blog-images").getPublicUrl(path);
+  return data.publicUrl;
 }
 
 export async function getAdminArticleById(id: string) {

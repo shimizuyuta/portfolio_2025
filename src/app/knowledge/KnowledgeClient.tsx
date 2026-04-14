@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import type { Article } from "@/lib/knowledge";
@@ -129,12 +130,23 @@ export function KnowledgeClient({ articles }: { articles: Article[] }) {
                 className="group block rounded-xl overflow-hidden border border-gray-200 bg-white hover:shadow-lg transition-shadow duration-200"
               >
                 {/* サムネイル */}
-                <div
-                  className={`h-36 bg-gradient-to-br ${getCategoryGradient(article.category)} flex items-center justify-center`}
-                >
-                  <span className="text-white/30 text-5xl font-black tracking-tighter select-none">
-                    {article.category.charAt(0)}
-                  </span>
+                <div className="relative h-36 overflow-hidden">
+                  {article.thumbnail_url ? (
+                    <Image
+                      src={article.thumbnail_url}
+                      alt={article.title}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                  ) : (
+                    <div
+                      className={`h-full bg-gradient-to-br ${getCategoryGradient(article.category)} flex items-center justify-center`}
+                    >
+                      <span className="text-white/30 text-5xl font-black tracking-tighter select-none">
+                        {article.category.charAt(0)}
+                      </span>
+                    </div>
+                  )}
                 </div>
 
                 {/* 本文 */}

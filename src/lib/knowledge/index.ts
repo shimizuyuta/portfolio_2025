@@ -11,6 +11,7 @@ export type Article = {
   published_at: string | null;
   created_at: string;
   updated_at: string;
+  thumbnail_url: string | null;
   tags: { id: string; name: string }[];
 };
 
@@ -28,6 +29,7 @@ export async function getPublishedArticles(): Promise<Article[]> {
 
   return data.map((row) => ({
     ...row,
+    thumbnail_url: row.thumbnail_url ?? null,
     tags: row.article_tags
       .map((at: { tags: { id: string; name: string } | null }) => at.tags)
       .filter(Boolean) as { id: string; name: string }[],
@@ -59,6 +61,7 @@ export async function getArticleBySlug(
 
   return {
     ...data,
+    thumbnail_url: data.thumbnail_url ?? null,
     tags: data.article_tags
       .map((at: { tags: { id: string; name: string } | null }) => at.tags)
       .filter(Boolean) as { id: string; name: string }[],
