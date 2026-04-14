@@ -34,6 +34,15 @@ export async function getPublishedArticles(): Promise<Article[]> {
   }));
 }
 
+export async function getAllArticleSlugs(): Promise<string[]> {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("articles")
+    .select("slug")
+    .eq("status", "published");
+  return data?.map((r) => r.slug) ?? [];
+}
+
 export async function getArticleBySlug(
   slug: string,
 ): Promise<Article | undefined> {

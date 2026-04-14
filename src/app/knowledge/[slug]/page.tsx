@@ -11,6 +11,12 @@ type Props = {
   params: Promise<{ slug: string }>;
 };
 
+// generateStaticParams でのビルド時 Supabase 接続を回避するため常に空配列を返す。
+// ページはリクエスト時にオンデマンドで SSR される。
+export function generateStaticParams() {
+  return [];
+}
+
 // Markdownの見出し（## / ###）を抽出してToCを生成
 function extractHeadings(markdown: string) {
   const lines = markdown.split("\n");
