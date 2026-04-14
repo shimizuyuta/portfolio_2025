@@ -57,6 +57,69 @@ function Field({
   );
 }
 
+// ─── ImageUploader ────────────────────────────────────────────────────────────
+function ImageUploader() {
+  const [url, setUrl] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
+  const [isPending, startTransition] = useTransition();
+
+  function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    startTransition(async () => {
+      const fd = new FormData();
+      fd.append("file", file);
+      const uploaded = await uploadThumbnail(fd);
+      setUrl(uploaded);
+      setCopied(false);
+    });
+    e.target.value = "";
+  }
+
+  function handleCopy() {
+    if (!url) return;
+    navigator.clipboard.writeText(`![](${url})`);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  }
+
+  return (
+    <div className="rounded-lg border border-dashed border-gray-300 bg-gray-50 px-4 py-3 space-y-2">
+      <p className="text-xs font-medium text-gray-500">
+        本文用 画像アップロード
+      </p>
+      <div className="flex items-center gap-3 flex-wrap">
+        <label className="cursor-pointer">
+          <span className="text-xs px-3 py-1.5 rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 transition-colors">
+            {isPending ? "アップロード中…" : "ファイルを選択"}
+          </span>
+          <input
+            type="file"
+            accept="image/jpeg,image/png,image/webp,image/gif"
+            className="hidden"
+            onChange={handleFile}
+            disabled={isPending}
+          />
+        </label>
+        {url && (
+          <div className="flex items-center gap-2 flex-1 min-w-0">
+            <code className="text-xs text-gray-500 truncate flex-1 bg-white border border-gray-200 rounded px-2 py-1">
+              {`![](${url})`}
+            </code>
+            <button
+              type="button"
+              onClick={handleCopy}
+              className="shrink-0 text-xs px-3 py-1.5 rounded-lg bg-sky-500 text-white hover:bg-sky-600 transition-colors"
+            >
+              {copied ? "コピー済み ✓" : "コピー"}
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 // ─── ArticleForm（コンポーネント外に定義） ────────────────────────────────────
 function ArticleForm({
   form,
@@ -180,6 +243,8 @@ function ArticleForm({
           onChange={(e) => setForm({ ...form, content: e.target.value })}
         />
       </Field>
+
+      <ImageUploader />
 
       <Field label="ステータス">
         <select
