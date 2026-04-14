@@ -27,6 +27,7 @@ No test framework is configured.
 @.claude/rules/docs.md
 @.claude/rules/env.md
 @.claude/rules/supabase.md
+@.claude/rules/vercel.md
 @.claude/rules/worktree.md
 
 ## Key Conventions
