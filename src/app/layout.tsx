@@ -6,11 +6,12 @@ import { Noto_Sans_JP, Zen_Kaku_Gothic_New } from "next/font/google";
 import Link from "next/link";
 import { type ReactNode, useState } from "react";
 
-const NAV_LINKS = [
+// SP ドロワー（ホームを先頭に追加）
+const DRAWER_LINKS = [
+  { label: "ホーム", href: "/" },
   { label: "サービス", href: "/#services" },
   { label: "実績", href: "/#works" },
   { label: "ブログ", href: "/knowledge" },
-  { label: "お問い合わせ", href: "/contact" },
 ];
 
 const notoSansJP = Noto_Sans_JP({
@@ -93,42 +94,67 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               </li>
             </ul>
 
-            {/* モバイル用ハンバーガー */}
+            {/* SP用ハンバーガー */}
             <button
               type="button"
-              className="md:hidden shrink-0 ml-auto p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200"
-              onClick={() => setIsOpen(!isOpen)}
-              aria-label="メニュー切替"
+              onClick={() => setIsOpen(true)}
+              aria-label="メニューを開く"
+              className="md:hidden shrink-0 ml-auto p-1.5 text-gray-700 hover:text-gray-900 transition-colors"
             >
-              {isOpen ? <X size={24} /> : <Menu size={24} />}
+              <Menu size={24} />
             </button>
           </nav>
-
-          {/* モバイルメニュー */}
-          <div
-            className={`md:hidden bg-white border-t transition-all duration-300 ease-in-out ${
-              isOpen
-                ? "max-h-64 opacity-100"
-                : "max-h-0 opacity-0 overflow-hidden"
-            }`}
-          >
-            <div className="max-w-7xl mx-auto">
-              <ul className="flex flex-col px-4 py-2 gap-1 text-sm font-medium">
-                {NAV_LINKS.map(({ label, href }) => (
-                  <li key={href}>
-                    <Link
-                      href={href}
-                      onClick={() => setIsOpen(false)}
-                      className="block py-3 px-3 hover:bg-sky-50 hover:text-sky-600 rounded-lg transition-colors duration-200"
-                    >
-                      {label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
         </header>
+
+        {/* SP: 全画面ドロワー */}
+        <div
+          className={`fixed inset-0 z-[60] bg-white flex flex-col transition-opacity duration-300 md:hidden ${
+            isOpen
+              ? "opacity-100 pointer-events-auto"
+              : "opacity-0 pointer-events-none"
+          }`}
+          aria-hidden={!isOpen}
+        >
+          {/* 閉じるボタン */}
+          <div className="flex justify-end px-6 pt-6 pb-2">
+            <button
+              type="button"
+              onClick={() => setIsOpen(false)}
+              aria-label="メニューを閉じる"
+              className="p-1.5 text-gray-700 hover:text-gray-900 transition-colors"
+            >
+              <X size={28} />
+            </button>
+          </div>
+
+          {/* ナビリンク */}
+          <nav className="flex-1 px-8 pt-8">
+            <ul>
+              {DRAWER_LINKS.map(({ label, href }) => (
+                <li key={href} className="border-b border-gray-100">
+                  <Link
+                    href={href}
+                    onClick={() => setIsOpen(false)}
+                    className="block py-5 text-base font-medium text-gray-800 hover:text-sky-600 transition-colors duration-200"
+                  >
+                    {label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          {/* 下部 CTA */}
+          <div className="px-8 pb-12 space-y-3">
+            <Link
+              href="/contact"
+              onClick={() => setIsOpen(false)}
+              className="flex items-center justify-center gap-2 w-full py-4 rounded-xl bg-gray-900 text-white text-sm font-semibold hover:bg-gray-700 transition-colors duration-200"
+            >
+              お問い合わせ
+            </Link>
+          </div>
+        </div>
 
         <main className="w-full flex-1">{children}</main>
 
