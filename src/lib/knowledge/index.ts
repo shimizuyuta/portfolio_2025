@@ -17,15 +17,21 @@ export type Article = {
 };
 
 export const getPublishedArticles = unstable_cache(
-  async (): Promise<Article[]> => {
+  async (limit?: number): Promise<Article[]> => {
     const supabase = await createClient();
 
-    const { data, error } = await supabase
+    let query = supabase
       .from("articles")
       .select("*, article_tags(tags(id, name))")
       .eq("status", "published")
       .lte("published_at", new Date().toISOString())
       .order("published_at", { ascending: false });
+
+    if (limit !== undefined) {
+      query = query.limit(limit);
+    }
+
+    const { data, error } = await query;
 
     if (error || !data) return [];
 
@@ -40,15 +46,6 @@ export const getPublishedArticles = unstable_cache(
   ["published-articles"],
   { revalidate: 86400, tags: ["published-articles"] },
 );
-
-export async function getAllArticleSlugs(): Promise<string[]> {
-  const supabase = await createClient();
-  const { data } = await supabase
-    .from("articles")
-    .select("slug")
-    .eq("status", "published");
-  return data?.map((r) => r.slug) ?? [];
-}
 
 export const getArticleBySlug = unstable_cache(
   async (slug: string): Promise<Article | undefined> => {
