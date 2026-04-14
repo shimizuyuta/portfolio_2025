@@ -633,8 +633,17 @@ export default function Home() {
           </div>
 
           {/* Marquee */}
-          <div className="relative overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
-            <div className="flex gap-6 w-max animate-marquee hover:[animation-play-state:paused]">
+          <div
+            className="relative overflow-hidden"
+            style={{
+              maskImage:
+                "linear-gradient(to right, transparent, black 10%, black 90%, transparent)",
+            }}
+          >
+            <div
+              className="flex gap-6 w-max"
+              style={{ animation: "marquee 50s linear infinite" }}
+            >
               {[
                 ...works.map((w) => ({ ...w, _key: `a-${w.title}` })),
                 ...works.map((w) => ({ ...w, _key: `b-${w.title}` })),
