@@ -6,11 +6,19 @@ import { Noto_Sans_JP, Zen_Kaku_Gothic_New } from "next/font/google";
 import Link from "next/link";
 import { type ReactNode, useState } from "react";
 
+// PC 中央ナビ（お問い合わせは右 CTA に分離）
 const NAV_LINKS = [
   { label: "サービス", href: "/#services" },
   { label: "実績", href: "/#works" },
   { label: "ブログ", href: "/knowledge" },
-  { label: "お問い合わせ", href: "/contact" },
+];
+
+// SP ドロワー（ホームを先頭に追加）
+const DRAWER_LINKS = [
+  { label: "ホーム", href: "/" },
+  { label: "サービス", href: "/#services" },
+  { label: "実績", href: "/#works" },
+  { label: "ブログ", href: "/knowledge" },
 ];
 
 const notoSansJP = Noto_Sans_JP({
@@ -36,89 +44,110 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       className={`${notoSansJP.variable} ${zenKakuGothic.variable}`}
     >
       <body className="min-h-screen flex flex-col bg-background text-foreground font-[family-name:var(--font-noto-sans-jp)]">
-        {/* ナビゲーション */}
-        <header className="w-full border-b bg-white/80 backdrop-blur-md sticky top-0 z-50">
-          <nav className="max-w-7xl mx-auto flex items-center py-4 px-4 md:py-6 md:px-6">
-            {/* ロゴ（クリックでトップへ） */}
+        {/* ── ヘッダー ──────────────────────────────────────── */}
+        <header className="w-full border-b border-gray-200 bg-white/90 backdrop-blur-md sticky top-0 z-50">
+          <div className="max-w-7xl mx-auto grid grid-cols-3 items-center py-4 px-6 md:py-5 md:px-8">
+            {/* 左: ロゴ */}
             <Link
               href="/"
-              className="font-[family-name:var(--font-zen-kaku)] font-bold text-base md:text-xl tracking-wide md:tracking-widest whitespace-nowrap shrink-0 bg-gradient-to-r from-sky-600 to-indigo-500 bg-clip-text text-transparent"
+              className="font-[family-name:var(--font-zen-kaku)] font-bold text-lg md:text-xl tracking-widest bg-gradient-to-r from-sky-600 to-indigo-500 bg-clip-text text-transparent"
             >
               YSデベロップメント
             </Link>
 
-            {/* PC用ナビ */}
-            <ul className="hidden md:flex items-center gap-1 text-sm font-medium ml-auto">
-              <li>
-                <Link
-                  href="/#services"
-                  className="hover:text-sky-600 transition-colors duration-200 py-2 px-3"
-                >
-                  サービス
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/#works"
-                  className="hover:text-sky-600 transition-colors duration-200 py-2 px-3"
-                >
-                  実績
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/knowledge"
-                  className="hover:text-sky-600 transition-colors duration-200 py-2 px-3"
-                >
-                  ブログ
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/contact"
-                  className="bg-sky-600 text-white rounded-lg hover:bg-sky-700 transition-colors duration-200 py-2 px-4"
-                >
-                  お問い合わせ
-                </Link>
-              </li>
+            {/* 中央: PC ナビ */}
+            <ul className="hidden md:flex items-center justify-center gap-8 lg:gap-10 text-sm font-medium">
+              {NAV_LINKS.map(({ label, href }) => (
+                <li key={href}>
+                  <Link
+                    href={href}
+                    className="text-gray-700 hover:text-sky-600 transition-colors duration-200 py-1"
+                  >
+                    {label}
+                  </Link>
+                </li>
+              ))}
+              {process.env.NEXT_PUBLIC_ADMIN_ENABLED && (
+                <li>
+                  <Link
+                    href="/admin"
+                    className="text-xs font-medium text-gray-400 border border-gray-200 rounded-md px-2.5 py-1.5 hover:border-sky-400 hover:text-sky-600 transition-colors duration-200"
+                  >
+                    記事編集
+                  </Link>
+                </li>
+              )}
             </ul>
 
-            {/* モバイル用ハンバーガー */}
-            <button
-              type="button"
-              className="md:hidden shrink-0 ml-auto p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200"
-              onClick={() => setIsOpen(!isOpen)}
-              aria-label="メニュー切替"
-            >
-              {isOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
-          </nav>
-
-          {/* モバイルメニュー */}
-          <div
-            className={`md:hidden bg-white border-t transition-all duration-300 ease-in-out ${
-              isOpen
-                ? "max-h-64 opacity-100"
-                : "max-h-0 opacity-0 overflow-hidden"
-            }`}
-          >
-            <div className="max-w-7xl mx-auto">
-              <ul className="flex flex-col px-4 py-2 gap-1 text-sm font-medium">
-                {NAV_LINKS.map(({ label, href }) => (
-                  <li key={href}>
-                    <Link
-                      href={href}
-                      onClick={() => setIsOpen(false)}
-                      className="block py-3 px-3 hover:bg-sky-50 hover:text-sky-600 rounded-lg transition-colors duration-200"
-                    >
-                      {label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+            {/* 右: PC CTA / SP ハンバーガー */}
+            <div className="flex items-center justify-end">
+              <Link
+                href="/contact"
+                className="hidden md:inline-flex items-center justify-center px-5 py-2 rounded-lg bg-gray-900 text-white text-sm font-semibold hover:bg-gray-700 transition-colors duration-200"
+              >
+                お問い合わせ
+              </Link>
+              <button
+                type="button"
+                onClick={() => setIsOpen(true)}
+                aria-label="メニューを開く"
+                className="md:hidden p-1.5 text-gray-700 hover:text-gray-900 transition-colors"
+              >
+                <Menu size={24} />
+              </button>
             </div>
           </div>
         </header>
+
+        {/* SP: 全画面ドロワー */}
+        <div
+          className={`fixed inset-0 z-[60] bg-white flex flex-col transition-opacity duration-300 md:hidden ${
+            isOpen
+              ? "opacity-100 pointer-events-auto"
+              : "opacity-0 pointer-events-none"
+          }`}
+          aria-hidden={!isOpen}
+        >
+          {/* 閉じるボタン */}
+          <div className="flex justify-end px-6 pt-6 pb-2">
+            <button
+              type="button"
+              onClick={() => setIsOpen(false)}
+              aria-label="メニューを閉じる"
+              className="p-1.5 text-gray-700 hover:text-gray-900 transition-colors"
+            >
+              <X size={28} />
+            </button>
+          </div>
+
+          {/* ナビリンク */}
+          <nav className="flex-1 px-8 pt-8">
+            <ul>
+              {DRAWER_LINKS.map(({ label, href }) => (
+                <li key={href} className="border-b border-gray-100">
+                  <Link
+                    href={href}
+                    onClick={() => setIsOpen(false)}
+                    className="block py-5 text-base font-medium text-gray-800 hover:text-sky-600 transition-colors duration-200"
+                  >
+                    {label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          {/* 下部 CTA */}
+          <div className="px-8 pb-12 space-y-3">
+            <Link
+              href="/contact"
+              onClick={() => setIsOpen(false)}
+              className="flex items-center justify-center gap-2 w-full py-4 rounded-xl bg-gray-900 text-white text-sm font-semibold hover:bg-gray-700 transition-colors duration-200"
+            >
+              お問い合わせ
+            </Link>
+          </div>
+        </div>
 
         <main className="w-full flex-1">{children}</main>
 
