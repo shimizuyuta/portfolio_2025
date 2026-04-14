@@ -181,39 +181,21 @@ function ArticleForm({
         />
       </Field>
 
-      <div className="flex gap-4">
-        <Field label="ステータス">
-          <select
-            className={inputCls}
-            value={form.status}
-            onChange={(e) =>
-              setForm({
-                ...form,
-                status: e.target.value as "draft" | "published",
-              })
-            }
-          >
-            <option value="draft">下書き</option>
-            <option value="published">公開</option>
-          </select>
-        </Field>
-
-        <Field label="公開日時">
-          <input
-            type="datetime-local"
-            className={inputCls}
-            value={form.published_at?.slice(0, 16) ?? ""}
-            onChange={(e) =>
-              setForm({
-                ...form,
-                published_at: e.target.value
-                  ? new Date(e.target.value).toISOString()
-                  : null,
-              })
-            }
-          />
-        </Field>
-      </div>
+      <Field label="ステータス">
+        <select
+          className={inputCls}
+          value={form.status}
+          onChange={(e) =>
+            setForm({
+              ...form,
+              status: e.target.value as "draft" | "published",
+            })
+          }
+        >
+          <option value="draft">下書き</option>
+          <option value="published">公開</option>
+        </select>
+      </Field>
 
       {error && <p className="text-sm text-red-600">{error}</p>}
 
