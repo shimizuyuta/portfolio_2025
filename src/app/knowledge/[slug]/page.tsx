@@ -160,6 +160,25 @@ export default async function ArticlePage({ params }: Props) {
           <ReactMarkdown
             remarkPlugins={[remarkGfm, remarkFootnotes as never]}
             rehypePlugins={[rehypeSlug, rehypeHighlight, rehypeRaw]}
+            components={{
+              img({ src, alt }) {
+                if (!src || typeof src !== "string") return null;
+                return (
+                  <span
+                    className="block relative w-full"
+                    style={{ aspectRatio: "16/9" }}
+                  >
+                    <Image
+                      src={src}
+                      alt={alt ?? ""}
+                      fill
+                      className="object-contain rounded-lg"
+                      loading="lazy"
+                    />
+                  </span>
+                );
+              },
+            }}
           >
             {article.content}
           </ReactMarkdown>
