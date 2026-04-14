@@ -58,6 +58,8 @@ function Field({
 function ArticleForm({
   form,
   setForm,
+  tagsInput,
+  setTagsInput,
   onSubmit,
   onCancel,
   submitLabel,
@@ -66,6 +68,8 @@ function ArticleForm({
 }: {
   form: ArticleInput;
   setForm: (f: ArticleInput) => void;
+  tagsInput: string;
+  setTagsInput: (v: string) => void;
   onSubmit: () => void;
   onCancel: () => void;
   submitLabel: string;
@@ -102,16 +106,8 @@ function ArticleForm({
         <input
           className={inputCls}
           placeholder="例: SEO, マーケティング, Web制作"
-          value={form.tagNames.join(", ")}
-          onChange={(e) =>
-            setForm({
-              ...form,
-              tagNames: e.target.value
-                .split(",")
-                .map((t) => t.trim())
-                .filter(Boolean),
-            })
-          }
+          value={tagsInput}
+          onChange={(e) => setTagsInput(e.target.value)}
         />
       </Field>
 
@@ -198,6 +194,7 @@ export default function AdminClient({
   const [view, setView] = useState<View>("list");
   const [articles, setArticles] = useState(initialArticles);
   const [form, setForm] = useState<ArticleInput>(EMPTY_FORM);
+  const [tagsInput, setTagsInput] = useState("");
   const [editingId, setEditingId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
@@ -207,8 +204,16 @@ export default function AdminClient({
     if (res.ok) setArticles(await res.json());
   }
 
+  function parseTagsInput(): string[] {
+    return tagsInput
+      .split(",")
+      .map((t) => t.trim())
+      .filter(Boolean);
+  }
+
   function handleCreate() {
     setForm(EMPTY_FORM);
+    setTagsInput("");
     setEditingId(null);
     setError(null);
     setView("create");
@@ -217,7 +222,7 @@ export default function AdminClient({
   function handleSubmitCreate() {
     startTransition(async () => {
       try {
-        await createArticle(form);
+        await createArticle({ ...form, tagNames: parseTagsInput() });
         await refreshList();
         setView("list");
       } catch (e) {
@@ -230,6 +235,7 @@ export default function AdminClient({
     setError(null);
     const article = await getAdminArticleById(id);
     if (!article) return;
+    const tags = article.tagNames ?? [];
     setForm({
       title: article.title,
       slug: article.slug,
@@ -238,8 +244,9 @@ export default function AdminClient({
       category: article.category ?? "",
       status: article.status as "draft" | "published",
       published_at: article.published_at ?? null,
-      tagNames: article.tagNames ?? [],
+      tagNames: tags,
     });
+    setTagsInput(tags.join(", "));
     setEditingId(id);
     setView("edit");
   }
@@ -248,7 +255,7 @@ export default function AdminClient({
     if (!editingId) return;
     startTransition(async () => {
       try {
-        await updateArticle(editingId, form);
+        await updateArticle(editingId, { ...form, tagNames: parseTagsInput() });
         await refreshList();
         setView("list");
       } catch (e) {
@@ -357,6 +364,8 @@ export default function AdminClient({
             <ArticleForm
               form={form}
               setForm={setForm}
+              tagsInput={tagsInput}
+              setTagsInput={setTagsInput}
               onSubmit={handleSubmitCreate}
               onCancel={() => setView("list")}
               submitLabel="作成する"
@@ -373,6 +382,8 @@ export default function AdminClient({
             <ArticleForm
               form={form}
               setForm={setForm}
+              tagsInput={tagsInput}
+              setTagsInput={setTagsInput}
               onSubmit={handleSubmitEdit}
               onCancel={() => setView("list")}
               submitLabel="更新する"
