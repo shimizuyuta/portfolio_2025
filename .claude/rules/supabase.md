@@ -2,8 +2,20 @@
 
 ## プロジェクト情報
 
-プロジェクト設定は `supabase/config.toml` を参照。
-接続情報（URL・キー）は `.env.local` を参照。
+| 項目 | 値 |
+|---|---|
+| Project Ref | `yjpbkeytzoyliozbzmhf` |
+| API URL | `https://yjpbkeytzoyliozbzmhf.supabase.co` |
+| Dashboard | https://supabase.com/dashboard/project/yjpbkeytzoyliozbzmhf |
+
+## 環境変数（`.env.local` に定義済み）
+
+| 変数名 | 用途 |
+|---|---|
+| `NEXT_PUBLIC_SUPABASE_URL` | API URL |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | 公開用匿名キー（読み取り） |
+| `SUPABASE_SERVICE_ROLE_KEY` | サービスロールキー（RLS バイパス） |
+| `SUPABASE_DB_PASSWORD` | DB パスワード（CLI 用） |
 
 ## MCP Server
 
