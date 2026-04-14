@@ -5,18 +5,16 @@ import rehypeHighlight from "rehype-highlight";
 import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
 import { Badge } from "@/components/ui/badge";
-import { getAllArticleSlugs, getArticleBySlug } from "@/lib/knowledge";
+import { getArticleBySlug } from "@/lib/knowledge";
 
 type Props = {
   params: Promise<{ slug: string }>;
 };
 
-export async function generateStaticParams() {
-  if (process.env.VERCEL === "1") {
-    return [];
-  }
-  const slugs = await getAllArticleSlugs();
-  return slugs.map((slug) => ({ slug }));
+// generateStaticParams でのビルド時 Supabase 接続を回避するため常に空配列を返す。
+// ページはリクエスト時にオンデマンドで SSR される。
+export function generateStaticParams() {
+  return [];
 }
 
 // Markdownの見出し（## / ###）を抽出してToCを生成
