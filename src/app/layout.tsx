@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     template: "%s | YSデベロップメント",
   },
   description:
-    "Web制作・AI活用支援のフリーランスエンジニア。Next.js・Supabaseを使った高品質なWebサイト・業務効率化システムを提供します。",
+    "福祉×IT・AIの視点で発信するフリーランスエンジニア。社会福祉士の資格と6年のエンジニア経験を活かし、福祉業界のDX・AI導入支援を行っています。",
   metadataBase: new URL("https://www.ysdevelopment.jp"),
 };
 
