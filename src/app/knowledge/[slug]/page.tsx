@@ -10,6 +10,7 @@ import remarkFootnotes from "remark-footnotes";
 import remarkGfm from "remark-gfm";
 import { Badge } from "@/components/ui/badge";
 import { getArticleBySlug } from "@/lib/knowledge";
+import { ConsultationCta } from "./_components/ConsultationCta";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -225,8 +226,10 @@ export default async function ArticlePage({ params }: Props) {
           </ReactMarkdown>
         </div>
 
+        <ConsultationCta />
+
         {/* 戻るリンク */}
-        <div className="mt-16 pt-8 border-t">
+        <div className="mt-10 pt-8 border-t">
           <Link
             href="/knowledge"
             className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-sky-600 transition-colors"
