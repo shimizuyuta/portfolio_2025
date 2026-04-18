@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -19,6 +20,50 @@ type Props = {
 // cookies() が例外になるため、force-dynamic で明示的に SSR に固定する。
 // ビルド時の Supabase 接続もスキップされるため generateStaticParams は不要。
 export const dynamic = "force-dynamic";
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const article = await getArticleBySlug(slug);
+
+  if (!article) {
+    return { title: "記事が見つかりません" };
+  }
+
+  const description =
+    article.excerpt || article.content.slice(0, 120).replace(/\n/g, " ");
+  const ogImage = article.thumbnail_url
+    ? [
+        {
+          url: article.thumbnail_url,
+          width: 1200,
+          height: 630,
+          alt: article.title,
+        },
+      ]
+    : undefined;
+
+  return {
+    title: article.title,
+    description,
+    alternates: {
+      canonical: `/knowledge/${slug}`,
+    },
+    openGraph: {
+      title: article.title,
+      description,
+      url: `/knowledge/${slug}`,
+      type: "article",
+      publishedTime: article.published_at ?? undefined,
+      images: ogImage,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: article.title,
+      description,
+      images: ogImage?.map((img) => img.url),
+    },
+  };
+}
 
 // Markdownの見出し（## / ###）を抽出してToCを生成
 function extractHeadings(markdown: string) {

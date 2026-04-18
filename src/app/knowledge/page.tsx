@@ -1,8 +1,25 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { getPublishedArticles } from "@/lib/knowledge";
 import { KnowledgeClient } from "./KnowledgeClient";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "ブログ",
+  description:
+    "福祉×IT・AIをテーマに、現役エンジニア・社会福祉士が発信するブログ。福祉業界のDX・AI活用・業務効率化の実践知見を紹介します。",
+  alternates: {
+    canonical: "/knowledge",
+  },
+  openGraph: {
+    title: "ブログ | YSデベロップメント",
+    description:
+      "福祉×IT・AIをテーマに、現役エンジニア・社会福祉士が発信するブログ。福祉業界のDX・AI活用の実践知見を紹介します。",
+    url: "/knowledge",
+    type: "website",
+  },
+};
 
 export default async function KnowledgePage() {
   const articles = await getPublishedArticles();
