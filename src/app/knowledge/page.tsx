@@ -1,8 +1,25 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { getPublishedArticles } from "@/lib/knowledge";
 import { KnowledgeClient } from "./KnowledgeClient";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "ブログ",
+  description:
+    "Web制作・AI活用・業務効率化に関する技術記事を発信しています。Next.js、Supabase、フリーランスのノウハウなど。",
+  alternates: {
+    canonical: "/knowledge",
+  },
+  openGraph: {
+    title: "ブログ | YSデベロップメント",
+    description:
+      "Web制作・AI活用・業務効率化に関する技術記事を発信しています。",
+    url: "/knowledge",
+    type: "website",
+  },
+};
 
 export default async function KnowledgePage() {
   const articles = await getPublishedArticles();
