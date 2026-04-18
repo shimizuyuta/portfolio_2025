@@ -1,4 +1,5 @@
 import "./globals.css";
+import type { Metadata } from "next";
 import { Noto_Sans_JP, Zen_Kaku_Gothic_New } from "next/font/google";
 import type { ReactNode } from "react";
 import { Header } from "./_components/Header";
@@ -16,6 +17,16 @@ const zenKakuGothic = Zen_Kaku_Gothic_New({
   variable: "--font-zen-kaku",
   display: "swap",
 });
+
+export const metadata: Metadata = {
+  title: {
+    default: "YSデベロップメント",
+    template: "%s | YSデベロップメント",
+  },
+  description:
+    "Web制作・AI活用支援のフリーランスエンジニア。Next.js・Supabaseを使った高品質なWebサイト・業務効率化システムを提供します。",
+  metadataBase: new URL("https://www.ysdevelopment.jp"),
+};
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
