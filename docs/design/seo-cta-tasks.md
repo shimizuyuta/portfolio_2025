@@ -23,7 +23,7 @@
 - **目的:** metadata API を有効化するための前提作業。`"use client"` のままではルートレベルの `<title>` タグが機能しない。
 - **ゴール:** `layout.tsx` から `"use client"` が消え、ナビゲーションのインタラクション（ドロワー開閉）は `Header.tsx`（Client Component）に移譲されている。
 - **対象ファイル:** `src/app/layout.tsx` → `src/app/_components/Header.tsx` を新規作成
-- [ ] 完了
+- [x] 完了
 
 ---
 
@@ -32,7 +32,7 @@
 - **目的:** 全ページ共通の `<title>` テンプレートと、サイト全体のデフォルト description を定義する。
 - **ゴール:** `layout.tsx` に `export const metadata` が定義され、`title.template` によって各ページの title が「記事タイトル | YSデベロップメント」形式になっている。
 - **対象ファイル:** `src/app/layout.tsx`
-- [ ] 完了
+- [x] 完了
 
 ---
 
@@ -41,7 +41,7 @@
 - **目的:** 各記事ページが固有の `<title>` / `<meta name="description">` / OGPタグ / canonical を持つようにする。これが検索順位と SNS シェア品質に直結する。
 - **ゴール:** `/knowledge/ai-backoffice-efficiency` などの記事URLをブラウザで開いたとき、`<title>` に記事タイトルが入り、OGPタグが正しく出力されている。
 - **対象ファイル:** `src/app/knowledge/[slug]/page.tsx`
-- [ ] 完了
+- [x] 完了
 
 ---
 
@@ -50,7 +50,7 @@
 - **目的:** `/knowledge` ページが適切な title / description を持ち、「ブログ YSデベロップメント」などのクエリで検索結果に表示されるようにする。
 - **ゴール:** `/knowledge` ページの `<title>` が「ブログ | YSデベロップメント」になっている。
 - **対象ファイル:** `src/app/knowledge/page.tsx`
-- [ ] 完了
+- [x] 完了
 
 ---
 
@@ -59,7 +59,7 @@
 - **目的:** Googlebot にサイト内の全URLを通知し、クロール・インデックスを促進する。記事が増えるたびに自動で sitemap に追加されるようにする。
 - **ゴール:** `https://www.ysdevelopment.jp/sitemap.xml` にアクセスすると、全公開記事のURLが含まれた XML が返ってくる。
 - **対象ファイル:** `src/app/sitemap.ts`（新規作成）
-- [ ] 完了
+- [x] 完了
 
 ---
 
