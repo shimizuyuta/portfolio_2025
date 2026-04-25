@@ -10,6 +10,7 @@ import remarkFootnotes from "remark-footnotes";
 import remarkGfm from "remark-gfm";
 import { Badge } from "@/components/ui/badge";
 import { getArticleBySlug } from "@/lib/knowledge";
+import { AuthorCard } from "./_components/AuthorCard";
 import { ConsultationCta } from "./_components/ConsultationCta";
 
 type Props = {
@@ -226,6 +227,7 @@ export default async function ArticlePage({ params }: Props) {
           </ReactMarkdown>
         </div>
 
+        <AuthorCard />
         <ConsultationCta />
 
         {/* 戻るリンク */}
