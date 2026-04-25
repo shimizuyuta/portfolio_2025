@@ -2,6 +2,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Noto_Sans_JP, Zen_Kaku_Gothic_New } from "next/font/google";
 import type { ReactNode } from "react";
+import { GoogleAnalytics } from "./_components/GoogleAnalytics";
 import { Header } from "./_components/Header";
 
 const notoSansJP = Noto_Sans_JP({
@@ -35,6 +36,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       className={`${notoSansJP.variable} ${zenKakuGothic.variable}`}
     >
       <body className="min-h-screen flex flex-col bg-background text-foreground font-[family-name:var(--font-noto-sans-jp)]">
+        <GoogleAnalytics />
         <Header />
         <main className="w-full flex-1">{children}</main>
         <footer className="border-t py-8 bg-gray-50">
