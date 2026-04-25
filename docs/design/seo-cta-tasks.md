@@ -68,7 +68,7 @@
 - **目的:** クロール可否を明示し、`/admin` や `/api` などをインデックス対象外にする。sitemap のURLも記載して Googlebot に伝える。
 - **ゴール:** `https://www.ysdevelopment.jp/robots.txt` に `Allow: /`・`Disallow: /admin/`・`Sitemap:` が含まれている。
 - **対象ファイル:** `src/app/robots.ts`（新規作成）
-- [ ] 完了
+- [x] 完了
 
 ---
 
@@ -77,7 +77,7 @@
 - **目的:** Google に「このサイトをクロールしてほしい」と明示的に伝える。sitemap を送信することで全記事URLのインデックスを依頼する。
 - **ゴール:** Search Console でサイトが確認済み状態になり、sitemap が「成功」ステータスで登録されている。主要な記事URLを URL検査 ツールでインデックスリクエスト済み。
 - **対象:** Google Search Console（運用タスク・コード変更なし）
-- [ ] 完了
+- [x] 完了
 
 ---
 
