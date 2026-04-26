@@ -60,6 +60,15 @@ No test framework is configured.
 @.claude/rules/vercel.md
 @.claude/rules/worktree.md
 
+## 技術説明ルール
+
+実装・修正・バグ解決を行った際は、必ず以下を説明する：
+
+- **何をしたか** — 技術的な変更内容（どのファイル・関数・仕組みを変えたか）
+- **なぜそうしたか** — 技術的な根拠・選択の理由（他の選択肢との比較、既知の制約、ライブラリの挙動など）
+
+ユーザーが「なぜ？」と聞く前に自発的に説明すること。
+
 ## Key Conventions
 
 - **Linter/Formatter:** Biome（ESLint/Prettier ではない）。`npm run lint` で確認、`npm run format` でフォーマット修正。
