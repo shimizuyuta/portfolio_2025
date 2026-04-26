@@ -47,5 +47,7 @@ next-env.d.ts
 
 /tmp/*
 
+# output
+/output/
 
 /.playwright-mcp/*
