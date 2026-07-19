@@ -20,7 +20,7 @@
 ## MCP Server
 
 MCP Server を使うと Claude Code から直接 Supabase を操作できる。
-設定は `.claude/mcp.json` で管理する。
+設定はリポジトリ直下の `.mcp.json` で管理する（`.claude/mcp.json` は Claude Code に読まれないので使わない）。
 
 CLI で毎回接続文字列を貼る運用はトラブルが多いため、**Supabase の操作は MCP 経由を基本とする**。
 

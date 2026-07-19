@@ -1,0 +1,21 @@
+{
+  "mcpServers": {
+    "supabase": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@supabase/mcp-server-supabase@latest",
+        "--project-ref",
+        "yjpbkeytzoyliozbzmhf"
+      ]
+    },
+    "analytics": {
+      "command": "pipx",
+      "args": ["run", "analytics-mcp"],
+      "env": {
+        "GOOGLE_APPLICATION_CREDENTIALS": "${HOME}/.config/gcloud/portfolio-ga4-sa.json",
+        "GOOGLE_PROJECT_ID": "portfolio-ga4-shimizuyuta"
+      }
+    }
+  }
+}
