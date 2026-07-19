@@ -113,7 +113,8 @@ export async function getAdminArticles(filters: ArticleFilters = {}) {
   return data ?? [];
 }
 
-export async function uploadThumbnail(formData: FormData): Promise<string> {
+// サムネイルと本文画像の両方から使う。保存先は blog-images バケット共通。
+export async function uploadImage(formData: FormData): Promise<string> {
   assertAdminEnabled();
   const supabase = createServiceClient();
   const file = formData.get("file") as File;
