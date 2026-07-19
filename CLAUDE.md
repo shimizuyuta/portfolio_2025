@@ -39,6 +39,7 @@ No test framework is configured.
 | `.claude/rules/github.md`   | PR 作成・CI 確認・Issue 操作の前 |
 | `.claude/rules/worktree.md` | 新規ブランチ／作業ディレクトリの着手前 |
 | `.claude/rules/git.md`      | 履歴を書き換える操作（rebase・amend・force push・revert）の前 |
+| `.claude/rules/blog.md`     | 記事の執筆・リライト・企画・改善など、ブログ運用に関わる作業の前 |
 | `.claude/rules/supabase.md` | DB・テーブル・マイグレーション・記事データ操作の前 |
 | `.claude/rules/vercel.md`   | Vercel デプロイ／CI ステータス確認の前 |
 | `.claude/rules/env.md`      | 環境変数を追加・変更する前 |
