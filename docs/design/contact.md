@@ -43,5 +43,7 @@
 ## メール送信
 
 - サービス: Resend
-- 送信先: shimizuyuta213@gmail.com
-- 環境変数: `RESEND_API_KEY`（Vercel の環境変数に設定）
+- 送信先: `CONTACT_TO_EMAIL` で指定（ソースには直書きしない）
+- 環境変数: `RESEND_API_KEY`・`CONTACT_TO_EMAIL`（いずれも Vercel の環境変数に設定）
+
+`CONTACT_TO_EMAIL` が未設定の場合は送信せず 500 を返す。
