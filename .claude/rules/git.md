@@ -1,16 +1,23 @@
 # Git ルール
 
-## 禁止・要注意コマンド
+**いつ読むか:** 履歴を書き換える操作（rebase・commit --amend・force push・revert）を行う前。
 
-履歴を破壊するため、原則として実行しない：
+## 機械的にブロック済みのコマンド
+
+以下は `.claude/settings.json` の `permissions.deny` で拒否される。プロンプトで注意する必要はない：
 
 | コマンド | 理由 | 代替手段 |
 |---------|------|---------|
-| `git push --force` | リモート履歴を上書き | `--force-with-lease`（feature ブランチのみ）|
+| `git push --force` | リモート履歴を上書き | `--force-with-lease`（feature ブランチのみ、許可済み）|
 | `git reset --hard` | コミットを消去 | `git revert`（履歴を残して取り消し）|
-| `git commit --amend`（push 済み） | 公開済みコミットを書き換え | 新規コミットで修正 |
-| `git rebase`（main ブランチ上） | 共有履歴の書き換え | `git merge` |
 | `git clean -fd` | 未追跡ファイルを削除 | 個別に `rm` で削除 |
+
+## 条件付きで禁止（deny では表現できないため要注意）
+
+| コマンド | 禁止条件 | 代替手段 |
+|---------|---------|---------|
+| `git commit --amend` | push 済みコミットに対して | 新規コミットで修正 |
+| `git rebase` | main ブランチ上で | `git merge` |
 
 ## force-with-lease を使う場合
 
