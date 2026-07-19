@@ -17,7 +17,13 @@ export type AdminArticle = {
   updated_at: string;
 };
 
-export function ArticleList({ articles }: { articles: AdminArticle[] }) {
+export function ArticleList({
+  articles,
+  isFiltered = false,
+}: {
+  articles: AdminArticle[];
+  isFiltered?: boolean;
+}) {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
@@ -36,9 +42,10 @@ export function ArticleList({ articles }: { articles: AdminArticle[] }) {
   }
 
   if (articles.length === 0) {
+    // 絞り込みの結果 0 件なのか、そもそも記事が無いのかで意味が違う
     return (
       <p className="text-sm text-gray-400 text-center py-20">
-        記事がありません
+        {isFiltered ? "条件に一致する記事がありません" : "記事がありません"}
       </p>
     );
   }

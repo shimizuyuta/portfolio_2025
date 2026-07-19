@@ -87,13 +87,28 @@ export async function deleteArticle(id: string) {
   revalidatePath("/knowledge");
 }
 
-export async function getAdminArticles() {
+// 一覧の絞り込み条件。増えた分はここに足し、getAdminArticles で条件を積む。
+export type ArticleFilters = {
+  status?: "draft" | "published";
+};
+
+export async function getAdminArticles(filters: ArticleFilters = {}) {
   assertAdminEnabled();
   const supabase = createServiceClient();
-  const { data, error } = await supabase
+
+  // 取得後に JS で絞ると記事が増えたときに全件取得が無駄になるため、
+  // 条件はクエリ側に積む。
+  let query = supabase
     .from("articles")
-    .select("id, title, slug, category, status, published_at, updated_at")
-    .order("updated_at", { ascending: false });
+    .select("id, title, slug, category, status, published_at, updated_at");
+
+  if (filters.status) {
+    query = query.eq("status", filters.status);
+  }
+
+  const { data, error } = await query.order("updated_at", {
+    ascending: false,
+  });
   if (error) throw new Error(error.message);
   return data ?? [];
 }
