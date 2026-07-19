@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath, revalidateTag } from "next/cache";
+import { syncArticleTags, upsertTags } from "@/lib/knowledge/write";
 import { createServiceClient } from "@/lib/supabase/service";
 
 export type ArticleInput = {
@@ -14,37 +15,6 @@ export type ArticleInput = {
   tagNames: string[];
   thumbnail_url: string | null;
 };
-
-// タグを upsert して ID を返す
-async function upsertTags(
-  supabase: ReturnType<typeof createServiceClient>,
-  names: string[],
-): Promise<string[]> {
-  if (names.length === 0) return [];
-  const { data, error } = await supabase
-    .from("tags")
-    .upsert(
-      names.map((name) => ({ name })),
-      { onConflict: "name" },
-    )
-    .select("id");
-  if (error) throw new Error(error.message);
-  return (data ?? []).map((t) => t.id);
-}
-
-// article_tags を洗い替え
-async function syncArticleTags(
-  supabase: ReturnType<typeof createServiceClient>,
-  articleId: string,
-  tagIds: string[],
-) {
-  await supabase.from("article_tags").delete().eq("article_id", articleId);
-  if (tagIds.length === 0) return;
-  const { error } = await supabase
-    .from("article_tags")
-    .insert(tagIds.map((tag_id) => ({ article_id: articleId, tag_id })));
-  if (error) throw new Error(error.message);
-}
 
 export async function createArticle(input: ArticleInput) {
   const supabase = createServiceClient();
