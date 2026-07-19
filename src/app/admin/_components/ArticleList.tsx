@@ -87,6 +87,13 @@ export function ArticleList({
               variant="outline"
               className="h-auto py-1.5 px-3 text-xs rounded-lg"
             >
+              <Link href={`/admin/${a.id}/preview`}>プレビュー</Link>
+            </Button>
+            <Button
+              asChild
+              variant="outline"
+              className="h-auto py-1.5 px-3 text-xs rounded-lg"
+            >
               <Link href={`/admin/${a.id}/edit`}>編集</Link>
             </Button>
             <Button
