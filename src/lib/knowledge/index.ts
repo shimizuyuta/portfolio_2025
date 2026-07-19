@@ -16,6 +16,22 @@ export type Article = {
   tags: { id: string; name: string }[];
 };
 
+type ArticleRow = Omit<Article, "tags"> & {
+  thumbnail_url: string | null;
+  article_tags: { tags: { id: string; name: string } | null }[];
+};
+
+function toArticle(row: ArticleRow): Article {
+  return {
+    ...row,
+    thumbnail_url: row.thumbnail_url ?? null,
+    tags: row.article_tags.map((at) => at.tags).filter(Boolean) as {
+      id: string;
+      name: string;
+    }[],
+  };
+}
+
 export const getPublishedArticles = unstable_cache(
   async (limit?: number): Promise<Article[]> => {
     const supabase = createServiceClient();
@@ -35,13 +51,7 @@ export const getPublishedArticles = unstable_cache(
 
     if (error || !data) return [];
 
-    return data.map((row) => ({
-      ...row,
-      thumbnail_url: row.thumbnail_url ?? null,
-      tags: row.article_tags
-        .map((at: { tags: { id: string; name: string } | null }) => at.tags)
-        .filter(Boolean) as { id: string; name: string }[],
-    }));
+    return data.map(toArticle);
   },
   ["published-articles"],
   { revalidate: 86400, tags: ["published-articles"] },
@@ -60,14 +70,30 @@ export const getArticleBySlug = unstable_cache(
 
     if (error || !data) return undefined;
 
-    return {
-      ...data,
-      thumbnail_url: data.thumbnail_url ?? null,
-      tags: data.article_tags
-        .map((at: { tags: { id: string; name: string } | null }) => at.tags)
-        .filter(Boolean) as { id: string; name: string }[],
-    };
+    return toArticle(data);
   },
   ["article-by-slug"],
   { revalidate: 86400, tags: ["published-articles"] },
 );
+
+// プレビュー専用。status を絞らず、draft も予約投稿も取得する。
+//
+// unstable_cache で包んでいないのは意図的：
+// - draft は編集のたびに変わるため、毎回最新を取得する必要がある
+// - published-articles タグのキャッシュに混ぜると、公開記事向けの
+//   revalidateTag（人間が公開操作時に行う）の意味が濁る
+export async function getArticleBySlugForPreview(
+  slug: string,
+): Promise<Article | undefined> {
+  const supabase = createServiceClient();
+
+  const { data, error } = await supabase
+    .from("articles")
+    .select("*, article_tags(tags(id, name))")
+    .eq("slug", slug)
+    .single();
+
+  if (error || !data) return undefined;
+
+  return toArticle(data);
+}
