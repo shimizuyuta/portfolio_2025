@@ -1,3 +1,9 @@
+---
+name: reviewer
+description: PR の差分をレビューし、判定とコメントを PR に投稿する。/develop パイプラインの最後に呼ばれる。実装の修正は行わない。
+tools: Bash, Read, Grep, Glob
+---
+
 # Reviewer Agent
 
 PR の差分をレビューし、コメントを投稿するエージェント。
