@@ -14,51 +14,37 @@ No test framework is configured.
 
 ## Architecture
 
-### ページ構成（`src/app/`）
+ディレクトリ構成は `src/app/`・`src/lib/` を直接見れば分かる。以下は見ただけでは分からない点のみ：
 
-| パス | 説明 |
-|---|---|
-| `layout.tsx` | ルートレイアウト（`"use client"`）。PC: grid 3カラムヘッダー、SP: 全画面ドロワー |
-| `page.tsx` | ホームページ（`"use client"`、Framer Motion アニメーション） |
-| `service/page.tsx` | サービス一覧 + FAQ |
-| `contact/page.tsx` | お問い合わせフォーム（`"use client"`、Resend メール送信） |
-| `knowledge/page.tsx` | ブログ一覧（Server Component、Supabase からデータ取得） |
-| `knowledge/KnowledgeClient.tsx` | カテゴリー・タグフィルター＋グリッド（`"use client"`） |
-| `knowledge/[slug]/page.tsx` | 記事詳細（`force-dynamic` SSR、目次・ReactMarkdown） |
-| `admin/page.tsx` | 記事管理（ローカル専用、`NEXT_PUBLIC_ADMIN_ENABLED` フラグで制御） |
-| `api/contact/route.ts` | メール送信 API（Resend） |
-| `api/knowledge/route.ts` | 公開記事一覧 API |
-| `api/articles/route.ts` | 記事 CRUD API |
-| `api/admin/articles/route.ts` | 管理用記事 API |
-| `design/page.tsx` | ローカル専用コンポーネントショーケース |
+- **レンダリング:** `knowledge/page.tsx` は Server Component（Supabase から取得）、`knowledge/[slug]/page.tsx` は `force-dynamic` SSR。それ以外の主要ページ（`layout.tsx`・ホーム・contact）は `"use client"`。
+- **ローカル専用ページ:** `admin/`（記事管理）と `design/`（コンポーネントショーケース）は `NEXT_PUBLIC_ADMIN_ENABLED` で制御。本番には出さない。
+- **Supabase クライアント:** 通常の読み取りは `src/lib/supabase/server.ts`、RLS をバイパスする管理操作のみ `service.ts`。
+- **型:** `src/types/supabase.ts` は自動生成（`supabase gen types typescript --linked`）。手で編集しない。
+- **設計ドキュメント:** `docs/design/` に各ページの設計がある。設計に関わる実装は先にこちらを更新する。
 
-### ライブラリ（`src/lib/`）
+## 作業原則
 
-| パス | 説明 |
-|---|---|
-| `knowledge/index.ts` | Supabase から記事を取得する関数 |
-| `knowledge/mock.ts` | ローカル開発用モックデータ |
-| `supabase/server.ts` | Server Components 用 Supabase クライアント |
-| `supabase/service.ts` | Service Role クライアント（管理操作用） |
-| `utils.ts` | Tailwind クラスをマージする `cn()` ヘルパー |
-| `slack.ts` | Slack API クライアント |
-
-### その他
-
-- `src/components/ui/` — shadcn/ui コンポーネント（New York スタイル、Radix UI ベース）
-- `src/types/supabase.ts` — Supabase 自動生成型（`supabase gen types typescript --linked` で再生成）
-- `docs/design/` — 各ページの設計ドキュメント（実装前に更新必須）
+- **会話の記憶より実際の状態を優先する。** 「さっきこうだった」で動かず、必ずツールで現在の状態を確認してから行動する。
+- **1アクションごとに報告する。** 複数の操作をまとめて実行せず、「〜しました。次に〜してよいですか？」の形で確認を取る。
+- **着手前に確定していること:** 何を作るか（機能・構造）、どう見せるか（デザイン・内容・文言）、ユーザーの承認。構造が決まっても内容が未確定なら壁打ちを先に行う。
+- **並行開発は git worktree を使う。** `git checkout -b` は使わない（→ `worktree.md`）。
+- **コミットメッセージ:** `<type>: <説明（日本語）>`。type は `feat` / `fix` / `style` / `chore` / `refactor` / `docs`。
 
 ## ルール
 
-@.claude/rules/git.md
-@.claude/rules/github.md
-@.claude/rules/workflow.md
-@.claude/rules/docs.md
-@.claude/rules/env.md
-@.claude/rules/supabase.md
-@.claude/rules/vercel.md
-@.claude/rules/worktree.md
+タスクが該当したら、**着手前に必ず該当ファイルを読む**：
+
+| ファイル | いつ読むか |
+|---|---|
+| `.claude/rules/github.md`   | PR 作成・CI 確認・Issue 操作の前 |
+| `.claude/rules/worktree.md` | 新規ブランチ／作業ディレクトリの着手前 |
+| `.claude/rules/git.md`      | 履歴を書き換える操作（rebase・amend・force push・revert）の前 |
+| `.claude/rules/supabase.md` | DB・テーブル・マイグレーション・記事データ操作の前 |
+| `.claude/rules/vercel.md`   | Vercel デプロイ／CI ステータス確認の前 |
+| `.claude/rules/env.md`      | 環境変数を追加・変更する前 |
+| `.claude/rules/docs.md`     | 設計に関わる実装の前（`docs/design/` 更新を伴う作業） |
+
+破壊的な git コマンド（`push --force` / `reset --hard` / `clean -fd`）は `.claude/settings.json` の `permissions.deny` でブロック済み。
 
 ## 技術説明ルール
 
@@ -72,7 +58,7 @@ No test framework is configured.
 ## Key Conventions
 
 - **Linter/Formatter:** Biome（ESLint/Prettier ではない）。`npm run lint` で確認、`npm run format` でフォーマット修正。
-- **スタイリング:** Tailwind CSS 4 + OKLch CSS 変数。ダークモードは `.dark` クラス。クラスの条件結合は `cn()` を使う。
-- **UI コンポーネント:** インストール済み → Accordion, Badge, Button, Card, Separator, Sheet。追加は `npx shadcn@latest add <component>`（`src/components/ui/` を事前確認）。
+- **スタイリング:** Tailwind CSS 4 + OKLch CSS 変数。ダークモードは `.dark` クラス。クラスの条件結合は `cn()`（`src/lib/utils.ts`）を使う。
+- **UI コンポーネント:** shadcn/ui（New York スタイル、Radix UI ベース）。追加前に `src/components/ui/` を確認し、なければ `npx shadcn@latest add <component>`。
 - **パスエイリアス:** `@/*` は `src/*` に解決される。
 - **コンテンツ言語:** 日本語・英語の混在。既存のバランスを維持すること。
