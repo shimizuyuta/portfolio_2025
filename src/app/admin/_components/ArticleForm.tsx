@@ -2,8 +2,9 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useRef, useState, useTransition } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 import { ArticleBody } from "@/components/ArticleBody";
+import { ArticleView } from "@/components/ArticleView";
 import { Button } from "@/components/ui/button";
 import { type ArticleInput, uploadImage } from "../actions";
 
@@ -97,6 +98,64 @@ function insertImageMarkdown(content: string, at: number, url: string) {
   };
 }
 
+// ─── 記事全体プレビュー ───────────────────────────────────────────────────────
+// 公開ページと同じ ArticleView を、画面全体を覆うレイヤーに描画する。
+// 編集フォームの列は幅が狭く、記事の実寸レイアウトを再現できないため。
+function FullPreviewOverlay({
+  form,
+  tagNames,
+  thumbnailUrl,
+  unoptimizedImage,
+  onClose,
+}: {
+  form: ArticleInput;
+  tagNames: string[];
+  thumbnailUrl: string | null;
+  unoptimizedImage: boolean;
+  onClose: () => void;
+}) {
+  // Escape で閉じる。開いている間は背後のフォームをスクロールさせない。
+  useEffect(() => {
+    function onKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") onClose();
+    }
+    document.addEventListener("keydown", onKeyDown);
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [onClose]);
+
+  return (
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-white">
+      <div className="sticky top-0 z-10 flex items-center gap-3 border-b border-amber-200 bg-amber-50 px-4 py-2">
+        <span className="text-xs font-bold text-amber-800">
+          プレビュー（未保存の内容）
+        </span>
+        <button
+          type="button"
+          onClick={onClose}
+          className="ml-auto rounded-md border border-amber-300 bg-white px-3 py-1 text-xs text-amber-900 transition-colors hover:bg-amber-100"
+        >
+          閉じる（Esc）
+        </button>
+      </div>
+
+      <ArticleView
+        title={form.title || "（タイトル未入力）"}
+        category={form.category || "未分類"}
+        tags={tagNames}
+        content={form.content}
+        thumbnailUrl={thumbnailUrl}
+        publishedAt={form.published_at}
+        unoptimizedImage={unoptimizedImage}
+      />
+    </div>
+  );
+}
+
 // ─── ArticleForm ──────────────────────────────────────────────────────────────
 // 入力状態はこのコンポーネントが持ち、呼び出し側は初期値と保存処理だけを渡す。
 // 新規作成と編集で入力欄の実装が分岐しないようにするため。
@@ -113,6 +172,7 @@ export function ArticleForm({
   const [tagsInput, setTagsInput] = useState(initialForm.tagNames.join(", "));
   const [thumbnailFile, setThumbnailFile] = useState<File | null>(null);
   const [contentTab, setContentTab] = useState<"edit" | "preview">("edit");
+  const [isFullPreviewOpen, setIsFullPreviewOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
 
@@ -181,6 +241,12 @@ export function ArticleForm({
 
   const outline = getOutline(form.content);
 
+  // 保存時とプレビューで同じ解釈になるよう、タグ名の導出は一箇所にまとめる
+  const tagNames = tagsInput
+    .split(",")
+    .map((t) => t.trim())
+    .filter(Boolean);
+
   function handleSubmit() {
     setError(null);
     startTransition(async () => {
@@ -196,10 +262,7 @@ export function ArticleForm({
         await onSubmit({
           ...form,
           thumbnail_url,
-          tagNames: tagsInput
-            .split(",")
-            .map((t) => t.trim())
-            .filter(Boolean),
+          tagNames,
         });
       } catch (e) {
         setError(e instanceof Error ? e.message : "保存に失敗しました");
@@ -308,6 +371,13 @@ export function ArticleForm({
 
           {contentTab === "preview" && (
             <span className="ml-auto flex items-center gap-3 text-xs text-gray-500">
+              <button
+                type="button"
+                onClick={() => setIsFullPreviewOpen(true)}
+                className="rounded-md border border-gray-300 bg-white px-2 py-1 text-xs text-gray-700 transition-colors hover:bg-gray-50"
+              >
+                記事全体を見る
+              </button>
               <span>{outline.chars.toLocaleString()}字</span>
               <span>h2: {outline.h2}</span>
               <span>h3: {outline.h3}</span>
@@ -410,6 +480,16 @@ export function ArticleForm({
           <Link href="/admin">キャンセル</Link>
         </Button>
       </div>
+
+      {isFullPreviewOpen && (
+        <FullPreviewOverlay
+          form={form}
+          tagNames={tagNames}
+          thumbnailUrl={previewUrl}
+          unoptimizedImage={!!thumbnailFile}
+          onClose={() => setIsFullPreviewOpen(false)}
+        />
+      )}
     </div>
   );
 }
