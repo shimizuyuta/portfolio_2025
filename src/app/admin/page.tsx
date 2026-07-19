@@ -2,8 +2,10 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArticleList } from "./_components/ArticleList";
 import { getAdminArticles } from "./actions";
+import { assertAdminPage } from "./guard";
 
 export default async function AdminPage() {
+  assertAdminPage();
   const articles = await getAdminArticles();
 
   return (

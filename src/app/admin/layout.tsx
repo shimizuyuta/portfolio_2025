@@ -1,11 +1,17 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-// ADMIN_ENABLED の判定はここに集約する。ページごとに書くと追加時に
-// 書き忘れる余地が残るため。
+// 管理画面は常に最新の DB を見るため、静的プリレンダリングしない。
+// ビルド時に /admin を生成しようとすると ADMIN_ENABLED の無い環境で
+// データ取得が Forbidden になる。
+export const dynamic = "force-dynamic";
+
+// ADMIN_ENABLED はここと各ページの assertAdminPage() の両方で判定する。
+// layout だけでは足りない：Next.js は layout と page のデータ取得を独立して
+// 実行するため、layout が notFound() を投げてもページ側の取得処理は走る。
 //
-// actions.ts 側の assertAdminEnabled() は別途必要：あちらは Server Action が
-// 外部から直接叩かれる経路を塞ぐもので、このガードとは守る対象が違う。
+// actions.ts 側の assertAdminEnabled() はさらに別で、Server Action が
+// 外部から直接叩かれる経路を塞ぐもの。3つとも守る対象が違う。
 export default function AdminLayout({
   children,
 }: {

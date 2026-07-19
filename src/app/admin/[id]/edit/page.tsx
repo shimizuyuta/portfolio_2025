@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { getAdminArticleById } from "../../actions";
+import { assertAdminPage } from "../../guard";
 import { EditArticleForm } from "./EditArticleForm";
 
 export default async function EditArticlePage({
@@ -7,6 +8,7 @@ export default async function EditArticlePage({
 }: {
   params: Promise<{ id: string }>;
 }) {
+  assertAdminPage();
   const { id } = await params;
   const article = await getAdminArticleById(id);
 
