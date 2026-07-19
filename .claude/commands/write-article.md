@@ -44,9 +44,28 @@ curl -s "$BLOG_API_BASE_URL/api/articles" -H "Authorization: Bearer $BLOG_API_KE
 
 承認された構成案を渡して `writer` に本文を書かせる。
 
+### Step 4.5. 文字数の実測（省略禁止）
+
+本文をファイルに保存し、**コマンド本体が実測する。** writer・editor は文字数を数えられないため、ここで計測しないと推定値のまま判定が進む。
+
+```bash
+python3 -c '
+import re,sys
+t = open(sys.argv[1], encoding="utf-8").read()
+t = re.sub(r"\[([^\]]*)\]\([^)]*\)", r"\1", t)   # リンクはテキストのみ
+t = re.sub(r"【画像:[^】]*】", "", t)              # 画像プレースホルダ除外
+t = re.sub(r"[#>*|`-]", "", t)                    # 記法除去
+print(len(re.sub(r"\s+", "", t)), "字")
+' <本文ファイル>
+```
+
+**実測値を editor に渡す。** writer が自己申告した値は使わない。
+
+修正のたびに再計測する。**削減を指示するときは絶対字数で示す**（「引用を減らす」等の代理指標は字数削減に結びつかない）。
+
 ### Step 5. editor レビュー（省略禁止）
 
-`editor` エージェントを呼ぶ。
+`editor` エージェントを呼ぶ。**Step 4.5 の実測値を必ず渡す。**
 
 - 「要修正」なら writer に修正させ、再度 editor にかける
 - **往復は最大2回。** 2回で合格しなければ人間に判断を仰いで停止する
