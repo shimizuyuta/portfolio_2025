@@ -1,4 +1,4 @@
-import { FONT_STACK } from "./fonts";
+import { DISPLAY_STACK as DISPLAY, FONT_STACK } from "./fonts";
 
 export const WIDTH = 1200;
 export const HEIGHT = 630;
@@ -38,6 +38,9 @@ export const DECORATED = {
 } as const;
 
 export const FONT_FAMILY = FONT_STACK;
+
+/** 見出し用のフォントスタック。ラテン文字だけセリフ体になる（→ fonts.ts） */
+export const DISPLAY_STACK = DISPLAY;
 
 /** 記事タイプに応じて選ぶテンプレート。 */
 export type TemplateName = "minimal" | "decorated";

@@ -87,7 +87,13 @@ npx tsx --tsconfig scripts/thumbnail/tsconfig.json scripts/thumbnail/generate.ts
 
 - `--title` は `\n` をシェルに食わせないため**シングルクォート**で囲む
 - `--brand` / `--brand-suffix` は `minimal` のみ有効
-- `decorated` にイラストを入れる場合のみ `--illustration <パス>` を足す
+- `decorated` にイラストを入れる場合は `--emoji 🪙`（Twemoji）か `--illustration <パス>`（自前画像）を足す
+
+#### `--emoji` を使う前に確認する（省略禁止）
+
+**Twemoji の画像は CC-BY 4.0 で、帰属表示の義務がある。** npm の `license` 欄が MIT なのはコードの話で、画像には適用されない。
+
+`docs/thumbnail-credits.md` に記載した帰属表示がサイトに設置済みかを確認する。**未設置なら `--emoji` を使わず、人間に判断を仰いで停止する。**
 
 出力先は `tmp/thumbnails/<slug>.png`（1200×630）。
 
@@ -114,7 +120,9 @@ npx tsx --tsconfig scripts/thumbnail/tsconfig.json scripts/thumbnail/generate.ts
 | `scripts/thumbnail/templates/minimal.tsx` | テンプレA |
 | `scripts/thumbnail/templates/decorated.tsx` | テンプレB |
 | `scripts/thumbnail/theme.ts` | 配色・サイズ・見出しの自動縮小 |
-| `scripts/thumbnail/fonts.ts` | Noto Sans JP の取得と `tmp/fonts/` へのキャッシュ |
+| `scripts/thumbnail/fonts.ts` | フォントの取得と `tmp/fonts/` へのキャッシュ |
+| `scripts/thumbnail/emoji.ts` | Twemoji SVG の取得と `tmp/emoji/` へのキャッシュ |
+| `docs/thumbnail-credits.md` | 素材のライセンスと帰属表示の義務 |
 
 ### 変更するときの注意（satori の制約）
 
@@ -125,3 +133,5 @@ npx tsx --tsconfig scripts/thumbnail/tsconfig.json scripts/thumbnail/generate.ts
 - **oklch は解釈されない。** `globals.css` の CSS 変数は使えず、`theme.ts` に hex を複製している。ブランドカラーを変えたら追随させる
 - **`position: absolute` の要素は文字幅で自動的に広がらない。** 幅は明示する
 - **フォントのサブセットに無い記号は豆腐になる**（例: ◆ U+25C6）。図形は div や SVG で描く
+- **関数コンポーネントは解決されない。** satori は host 要素しか辿らないため `<Sparkle />` と書くと黙って捨てられる。`{Sparkle({...})}` と関数呼び出しにする
+- **`<pattern>` は解釈されない。** 繰り返し模様は図形を1つずつ描く

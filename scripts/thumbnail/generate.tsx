@@ -3,6 +3,7 @@ import { extname, join } from "node:path";
 import { parseArgs } from "node:util";
 import satori from "satori";
 import sharp from "sharp";
+import { loadEmoji } from "./emoji";
 import { loadFonts } from "./fonts";
 import { Decorated } from "./templates/decorated";
 import { Minimal } from "./templates/minimal";
@@ -26,6 +27,8 @@ const USAGE = `
   --brand         ミニマル版フッターのブランド名
   --brand-suffix  ミニマル版フッターの URL 等
   --illustration  装飾版に差し込む画像のパス（png / jpg / webp）
+  --emoji         装飾版に差し込む絵文字（Twemoji SVG。例: 🪙）
+                  --illustration が指定されていればそちらが優先される
 `.trim();
 
 /** 画像を data URI に変換する。satori は外部ファイルパスを読めないため。 */
@@ -52,6 +55,7 @@ async function main() {
       brand: { type: "string" },
       "brand-suffix": { type: "string" },
       illustration: { type: "string" },
+      emoji: { type: "string" },
       help: { type: "boolean", default: false },
     },
   });
@@ -83,9 +87,12 @@ async function main() {
     subtitle: values.subtitle,
     brand: values.brand,
     brandSuffix: values["brand-suffix"],
+    // --illustration（自前の画像）を優先し、無ければ --emoji を使う
     illustration: values.illustration
       ? await toDataUri(values.illustration)
-      : undefined,
+      : values.emoji
+        ? await loadEmoji(values.emoji)
+        : undefined,
   };
 
   const element = template === "decorated" ? Decorated(input) : Minimal(input);
