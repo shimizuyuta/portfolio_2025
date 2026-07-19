@@ -4,6 +4,18 @@ import { revalidatePath, revalidateTag } from "next/cache";
 import { syncArticleTags, upsertTags } from "@/lib/knowledge/write";
 import { createServiceClient } from "@/lib/supabase/service";
 
+// "use server" のファイルでは export した関数がすべて Server Action として
+// 公開され、Next-Action ヘッダ付き POST で外部から直接呼び出せる。
+// ページ側（admin/page.tsx）の ADMIN_ENABLED チェックは呼び出し側のガードに
+// すぎず、アクション本体には掛からない。そのためアクションごとに検査する。
+//
+// export しないことでこの関数自体は Server Action にならない。
+function assertAdminEnabled() {
+  if (!process.env.ADMIN_ENABLED) {
+    throw new Error("Forbidden");
+  }
+}
+
 export type ArticleInput = {
   title: string;
   slug: string;
@@ -17,6 +29,7 @@ export type ArticleInput = {
 };
 
 export async function createArticle(input: ArticleInput) {
+  assertAdminEnabled();
   const supabase = createServiceClient();
   const { tagNames, ...articleData } = input;
 
@@ -41,6 +54,7 @@ export async function createArticle(input: ArticleInput) {
 }
 
 export async function updateArticle(id: string, input: ArticleInput) {
+  assertAdminEnabled();
   const supabase = createServiceClient();
   const { tagNames, ...articleData } = input;
 
@@ -64,6 +78,7 @@ export async function updateArticle(id: string, input: ArticleInput) {
 }
 
 export async function deleteArticle(id: string) {
+  assertAdminEnabled();
   const supabase = createServiceClient();
   const { error } = await supabase.from("articles").delete().eq("id", id);
   if (error) throw new Error(error.message);
@@ -73,6 +88,7 @@ export async function deleteArticle(id: string) {
 }
 
 export async function getAdminArticles() {
+  assertAdminEnabled();
   const supabase = createServiceClient();
   const { data, error } = await supabase
     .from("articles")
@@ -83,6 +99,7 @@ export async function getAdminArticles() {
 }
 
 export async function uploadThumbnail(formData: FormData): Promise<string> {
+  assertAdminEnabled();
   const supabase = createServiceClient();
   const file = formData.get("file") as File;
   const bytes = await file.arrayBuffer();
@@ -99,6 +116,7 @@ export async function uploadThumbnail(formData: FormData): Promise<string> {
 }
 
 export async function getAdminArticleById(id: string) {
+  assertAdminEnabled();
   const supabase = createServiceClient();
   const { data, error } = await supabase
     .from("articles")
