@@ -55,7 +55,8 @@ export function Decorated(input: ThumbnailInput) {
   const lines = splitLines(input.title);
   // イラストがある分だけ本文の使える幅が狭くなるので、見積もりを詰める
   // お手本の実測: 見出しの字高 83px、サブ 55px（1200幅換算）。
-  // Noto Sans JP の字高は font-size の約0.93倍なので、逆算して 90 / 0.66 を上限にする。
+  // 太さは Bold(700)。900 にするとインク率が 45.8% になりお手本(40.7%)から
+  // 明確に外れる（700 は 40.2% で一致し、字幅/字高比も 8.44 対 8.45 で合う）。
   // イラストがある分だけ本文に使える幅が狭くなるので、幅の見積もりも渡す。
   const titleSize = Math.min(
     fitTitleSize(lines, hasIllustration ? 920 : 980),
@@ -188,7 +189,7 @@ export function Decorated(input: ThumbnailInput) {
               style={{
                 fontFamily: DISPLAY_STACK,
                 fontSize: titleSize,
-                fontWeight: 900,
+                fontWeight: 700,
                 color: DECORATED.title,
                 lineHeight: 1.3,
                 letterSpacing: -1,
@@ -202,7 +203,7 @@ export function Decorated(input: ThumbnailInput) {
             <div
               style={{
                 fontSize: Math.round(titleSize * 0.66),
-                fontWeight: 900,
+                fontWeight: 700,
                 color: DECORATED.title,
                 marginTop: 34,
                 lineHeight: 1.4,
@@ -252,7 +253,7 @@ export function Decorated(input: ThumbnailInput) {
             color: "#ffffff",
             fontFamily: DISPLAY_STACK,
             fontSize: RIBBON_FONT_SIZE,
-            fontWeight: 900,
+            fontWeight: 700,
           }}
         >
           {input.badge}

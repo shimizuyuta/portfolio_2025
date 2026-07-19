@@ -67,7 +67,10 @@ const FONTS: FontSpec[] = [
     file: "noto-sans-jp/noto-sans-jp-latin-900",
     weight: 900,
   },
-  { name: FONT_SERIF, file: "noto-serif/noto-serif-latin-700", weight: 700 },
+  // 見出しは weight 700 で組むが、セリフ体だけは 900 のファイルを 700 として
+  // 登録する。お手本の「IT」は和文より明らかに縦画が太く、同じ 700 では細く見える。
+  // satori は fontWeight を font-family ごとに変えられないため、ここで吸収する。
+  { name: FONT_SERIF, file: "noto-serif/noto-serif-latin-900", weight: 700 },
   { name: FONT_SERIF, file: "noto-serif/noto-serif-latin-900", weight: 900 },
 ];
 
