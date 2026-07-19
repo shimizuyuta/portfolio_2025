@@ -64,9 +64,9 @@ export type ThumbnailInput = {
  * 見出しの行数と最長行の文字数から font-size を決める。
  * 日本語は等幅に近いので「文字数 × サイズ」で概ね幅を見積もれる。
  */
-export function fitTitleSize(lines: string[]): number {
+export function fitTitleSize(lines: string[], maxWidth = 880): number {
   const longest = Math.max(...lines.map((line) => line.length), 1);
-  const byWidth = 880 / longest;
+  const byWidth = maxWidth / longest;
   const byHeight = lines.length >= 3 ? 74 : 96;
   return Math.max(40, Math.min(96, byWidth, byHeight));
 }
