@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useState, useTransition } from "react";
+import { ArticleBody } from "@/components/ArticleBody";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -40,6 +41,44 @@ const EMPTY_FORM: ArticleInput = {
 // ─── inputCls ────────────────────────────────────────────────────────────────
 const inputCls =
   "w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-400";
+
+// ─── 本文タブ ────────────────────────────────────────────────────────────────
+// shadcn の Tabs は未導入のため、依存を増やさず Button で組む。
+function TabButton({
+  active,
+  onClick,
+  children,
+}: {
+  active: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`rounded-md px-3 py-1 text-xs transition-colors ${
+        active
+          ? "bg-sky-600 font-bold text-white"
+          : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+      }`}
+    >
+      {children}
+    </button>
+  );
+}
+
+// blog.md が数値で規定している項目（見出し階層・文字数）を書きながら確認する。
+// h4 以下は規約で禁止のため、使われていたら警告する。
+function getOutline(content: string) {
+  const lines = content.split("\n");
+  return {
+    chars: content.length,
+    h2: lines.filter((l) => /^##\s/.test(l)).length,
+    h3: lines.filter((l) => /^###\s/.test(l)).length,
+    hasDeepHeading: lines.some((l) => /^#{4,}\s/.test(l)),
+  };
+}
 
 // ─── Field（コンポーネント外に定義してフォーカス問題を回避） ──────────────────
 function Field({
@@ -151,6 +190,10 @@ function ArticleForm({
     ? URL.createObjectURL(thumbnailFile)
     : (form.thumbnail_url ?? null);
 
+  // 本文欄のタブ（編集 / プレビュー）
+  const [contentTab, setContentTab] = useState<"edit" | "preview">("edit");
+  const outline = getOutline(form.content);
+
   return (
     <div className="space-y-5">
       <Field label="タイトル *">
@@ -236,12 +279,52 @@ function ArticleForm({
       </Field>
 
       <Field label="本文（Markdown） *">
-        <textarea
-          className={`${inputCls} resize-y font-mono text-xs`}
-          rows={16}
-          value={form.content}
-          onChange={(e) => setForm({ ...form, content: e.target.value })}
-        />
+        <div className="mb-2 flex items-center gap-1">
+          <TabButton
+            active={contentTab === "edit"}
+            onClick={() => setContentTab("edit")}
+          >
+            編集
+          </TabButton>
+          <TabButton
+            active={contentTab === "preview"}
+            onClick={() => setContentTab("preview")}
+          >
+            プレビュー
+          </TabButton>
+
+          {contentTab === "preview" && (
+            <span className="ml-auto flex items-center gap-3 text-xs text-gray-500">
+              <span>{outline.chars.toLocaleString()}字</span>
+              <span>h2: {outline.h2}</span>
+              <span>h3: {outline.h3}</span>
+              {outline.hasDeepHeading && (
+                <span className="font-bold text-red-600">
+                  h4以下あり（規約違反）
+                </span>
+              )}
+            </span>
+          )}
+        </div>
+
+        {contentTab === "edit" ? (
+          <textarea
+            className={`${inputCls} resize-y font-mono text-xs`}
+            rows={16}
+            value={form.content}
+            onChange={(e) => setForm({ ...form, content: e.target.value })}
+          />
+        ) : (
+          <div className="min-h-[22rem] rounded-lg border border-gray-300 bg-white px-4 py-3">
+            {form.content.trim() ? (
+              <ArticleBody content={form.content} />
+            ) : (
+              <p className="text-sm text-gray-400">
+                本文を入力するとプレビューが表示されます
+              </p>
+            )}
+          </div>
+        )}
       </Field>
 
       <ImageUploader />

@@ -2,12 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import ReactMarkdown from "react-markdown";
-import rehypeHighlight from "rehype-highlight";
-import rehypeRaw from "rehype-raw";
-import rehypeSlug from "rehype-slug";
-import remarkFootnotes from "remark-footnotes";
-import remarkGfm from "remark-gfm";
+import { ArticleBody } from "@/components/ArticleBody";
 import { Badge } from "@/components/ui/badge";
 import { getArticleBySlug, getArticleBySlugForPreview } from "@/lib/knowledge";
 import { isValidPreviewToken } from "@/lib/knowledge/preview";
@@ -239,33 +234,7 @@ export default async function ArticlePage({ params, searchParams }: Props) {
         )}
 
         {/* 記事本文 */}
-        <div className="prose prose-neutral prose-headings:font-bold prose-headings:text-gray-900 prose-a:text-sky-600 prose-a:no-underline hover:prose-a:underline prose-code:text-sky-700 prose-code:bg-sky-50 prose-code:px-1 prose-code:rounded max-w-none">
-          <ReactMarkdown
-            remarkPlugins={[remarkGfm, remarkFootnotes as never]}
-            rehypePlugins={[rehypeSlug, rehypeHighlight, rehypeRaw]}
-            components={{
-              img({ src, alt }) {
-                if (!src || typeof src !== "string") return null;
-                return (
-                  <span
-                    className="block relative w-full"
-                    style={{ aspectRatio: "16/9" }}
-                  >
-                    <Image
-                      src={src}
-                      alt={alt ?? ""}
-                      fill
-                      className="object-contain rounded-lg"
-                      loading="lazy"
-                    />
-                  </span>
-                );
-              },
-            }}
-          >
-            {article.content}
-          </ReactMarkdown>
-        </div>
+        <ArticleBody content={article.content} />
 
         <AuthorCard />
         <ConsultationCta />
