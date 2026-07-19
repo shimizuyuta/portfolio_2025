@@ -9,13 +9,35 @@ import rehypeSlug from "rehype-slug";
 import remarkFootnotes from "remark-footnotes";
 import remarkGfm from "remark-gfm";
 import { Badge } from "@/components/ui/badge";
-import { getArticleBySlug } from "@/lib/knowledge";
+import { getArticleBySlug, getArticleBySlugForPreview } from "@/lib/knowledge";
+import { isValidPreviewToken } from "@/lib/knowledge/preview";
 import { AuthorCard } from "./_components/AuthorCard";
 import { ConsultationCta } from "./_components/ConsultationCta";
+import { PreviewBanner } from "./_components/PreviewBanner";
 
 type Props = {
   params: Promise<{ slug: string }>;
+  searchParams: Promise<{ preview?: string }>;
 };
+
+// ?preview=<PREVIEW_TOKEN> が正しいときだけ draft を取得する。
+// トークンが無効なら「プレビューではない」として扱い、通常どおり
+// 公開記事のみを探す。結果として draft は notFound() になり、
+// 「トークンが違う」と「記事が無い」を外から区別できない。
+// draft の存在自体を漏らさないための設計。
+async function resolveArticle(
+  slug: string,
+  searchParams: Promise<{ preview?: string }>,
+) {
+  const { preview } = await searchParams;
+  const isPreview = isValidPreviewToken(preview);
+
+  const article = isPreview
+    ? await getArticleBySlugForPreview(slug)
+    : await getArticleBySlug(slug);
+
+  return { article, isPreview };
+}
 
 // force-dynamic で SSR を強制する。
 // generateStaticParams を使うと on-demand ISR（静的コンテキスト）になり
@@ -23,12 +45,24 @@ type Props = {
 // ビルド時の Supabase 接続もスキップされるため generateStaticParams は不要。
 export const dynamic = "force-dynamic";
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+  searchParams,
+}: Props): Promise<Metadata> {
   const { slug } = await params;
-  const article = await getArticleBySlug(slug);
+  const { article, isPreview } = await resolveArticle(slug, searchParams);
 
   if (!article) {
     return { title: "記事が見つかりません" };
+  }
+
+  // プレビューは未公開の内容なので、検索エンジンに拾わせない。
+  // canonical も付けない（未公開URLを正規URLとして申告しないため）。
+  if (isPreview) {
+    return {
+      title: `[プレビュー] ${article.title}`,
+      robots: { index: false, follow: false },
+    };
   }
 
   const description =
@@ -84,9 +118,9 @@ function extractHeadings(markdown: string) {
     });
 }
 
-export default async function ArticlePage({ params }: Props) {
+export default async function ArticlePage({ params, searchParams }: Props) {
   const { slug } = await params;
-  const article = await getArticleBySlug(slug);
+  const { article, isPreview } = await resolveArticle(slug, searchParams);
 
   if (!article) {
     notFound();
@@ -103,6 +137,12 @@ export default async function ArticlePage({ params }: Props) {
 
   return (
     <div className="bg-white min-h-screen">
+      {isPreview && (
+        <PreviewBanner
+          status={article.status}
+          publishedAt={article.published_at}
+        />
+      )}
       {/* パンくずナビ */}
       <div className="border-b bg-gray-50">
         <nav
