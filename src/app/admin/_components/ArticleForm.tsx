@@ -2,10 +2,17 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState, useTransition } from "react";
+import { useRef, useState, useTransition } from "react";
 import { ArticleBody } from "@/components/ArticleBody";
 import { Button } from "@/components/ui/button";
-import { type ArticleInput, uploadThumbnail } from "../actions";
+import { type ArticleInput, uploadImage } from "../actions";
+
+const ACCEPTED_IMAGE_TYPES = [
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+  "image/gif",
+];
 
 export const EMPTY_FORM: ArticleInput = {
   title: "",
@@ -76,67 +83,18 @@ function Field({
   );
 }
 
-// ─── ImageUploader ────────────────────────────────────────────────────────────
-function ImageUploader() {
-  const [url, setUrl] = useState<string | null>(null);
-  const [copied, setCopied] = useState(false);
-  const [isPending, startTransition] = useTransition();
-
-  function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    startTransition(async () => {
-      const fd = new FormData();
-      fd.append("file", file);
-      const uploaded = await uploadThumbnail(fd);
-      setUrl(uploaded);
-      setCopied(false);
-    });
-    e.target.value = "";
-  }
-
-  function handleCopy() {
-    if (!url) return;
-    navigator.clipboard.writeText(`![](${url})`);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  }
-
-  return (
-    <div className="rounded-lg border border-dashed border-gray-300 bg-gray-50 px-4 py-3 space-y-2">
-      <p className="text-xs font-medium text-gray-500">
-        本文用 画像アップロード
-      </p>
-      <div className="flex items-center gap-3 flex-wrap">
-        <label className="cursor-pointer">
-          <span className="text-xs px-3 py-1.5 rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 transition-colors">
-            {isPending ? "アップロード中…" : "ファイルを選択"}
-          </span>
-          <input
-            type="file"
-            accept="image/jpeg,image/png,image/webp,image/gif"
-            className="hidden"
-            onChange={handleFile}
-            disabled={isPending}
-          />
-        </label>
-        {url && (
-          <div className="flex items-center gap-2 flex-1 min-w-0">
-            <code className="text-xs text-gray-500 truncate flex-1 bg-white border border-gray-200 rounded px-2 py-1">
-              {`![](${url})`}
-            </code>
-            <button
-              type="button"
-              onClick={handleCopy}
-              className="shrink-0 text-xs px-3 py-1.5 rounded-lg bg-sky-500 text-white hover:bg-sky-600 transition-colors"
-            >
-              {copied ? "コピー済み ✓" : "コピー"}
-            </button>
-          </div>
-        )}
-      </div>
-    </div>
-  );
+// 本文の指定位置に画像記法を差し込む。
+// 画像は行単位のブロックとして置きたいので、前後が改行でなければ補う。
+// caret は `![` の直後を指す（挿入直後に alt をそのまま打てるようにするため）。
+function insertImageMarkdown(content: string, at: number, url: string) {
+  const before = content.slice(0, at);
+  const after = content.slice(at);
+  const prefix = before === "" || before.endsWith("\n") ? "" : "\n";
+  const suffix = after === "" || after.startsWith("\n") ? "" : "\n";
+  return {
+    text: `${before}${prefix}![](${url})${suffix}${after}`,
+    caret: before.length + prefix.length + 2,
+  };
 }
 
 // ─── ArticleForm ──────────────────────────────────────────────────────────────
@@ -158,6 +116,64 @@ export function ArticleForm({
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
 
+  // 本文への画像挿入
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+  const [isDragOver, setIsDragOver] = useState(false);
+
+  // ペースト・ドロップ・ファイル選択の3経路から共通で呼ぶ。
+  async function uploadAndInsert(file: File) {
+    if (!ACCEPTED_IMAGE_TYPES.includes(file.type)) {
+      setUploadError(`対応していない形式です（${file.type || "不明"}）`);
+      return;
+    }
+    // await を挟むとフォーカスが外れて選択位置が失われるため、先に控える
+    const at = textareaRef.current?.selectionStart ?? form.content.length;
+    setUploadError(null);
+    setIsUploading(true);
+    try {
+      const fd = new FormData();
+      fd.append("file", file);
+      const url = await uploadImage(fd);
+      // await 後なので、古い content を掴まないよう関数形式で更新する
+      let caret = at;
+      setForm((prev) => {
+        const next = insertImageMarkdown(prev.content, at, url);
+        caret = next.caret;
+        return { ...prev, content: next.text };
+      });
+      // value の反映後にキャレットを戻す
+      setTimeout(() => {
+        const ta = textareaRef.current;
+        if (!ta) return;
+        ta.focus();
+        ta.setSelectionRange(caret, caret);
+      }, 0);
+    } catch (e) {
+      setUploadError(
+        e instanceof Error ? e.message : "画像のアップロードに失敗しました",
+      );
+    } finally {
+      setIsUploading(false);
+    }
+  }
+
+  function handlePaste(e: React.ClipboardEvent<HTMLTextAreaElement>) {
+    const file = Array.from(e.clipboardData.files)[0];
+    if (!file) return; // 通常のテキストペーストは邪魔しない
+    e.preventDefault();
+    void uploadAndInsert(file);
+  }
+
+  function handleDrop(e: React.DragEvent<HTMLTextAreaElement>) {
+    setIsDragOver(false);
+    const file = Array.from(e.dataTransfer.files)[0];
+    if (!file) return;
+    e.preventDefault();
+    void uploadAndInsert(file);
+  }
+
   // ローカルプレビュー URL（選択直後）
   const previewUrl = thumbnailFile
     ? URL.createObjectURL(thumbnailFile)
@@ -174,7 +190,7 @@ export function ArticleForm({
         if (thumbnailFile) {
           const fd = new FormData();
           fd.append("file", thumbnailFile);
-          thumbnail_url = await uploadThumbnail(fd);
+          thumbnail_url = await uploadImage(fd);
         }
 
         await onSubmit({
@@ -305,12 +321,52 @@ export function ArticleForm({
         </div>
 
         {contentTab === "edit" ? (
-          <textarea
-            className={`${inputCls} resize-y font-mono text-xs`}
-            rows={16}
-            value={form.content}
-            onChange={(e) => setForm({ ...form, content: e.target.value })}
-          />
+          <div className="space-y-2">
+            <textarea
+              ref={textareaRef}
+              className={`${inputCls} resize-y font-mono text-xs ${
+                isDragOver ? "border-sky-400 ring-2 ring-sky-300" : ""
+              }`}
+              rows={16}
+              value={form.content}
+              onChange={(e) => setForm({ ...form, content: e.target.value })}
+              onPaste={handlePaste}
+              onDrop={handleDrop}
+              onDragOver={(e) => {
+                if (e.dataTransfer.types.includes("Files")) {
+                  e.preventDefault();
+                  setIsDragOver(true);
+                }
+              }}
+              onDragLeave={() => setIsDragOver(false)}
+            />
+
+            <div className="flex items-center gap-3 flex-wrap">
+              <label className="cursor-pointer">
+                <span className="text-xs px-3 py-1.5 rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 transition-colors">
+                  {isUploading ? "アップロード中…" : "画像を挿入"}
+                </span>
+                <input
+                  type="file"
+                  accept={ACCEPTED_IMAGE_TYPES.join(",")}
+                  className="hidden"
+                  disabled={isUploading}
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) void uploadAndInsert(file);
+                    e.target.value = "";
+                  }}
+                />
+              </label>
+              <span className="text-xs text-gray-400">
+                カーソル位置に挿入されます。画像のペースト・ドラッグ&ドロップも可
+              </span>
+            </div>
+
+            {uploadError && (
+              <p className="text-xs text-red-600">{uploadError}</p>
+            )}
+          </div>
         ) : (
           <div className="min-h-[22rem] rounded-lg border border-gray-300 bg-white px-4 py-3">
             {form.content.trim() ? (
@@ -323,8 +379,6 @@ export function ArticleForm({
           </div>
         )}
       </Field>
-
-      <ImageUploader />
 
       <Field label="ステータス">
         <select
