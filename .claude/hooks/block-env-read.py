@@ -48,6 +48,21 @@ def strip_quoted(text):
     return text
 
 
+# シンボリックリンクの作成のみ許可する。
+# ワークツリーで dev サーバーを動かすには環境ファイルの配置が要るが、
+# リンクを張ることと中身を読むことは別。読み取り（cat / source / cp 等）は
+# 引き続き全てブロックされる。
+SYMLINK_OK = re.compile(r"^\s*(sudo\s+)?ln\s+(-[a-zA-Z]*s[a-zA-Z]*\s+)")
+
+
+def split_segments(text):
+    """&& || ; | 改行 でコマンドを分割する。
+
+    `ln -s ... && cat <環境ファイル>` のような連結で読み取りが紛れ込むのを防ぐ。
+    """
+    return re.split(r"&&|\|\||;|\||\n", text)
+
+
 def main():
     try:
         payload = json.load(sys.stdin)
@@ -60,7 +75,14 @@ def main():
 
     cleaned = strip_quoted(strip_heredocs(command)).replace(SAMPLE, "")
 
-    if TARGET.search(cleaned):
+    # 環境ファイルに触れるセグメントのうち、シンボリックリンク作成だけ許す
+    offending = [
+        seg
+        for seg in split_segments(cleaned)
+        if TARGET.search(seg) and not SYMLINK_OK.match(seg)
+    ]
+
+    if offending:
         print(
             json.dumps(
                 {
