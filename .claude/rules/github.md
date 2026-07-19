@@ -96,3 +96,27 @@ gh issue comment <Issue番号> --body "..." # Issue に記録
 - 結果: ✅ 問題なし / ⚠️ 軽微な指摘あり / ❌ 要修正
 - 備考: （任意）
 ```
+
+## 検証スクリーンショットの置き場
+
+UI の変更をブラウザで目視確認した場合、スクリーンショットを `tmp/PR/` に保存する。
+
+```
+tmp/PR/pr<PR番号>-<内容>.jpg    # 例: tmp/PR/pr155-admin-list.jpg
+```
+
+- `tmp/` は `.gitignore` 済みなので、リポジトリには載らない
+- **Claude は PR コメントに画像を貼れない。** `gh` CLI に画像アップロード機能が無く、GitHub 側にも公開 API が無いため。Claude はファイルを置いてパスを伝えるところまでを行い、**PR への添付は人間が Web UI でドラッグ&ドロップする**
+- PR 本文の確認欄に「ブラウザ目視」と書く場合、スクショの添付は人間の作業として残っていることを明示する
+
+### PR マージ後の削除（必須）
+
+worktree の削除と同じタイミングで、その PR のスクショも削除する。
+
+```bash
+git worktree remove ../portfolio-<branch-name>
+git branch -d <branch-name>
+rm -f tmp/PR/pr<PR番号>-*        # 対象 PR のスクショのみ削除
+```
+
+`tmp/PR/` ごと消さないこと。他の未マージ PR のスクショが残っている場合があるため。
