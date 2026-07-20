@@ -16,6 +16,37 @@ function assertAdminEnabled() {
   }
 }
 
+// 本番のキャッシュ再検証を呼ぶ。
+//
+// revalidateTag() はそのプロセスのキャッシュにしか効かない。admin は
+// ADMIN_ENABLED でローカル限定のため、ローカルで公開しても本番の一覧・
+// サイトマップは古いまま残る（getPublishedArticles は revalidate: 86400）。
+// 本番へ届かせるには HTTP で叩くしかない。
+//
+// 失敗しても保存は成功扱いにする。記事は Supabase に保存済みであり、
+// ここで throw すると「保存できなかった」と誤解させるため。
+// 反映されなくても revalidate: 86400 で最終的には追いつく。
+//
+// 未設定の環境では何もしない。ローカル検証だけしたい場合に
+// 本番を触らずに済ませるため（設定して初めて本番へ届く）。
+async function revalidateProduction() {
+  const url = process.env.REVALIDATE_TARGET_URL?.trim();
+  const token = process.env.REVALIDATE_TOKEN?.trim();
+  if (!url || !token) return;
+
+  try {
+    const res = await fetch(`${url}/api/revalidate`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (!res.ok) {
+      console.error(`本番キャッシュの再検証に失敗しました: HTTP ${res.status}`);
+    }
+  } catch (e) {
+    console.error("本番キャッシュの再検証に失敗しました", e);
+  }
+}
+
 export type ArticleInput = {
   title: string;
   slug: string;
@@ -49,6 +80,7 @@ export async function createArticle(input: ArticleInput) {
   await syncArticleTags(supabase, data.id, tagIds);
 
   revalidateTag("published-articles");
+  await revalidateProduction();
   revalidatePath("/admin");
   revalidatePath("/knowledge");
 }
@@ -73,6 +105,7 @@ export async function updateArticle(id: string, input: ArticleInput) {
   await syncArticleTags(supabase, id, tagIds);
 
   revalidateTag("published-articles");
+  await revalidateProduction();
   revalidatePath("/admin");
   revalidatePath("/knowledge");
 }
@@ -83,6 +116,7 @@ export async function deleteArticle(id: string) {
   const { error } = await supabase.from("articles").delete().eq("id", id);
   if (error) throw new Error(error.message);
   revalidateTag("published-articles");
+  await revalidateProduction();
   revalidatePath("/admin");
   revalidatePath("/knowledge");
 }

@@ -1,6 +1,6 @@
-import { timingSafeEqual } from "node:crypto";
 import { revalidateTag } from "next/cache";
 import { NextResponse } from "next/server";
+import { verifyBearerToken } from "@/lib/api-auth";
 import { syncArticleTags, upsertTags } from "@/lib/knowledge/write";
 import { createServiceClient } from "@/lib/supabase/service";
 
@@ -37,21 +37,10 @@ const REQUIRED_ON_CREATE: RequiredField[] = [
 ];
 
 function authenticate(request: Request): boolean {
-  const auth = request.headers.get("Authorization");
-  // Vercel の環境変数は貼り付け時に末尾へ改行が混入することがある。
-  // 見た目が同じでも "abc" と "abc\n" は厳密比較で一致しないため、
-  // 両辺を trim してから比較する（NEXT_PUBLIC_GA_ID と同種の対処）。
-  const key = process.env.BLOG_API_KEY?.trim();
-  if (!key || !auth?.startsWith("Bearer ")) return false;
-
-  const received = Buffer.from(auth.slice(7).trim());
-  const expected = Buffer.from(key);
-
-  // timingSafeEqual は長さが違うと例外を投げるので先に弾く。
-  // 長さの差は秘匿できないが、内容の総当たりは時間差から守る（preview.ts と同方針）。
-  if (received.length !== expected.length) return false;
-
-  return timingSafeEqual(received, expected);
+  return verifyBearerToken(
+    request.headers.get("Authorization"),
+    process.env.BLOG_API_KEY,
+  );
 }
 
 function unauthorized() {
