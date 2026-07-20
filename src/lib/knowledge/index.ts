@@ -21,6 +21,10 @@ type ArticleRow = Omit<Article, "tags"> & {
   article_tags: { tags: { id: string; name: string } | null }[];
 };
 
+// PostgREST が .single() で0件だったときに返すコード。
+// 「記事が無い」と「取得に失敗した」を区別するために使う。
+const NO_ROWS_RETURNED = "PGRST116";
+
 function toArticle(row: ArticleRow): Article {
   return {
     ...row,
@@ -49,9 +53,20 @@ export const getPublishedArticles = unstable_cache(
 
     const { data, error } = await query;
 
-    if (error || !data) return [];
+    // 取得に失敗したら握りつぶさず投げる。
+    //
+    // 以前は空配列を返していたが、これは事故になる：サイトマップが
+    // 「記事0件」の XML を 200 で配信し、Google にインデックス削除と
+    // 解釈されうる。さらに unstable_cache は返り値をキャッシュするため、
+    // 一時的な障害の結果が最大24時間居座る（例外はキャッシュされない）。
+    //
+    // 呼び出し側の判断で握り潰したい場合（ホームの記事セクション等）は、
+    // 各ページで catch する。ここでは事実を返すことに徹する。
+    if (error) {
+      throw new Error(`公開記事の取得に失敗しました: ${error.message}`);
+    }
 
-    return data.map(toArticle);
+    return (data ?? []).map(toArticle);
   },
   ["published-articles"],
   { revalidate: 86400, tags: ["published-articles"] },
@@ -68,9 +83,15 @@ export const getArticleBySlug = unstable_cache(
       .eq("status", "published")
       .single();
 
-    if (error || !data) return undefined;
+    // 0件（未公開・存在しない）は undefined を返し、呼び出し側で 404 にする。
+    // それ以外のエラーは投げる。区別しないと、一時的な障害で公開中の記事が
+    // 404 になり、検索エンジンに存在しないページと見なされる。
+    if (error) {
+      if (error.code === NO_ROWS_RETURNED) return undefined;
+      throw new Error(`記事の取得に失敗しました（${slug}）: ${error.message}`);
+    }
 
-    return toArticle(data);
+    return data ? toArticle(data) : undefined;
   },
   ["article-by-slug"],
   { revalidate: 86400, tags: ["published-articles"] },
@@ -93,7 +114,10 @@ export async function getArticleBySlugForPreview(
     .eq("slug", slug)
     .single();
 
-  if (error || !data) return undefined;
+  if (error) {
+    if (error.code === NO_ROWS_RETURNED) return undefined;
+    throw new Error(`記事の取得に失敗しました（${slug}）: ${error.message}`);
+  }
 
-  return toArticle(data);
+  return data ? toArticle(data) : undefined;
 }
