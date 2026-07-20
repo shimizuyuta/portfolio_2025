@@ -10,13 +10,14 @@ import { verifyBearerToken } from "@/lib/api-auth";
 // （getPublishedArticles は revalidate: 86400 でキャッシュされる）。
 // 本番の外から再検証を起こせる唯一の経路がこのルート。
 //
-// BLOG_API_KEY とは別トークンにしている。記事の読み書き権限と
-// キャッシュ破棄の権限は影響範囲が違うため、片方が漏れても
-// もう片方が巻き込まれないようにする。
+// 認証は BLOG_API_KEY を流用する。専用トークンを分ける案もあったが、
+// 漏洩時の被害が非対称すぎて分離の価値が小さい：BLOG_API_KEY が漏れれば
+// 記事を書き換えられるのに対し、キャッシュ破棄でできるのは本番を一度
+// 再クエリさせることだけ。変数を増やす設定コストのほうが上回る。
 export async function POST(request: Request) {
   const authorized = verifyBearerToken(
     request.headers.get("Authorization"),
-    process.env.REVALIDATE_TOKEN,
+    process.env.BLOG_API_KEY,
   );
 
   if (!authorized) {

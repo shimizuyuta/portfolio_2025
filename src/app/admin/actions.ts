@@ -2,6 +2,7 @@
 
 import { revalidatePath, revalidateTag } from "next/cache";
 import { syncArticleTags, upsertTags } from "@/lib/knowledge/write";
+import { SITE_URL } from "@/lib/site";
 import { createServiceClient } from "@/lib/supabase/service";
 
 // "use server" のファイルでは export した関数がすべて Server Action として
@@ -23,19 +24,19 @@ function assertAdminEnabled() {
 // サイトマップは古いまま残る（getPublishedArticles は revalidate: 86400）。
 // 本番へ届かせるには HTTP で叩くしかない。
 //
+// 時間ベースの短い revalidate ではなくこの方式にしている。記事が変わらない
+// 期間も定期的に問い合わせ続けるのは無駄で、変更した瞬間だけ1回無効化すれば
+// 足りるため。
+//
 // 失敗しても保存は成功扱いにする。記事は Supabase に保存済みであり、
 // ここで throw すると「保存できなかった」と誤解させるため。
 // 反映されなくても revalidate: 86400 で最終的には追いつく。
-//
-// 未設定の環境では何もしない。ローカル検証だけしたい場合に
-// 本番を触らずに済ませるため（設定して初めて本番へ届く）。
 async function revalidateProduction() {
-  const url = process.env.REVALIDATE_TARGET_URL?.trim();
-  const token = process.env.REVALIDATE_TOKEN?.trim();
-  if (!url || !token) return;
+  const token = process.env.BLOG_API_KEY?.trim();
+  if (!token) return;
 
   try {
-    const res = await fetch(`${url}/api/revalidate`, {
+    const res = await fetch(`${SITE_URL}/api/revalidate`, {
       method: "POST",
       headers: { Authorization: `Bearer ${token}` },
     });
