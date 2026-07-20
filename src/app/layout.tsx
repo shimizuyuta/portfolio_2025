@@ -2,6 +2,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Noto_Sans_JP, Zen_Kaku_Gothic_New } from "next/font/google";
 import type { ReactNode } from "react";
+import { SITE_URL } from "@/lib/site";
 import { GoogleAnalytics } from "./_components/GoogleAnalytics";
 import { Header } from "./_components/Header";
 
@@ -26,7 +27,7 @@ export const metadata: Metadata = {
   },
   description:
     "福祉×IT・AIの視点で発信するフリーランスエンジニア。社会福祉士の資格と6年のエンジニア経験を活かし、福祉業界のDX・AI導入支援を行っています。",
-  metadataBase: new URL("https://www.ysdevelopment.jp"),
+  metadataBase: new URL(SITE_URL),
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
