@@ -16,6 +16,13 @@
         "GOOGLE_APPLICATION_CREDENTIALS": "${HOME}/.config/gcloud/portfolio-ga4-sa.json",
         "GOOGLE_PROJECT_ID": "portfolio-ga4-shimizuyuta"
       }
+    },
+    "gsc": {
+      "command": "npx",
+      "args": ["-y", "mcp-server-gsc"],
+      "env": {
+        "GOOGLE_APPLICATION_CREDENTIALS": "${HOME}/.config/gcloud/portfolio-ga4-sa.json"
+      }
     }
   }
 }
