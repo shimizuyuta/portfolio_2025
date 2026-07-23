@@ -52,3 +52,6 @@ next-env.d.ts
 /output/
 
 /.playwright-mcp/*
+
+# 記事の旧版退避（ローカルのみで管理）
+/articles-backup/
