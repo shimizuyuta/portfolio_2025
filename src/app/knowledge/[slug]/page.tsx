@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ArticleView } from "@/components/ArticleView";
 import { getArticleBySlug, getArticleBySlugForPreview } from "@/lib/knowledge";
+import { buildArticleJsonLd, serializeJsonLd } from "@/lib/knowledge/jsonld";
 import { isValidPreviewToken } from "@/lib/knowledge/preview";
 import { PreviewBanner } from "./_components/PreviewBanner";
 
@@ -101,6 +102,16 @@ export default async function ArticlePage({ params, searchParams }: Props) {
 
   return (
     <div className="bg-white min-h-screen">
+      {/* プレビューは noindex なので構造化データは公開記事だけに出す。 */}
+      {!isPreview &&
+        buildArticleJsonLd(article).map((jsonLd) => (
+          <script
+            key={jsonLd["@type"]}
+            type="application/ld+json"
+            // biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD は serializeJsonLd で < をエスケープ済み
+            dangerouslySetInnerHTML={{ __html: serializeJsonLd(jsonLd) }}
+          />
+        ))}
       {isPreview && (
         <PreviewBanner
           status={article.status}
