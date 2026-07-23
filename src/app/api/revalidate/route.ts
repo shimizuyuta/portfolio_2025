@@ -1,6 +1,7 @@
 import { revalidateTag } from "next/cache";
 import { NextResponse } from "next/server";
 import { verifyBearerToken } from "@/lib/api-auth";
+import { submitSitemap } from "@/lib/gsc";
 
 // 公開記事キャッシュの再検証エンドポイント。
 //
@@ -26,9 +27,29 @@ export async function POST(request: Request) {
 
   revalidateTag("published-articles");
 
+  // sitemap の再送信で GSC に再クロールを促す。
+  // Google が sitemap ping を廃止したため、公開反映と同じこのタイミングで
+  // Search Console API を叩くのが自動検知の唯一の経路になる。
+  // キャッシュ再検証が主目的なので、送信失敗で全体を 500 にはしない。
+  // 結果は sitemap フィールドで返し、成否はレスポンスで確認できるようにする。
+  let sitemap: string;
+  try {
+    const result = await submitSitemap();
+    if (result.ok) {
+      sitemap = "submitted";
+    } else if (result.skipped) {
+      sitemap = `skipped: ${result.reason}`;
+    } else {
+      sitemap = `failed: ${result.status} ${result.body}`;
+    }
+  } catch (error) {
+    sitemap = `error: ${error instanceof Error ? error.message : String(error)}`;
+  }
+
   return NextResponse.json({
     revalidated: true,
     tag: "published-articles",
+    sitemap,
     now: new Date().toISOString(),
   });
 }
