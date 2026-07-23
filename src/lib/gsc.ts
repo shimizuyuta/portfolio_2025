@@ -11,6 +11,9 @@ import { SITE_URL } from "@/lib/site";
 // 認証はサービスアカウントの JWT を自前で組んで access token に交換する。
 // google-auth-library / googleapis を足す案もあったが、呼ぶのは 1 エンドポイント
 // だけで、依存を増やすほどの実装量ではないため node:crypto で完結させる。
+//
+// 前提: サービスアカウントは GSC プロパティに「所有者」権限で追加すること。
+// sitemaps.submit は所有者必須で、フルユーザーでは 403（PERMISSION_DENIED）になる。
 
 const TOKEN_URL = "https://oauth2.googleapis.com/token";
 const SCOPE = "https://www.googleapis.com/auth/webmasters";
