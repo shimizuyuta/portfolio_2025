@@ -14,3 +14,5 @@ package-lock.json
 # Binary image assets (not useful for code understanding)
 public/images/
 public/logo/*.png
+
+.env.local
