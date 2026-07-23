@@ -9,7 +9,7 @@ import { Decorated } from "./templates/decorated";
 import { Minimal } from "./templates/minimal";
 import { HEIGHT, type TemplateName, type ThumbnailInput, WIDTH } from "./theme";
 
-const OUT_DIR = join(process.cwd(), "tmp", "thumbnails");
+const OUT_DIR = join(process.cwd(), "tmp", "サムネ");
 
 const USAGE = `
 使い方:
@@ -17,7 +17,7 @@ const USAGE = `
     --slug <slug> --template <minimal|decorated> --title "見出し" [options]
 
 必須:
-  --slug          出力ファイル名（tmp/thumbnails/<slug>.png）
+  --slug          出力ファイル名（tmp/サムネ/<slug>.png）
   --title         主見出し。\\n で改行位置を指定できる
 
 任意:

@@ -80,13 +80,11 @@ npx tsx --tsconfig scripts/thumbnail/tsconfig.json scripts/thumbnail/generate.ts
   --template <minimal|decorated> \
   --badge "<バッジ>" \
   --title '<見出し（\n で改行）>' \
-  --subtitle "<サブ>" \
-  --brand "TodoONada" \
-  --brand-suffix "note.com/daikidomon"
+  --subtitle "<サブ>"
 ```
 
 - `--title` は `\n` をシェルに食わせないため**シングルクォート**で囲む
-- `--brand` / `--brand-suffix` は `minimal` のみ有効
+- **`--brand` / `--brand-suffix` は使わない。** ブランド名・URL（TodoONada / note.com/daikidomon 等）はサムネに入れない方針。渡すとフッターに焼き込まれる
 - `decorated` にイラストを入れる場合は `--emoji 🪙`（Twemoji）か `--illustration <パス>`（自前画像）を足す
 
 #### `--emoji` を使う前に確認する（省略禁止）
@@ -95,7 +93,7 @@ npx tsx --tsconfig scripts/thumbnail/tsconfig.json scripts/thumbnail/generate.ts
 
 `docs/thumbnail-credits.md` に記載した帰属表示がサイトに設置済みかを確認する。**未設置なら `--emoji` を使わず、人間に判断を仰いで停止する。**
 
-出力先は `tmp/thumbnails/<slug>.png`（1200×630）。
+出力先は `tmp/サムネ/<slug>.png`（1200×630）。
 
 ### Step 6. 目視確認
 
