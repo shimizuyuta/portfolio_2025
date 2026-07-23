@@ -55,3 +55,6 @@ next-env.d.ts
 
 # 記事の旧版退避（ローカルのみで管理）
 /articles-backup/
+
+# 施策の改善ログ（ローカルのみで管理・他人に見せない）
+/docs/experiments/
