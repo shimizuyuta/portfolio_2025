@@ -28,7 +28,14 @@ function isImageOnlyParagraph(node: Element | undefined) {
 
 export function ArticleBody({ content }: { content: string }) {
   return (
-    <div className="prose prose-neutral prose-headings:font-bold prose-headings:text-gray-900 prose-a:text-sky-600 prose-a:no-underline hover:prose-a:underline prose-code:text-sky-700 prose-code:bg-sky-50 prose-code:px-1 prose-code:rounded max-w-none">
+    // スマホ閲覧が主のため SP を基準に文字組みを整える:
+    // - base=16px を維持し md:prose-lg で PC のみ 18px に上げる
+    // - break-words: 長い英単語・URL で横スクロールが出ないようにする
+    // - prose-headings:scroll-mt-24: sticky ヘッダー裏に見出しが隠れないよう
+    //   目次アンカーの着地位置をずらす
+    // - prose-table を block+overflow-x-auto にし、幅広の表はページ全体でなく
+    //   表の中だけを横スクロールさせる（table を block 化する定石）
+    <div className="prose prose-neutral md:prose-lg max-w-none break-words prose-p:leading-[1.8] prose-headings:font-bold prose-headings:text-gray-900 prose-headings:scroll-mt-24 prose-a:text-sky-600 prose-a:no-underline hover:prose-a:underline prose-code:text-sky-700 prose-code:bg-sky-50 prose-code:px-1 prose-code:rounded prose-pre:overflow-x-auto prose-pre:text-sm prose-table:block prose-table:overflow-x-auto">
       <ReactMarkdown
         remarkPlugins={[remarkGfm, remarkFootnotes as never]}
         rehypePlugins={[rehypeSlug, rehypeHighlight, rehypeRaw]}
