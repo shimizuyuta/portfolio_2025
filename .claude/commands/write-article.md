@@ -26,8 +26,10 @@
 
 ### Step 2. 重複チェック（省略禁止）
 
+デプロイ済みの本番 `/api/articles` から取得する（**ローカル dev サーバー不要**。鍵は表示しない）。取得方法は `/trend-scan` の Step 1 と同じ。
+
 ```bash
-curl -s "$BLOG_API_BASE_URL/api/articles" -H "Authorization: Bearer $BLOG_API_KEY"
+set -a; source .env.local; set +a; curl -s "https://www.ysdevelopment.jp/api/articles" -H "Authorization: Bearer $BLOG_API_KEY"
 ```
 
 **全status を対象に**タイトル・slug・タグで類似記事を探す。
