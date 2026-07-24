@@ -35,7 +35,15 @@ export function ArticleBody({ content }: { content: string }) {
     //   目次アンカーの着地位置をずらす
     // - prose-table を block+overflow-x-auto にし、幅広の表はページ全体でなく
     //   表の中だけを横スクロールさせる（table を block 化する定石）
-    <div className="prose prose-neutral md:prose-lg max-w-none break-words prose-p:leading-[1.8] prose-headings:font-bold prose-headings:text-gray-900 prose-headings:scroll-mt-24 prose-a:text-sky-600 prose-a:no-underline hover:prose-a:underline prose-code:text-sky-700 prose-code:bg-sky-50 prose-code:px-1 prose-code:rounded prose-pre:overflow-x-auto prose-pre:text-sm prose-table:block prose-table:overflow-x-auto">
+    // 可読性向上（見やすいメディアに合わせる）:
+    // - prose-p:my-6: 段落間の余白を広げ、スクロール時に段落を明確に分離
+    // - [--tw-prose-body:#1f2937]: 本文色を gray-800 相当に濃くし高コントラスト化
+    // 見出し装飾（案B：アクセント線）— 章の切れ目を一目で分かるようにする:
+    // - h2: 下罫線(gray-200) ＋ 短い sky アクセント下線(::after, w-12/h-[3px])
+    // - h3: 左 sky バー(border-l-4)
+    //   ※prose の生CSS(.prose h2)は Tailwind v4 で出力されないため、
+    //     prose-h2:/prose-h3:/after: ユーティリティで指定する（確実に出力される）
+    <div className="prose prose-neutral md:prose-lg max-w-none break-words [--tw-prose-body:#1f2937] prose-p:my-6 prose-p:leading-[1.8] prose-headings:font-bold prose-headings:text-gray-900 prose-headings:scroll-mt-24 prose-h2:relative prose-h2:border-b prose-h2:border-gray-200 prose-h2:pb-2 prose-h2:after:absolute prose-h2:after:bottom-[-1px] prose-h2:after:left-0 prose-h2:after:h-[3px] prose-h2:after:w-12 prose-h2:after:rounded-full prose-h2:after:bg-sky-500 prose-h2:after:content-[''] prose-h3:border-l-4 prose-h3:border-sky-500 prose-h3:pl-3 prose-a:text-sky-600 prose-a:no-underline hover:prose-a:underline prose-code:text-sky-700 prose-code:bg-sky-50 prose-code:px-1 prose-code:rounded prose-pre:overflow-x-auto prose-pre:text-sm prose-table:block prose-table:overflow-x-auto">
       <ReactMarkdown
         remarkPlugins={[remarkGfm, remarkFootnotes as never]}
         rehypePlugins={[rehypeSlug, rehypeHighlight, rehypeRaw]}
