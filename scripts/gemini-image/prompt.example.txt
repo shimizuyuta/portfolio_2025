@@ -1,0 +1,24 @@
+A clean, modern flat-vector infographic for a Japanese blog article. Full COLOR (not grayscale). Landscape 16:9, light off-white background (#f3f7fc) with plenty of margin. Style: rounded white cards with soft subtle shadow, a bold rounded "pill" title bar at the top, numbered circular badges, simple minimal line icons, thick arrows between cards. High resolution, crisp large legible Japanese text.
+
+COLOR PALETTE (match the site's brand — a BLUE / NAVY theme, NO orange):
+- Base: off-white background (#f3f7fc), white cards, light blue-gray borders (#d5dfeb).
+- Primary (title pill, number badges, arrows, icons): brand blue #0050b5.
+- Bright accent: #026fd7.
+- Neutral highlight: muted slate gray #506580.
+Keep the ENTIRE palette within blue + neutral gray. Do NOT use orange, red, green, or teal.
+
+TITLE PILL (top center, white text on brand-blue rounded pill):
+（ここにタイトルを入れる）
+
+STEP CARDS left-to-right, each with a number badge, a small icon, and a Japanese label.
+Render the Japanese text exactly and crisply:
+1. （ラベル1）  — icon: ...
+2. （ラベル2）  — icon: ...
+3. （ラベル3）  — icon: ...
+
+MUST:
+- Full color, not grayscale.
+- Correct, clean Japanese characters (no garbled or fake characters).
+- Abstract placeholders only for any sample data (〇〇 / △△). No real personal data.
+- No brand logo, no watermark, no URL.
+- Mobile-readable: large text, high contrast.
