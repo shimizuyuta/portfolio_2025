@@ -26,24 +26,36 @@ function isImageOnlyParagraph(node: Element | undefined) {
   );
 }
 
+// 記事本文の prose カスタマイズ。スマホ閲覧が主のため SP を基準に組む。
+// Tailwind v4 では .prose の生CSSが出力されないため、装飾はすべて
+// prose-* / 任意バリアントのユーティリティで指定する（確実にビルドに出る）。
+const PROSE_CLASSES = [
+  // ベース: SP16px / PC18px、行間1.8、本文色を濃く、長語の折り返し、見出しアンカー退避
+  // 引用ボーダー色は prose の変数を上書きして指定（specificity 争いを避ける）
+  "prose prose-neutral md:prose-lg max-w-none break-words",
+  "[--tw-prose-body:#1f2937] [--tw-prose-quote-borders:#38bdf8]",
+  "prose-p:my-6 prose-p:leading-[1.8]",
+  "prose-headings:font-bold prose-headings:scroll-mt-24",
+  // h2: ネイビー塗り帯・白文字・角丸（セクションの開始を明確化）
+  "prose-h2:text-white prose-h2:bg-sidebar prose-h2:rounded-lg prose-h2:px-5 prose-h2:py-3 prose-h2:text-xl prose-h2:leading-snug",
+  // h3: 左 sky バー＋下罫線
+  "prose-h3:text-gray-900 prose-h3:border-l-4 prose-h3:border-l-sky-500 prose-h3:border-b prose-h3:border-b-gray-200 prose-h3:pl-3 prose-h3:pb-1",
+  // blockquote: 左アクセント（色は上の変数で指定）＋薄背景のカラーボックス（引用符は消す）
+  "prose-blockquote:bg-sky-50 prose-blockquote:rounded-r-lg prose-blockquote:not-italic prose-blockquote:font-normal prose-blockquote:text-gray-700 prose-blockquote:px-4 prose-blockquote:py-1",
+  "[&_blockquote_p]:before:content-none [&_blockquote_p]:after:content-none",
+  // 太字: マーカー風ハイライトで色のアクセント（折り返しても綺麗に敷く）
+  "prose-strong:text-gray-900 [&_strong]:bg-[linear-gradient(transparent_65%,#bae6fd_65%)] [&_strong]:box-decoration-clone",
+  // リスト: マーカーを sky 色に
+  "prose-li:marker:text-sky-500",
+  // リンク・コード・表（既存の対策を維持）
+  "prose-a:text-sky-600 prose-a:no-underline hover:prose-a:underline",
+  "prose-code:text-sky-700 prose-code:bg-sky-50 prose-code:px-1 prose-code:rounded",
+  "prose-pre:overflow-x-auto prose-pre:text-sm prose-table:block prose-table:overflow-x-auto",
+].join(" ");
+
 export function ArticleBody({ content }: { content: string }) {
   return (
-    // スマホ閲覧が主のため SP を基準に文字組みを整える:
-    // - base=16px を維持し md:prose-lg で PC のみ 18px に上げる
-    // - break-words: 長い英単語・URL で横スクロールが出ないようにする
-    // - prose-headings:scroll-mt-24: sticky ヘッダー裏に見出しが隠れないよう
-    //   目次アンカーの着地位置をずらす
-    // - prose-table を block+overflow-x-auto にし、幅広の表はページ全体でなく
-    //   表の中だけを横スクロールさせる（table を block 化する定石）
-    // 可読性向上（見やすいメディアに合わせる）:
-    // - prose-p:my-6: 段落間の余白を広げ、スクロール時に段落を明確に分離
-    // - [--tw-prose-body:#1f2937]: 本文色を gray-800 相当に濃くし高コントラスト化
-    // 見出し装飾（案B：アクセント線）— 章の切れ目を一目で分かるようにする:
-    // - h2: 下罫線(gray-200) ＋ 短い sky アクセント下線(::after, w-12/h-[3px])
-    // - h3: 左 sky バー(border-l-4)
-    //   ※prose の生CSS(.prose h2)は Tailwind v4 で出力されないため、
-    //     prose-h2:/prose-h3:/after: ユーティリティで指定する（確実に出力される）
-    <div className="prose prose-neutral md:prose-lg max-w-none break-words [--tw-prose-body:#1f2937] prose-p:my-6 prose-p:leading-[1.8] prose-headings:font-bold prose-headings:text-gray-900 prose-headings:scroll-mt-24 prose-h2:relative prose-h2:border-b prose-h2:border-gray-200 prose-h2:pb-2 prose-h2:after:absolute prose-h2:after:bottom-[-1px] prose-h2:after:left-0 prose-h2:after:h-[3px] prose-h2:after:w-12 prose-h2:after:rounded-full prose-h2:after:bg-sky-500 prose-h2:after:content-[''] prose-h3:border-l-4 prose-h3:border-sky-500 prose-h3:pl-3 prose-a:text-sky-600 prose-a:no-underline hover:prose-a:underline prose-code:text-sky-700 prose-code:bg-sky-50 prose-code:px-1 prose-code:rounded prose-pre:overflow-x-auto prose-pre:text-sm prose-table:block prose-table:overflow-x-auto">
+    <div className={PROSE_CLASSES}>
       <ReactMarkdown
         remarkPlugins={[remarkGfm, remarkFootnotes as never]}
         rehypePlugins={[rehypeSlug, rehypeHighlight, rehypeRaw]}
