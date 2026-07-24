@@ -1,7 +1,13 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ArticleView } from "@/components/ArticleView";
-import { getArticleBySlug, getArticleBySlugForPreview } from "@/lib/knowledge";
+import {
+  extractInternalArticleSlugs,
+  getArticleBySlug,
+  getArticleBySlugForPreview,
+  getArticleCardsBySlugs,
+  toArticleCardMap,
+} from "@/lib/knowledge";
 import { buildArticleJsonLd, serializeJsonLd } from "@/lib/knowledge/jsonld";
 import { isValidPreviewToken } from "@/lib/knowledge/preview";
 import { PreviewBanner } from "./_components/PreviewBanner";
@@ -100,6 +106,13 @@ export default async function ArticlePage({ params, searchParams }: Props) {
     notFound();
   }
 
+  // 本文中の単独行サイト内リンクをカード化するため、リンク先の公開記事メタを
+  // 先に取得して渡す（自分自身へのリンクは除外）。
+  const linkedSlugs = extractInternalArticleSlugs(article.content).filter(
+    (s) => s !== slug,
+  );
+  const linkCards = toArticleCardMap(await getArticleCardsBySlugs(linkedSlugs));
+
   return (
     <div className="bg-white min-h-screen">
       {/* プレビューは noindex なので構造化データは公開記事だけに出す。 */}
@@ -125,6 +138,7 @@ export default async function ArticlePage({ params, searchParams }: Props) {
         content={article.content}
         thumbnailUrl={article.thumbnail_url}
         publishedAt={article.published_at}
+        linkCards={linkCards}
       />
     </div>
   );

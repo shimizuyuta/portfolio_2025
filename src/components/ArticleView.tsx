@@ -4,6 +4,7 @@ import { ArticleBody } from "@/components/ArticleBody";
 import { AuthorCard } from "@/components/article/AuthorCard";
 import { ConsultationCta } from "@/components/article/ConsultationCta";
 import { Badge } from "@/components/ui/badge";
+import type { ArticleCard } from "@/lib/knowledge";
 
 // Markdownの見出し（## / ###）を抽出してToCを生成
 export function extractHeadings(markdown: string) {
@@ -32,6 +33,9 @@ export type ArticleViewProps = {
   // 管理画面のプレビューはサムネイル未保存時に blob URL を渡す。
   // next/image は blob を最適化できないため、その場合だけ最適化を切る。
   unoptimizedImage?: boolean;
+  // 本文中の内部リンクをカード化するためのメタ。Server 側で事前取得して渡す。
+  // 省略時（編集フォームのライブプレビュー等）は通常リンクで描画される。
+  linkCards?: Map<string, ArticleCard>;
 };
 
 // 記事ページの見た目だけを持つコンポーネント。データ取得は呼び出し側の責務。
@@ -46,6 +50,7 @@ export function ArticleView({
   thumbnailUrl,
   publishedAt,
   unoptimizedImage,
+  linkCards,
 }: ArticleViewProps) {
   const headings = extractHeadings(content);
   const publishedDate = publishedAt
@@ -153,7 +158,7 @@ export function ArticleView({
         )}
 
         {/* 記事本文 */}
-        <ArticleBody content={content} />
+        <ArticleBody content={content} linkCards={linkCards} />
 
         <AuthorCard />
         <ConsultationCta />

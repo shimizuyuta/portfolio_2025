@@ -1,6 +1,11 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArticleView } from "@/components/ArticleView";
+import {
+  extractInternalArticleSlugs,
+  getArticleCardsBySlugs,
+  toArticleCardMap,
+} from "@/lib/knowledge";
 import { getAdminArticleById } from "../../actions";
 import { assertAdminPage } from "../../guard";
 
@@ -24,6 +29,12 @@ export default async function PreviewArticlePage({
   }
 
   const tagNames: string[] = article.tagNames ?? [];
+
+  // 公開ページと同じ見た目で確認するため、内部リンクカードも同様に事前取得する。
+  const linkedSlugs = extractInternalArticleSlugs(article.content ?? "").filter(
+    (s) => s !== article.slug,
+  );
+  const linkCards = toArticleCardMap(await getArticleCardsBySlugs(linkedSlugs));
 
   return (
     // admin layout の max-w-4xl / px-6 / py-10 を打ち消して全幅で描く。
@@ -59,6 +70,7 @@ export default async function PreviewArticlePage({
         content={article.content ?? ""}
         thumbnailUrl={article.thumbnail_url ?? null}
         publishedAt={article.published_at ?? null}
+        linkCards={linkCards}
       />
     </div>
   );
