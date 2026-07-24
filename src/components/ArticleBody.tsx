@@ -6,6 +6,8 @@ import rehypeRaw from "rehype-raw";
 import rehypeSlug from "rehype-slug";
 import remarkFootnotes from "remark-footnotes";
 import remarkGfm from "remark-gfm";
+import { ArticleLinkCard } from "@/components/article/ArticleLinkCard";
+import type { ArticleCard } from "@/lib/knowledge";
 
 // 記事本文の描画。記事詳細ページと /admin のプレビューで共有する。
 // 別実装にすると必ず見た目がずれるため、必ずこのコンポーネントを通す。
@@ -24,6 +26,42 @@ function isImageOnlyParagraph(node: Element | undefined) {
     meaningful[0].type === "element" &&
     meaningful[0].tagName === "img"
   );
+}
+
+// href（相対 / 絶対）から内部記事の slug を取り出す。該当しなければ null。
+// カード化の最終ゲートは linkCards マップ（公開記事のみ）なので、
+// ここでは形が /knowledge/<slug> かどうかだけを緩く判定する。
+function parseInternalArticleSlug(href: unknown): string | null {
+  if (typeof href !== "string") return null;
+  const path = href.startsWith("http")
+    ? (() => {
+        try {
+          return new URL(href).pathname;
+        } catch {
+          return href;
+        }
+      })()
+    : href;
+  const match = path.match(/^\/knowledge\/([a-z0-9-]+)\/?$/);
+  return match ? match[1] : null;
+}
+
+// 段落が「単独のサイト内記事リンク」だけで構成されているなら、その slug を返す。
+// 画像単独段落と同様に、前後の空白テキストは無視する。
+// これに当てはまる段落のみブログカードに差し替える（文中インラインリンクは対象外）。
+function getStandaloneArticleSlug(node: Element | undefined): string | null {
+  if (!node) return null;
+  const meaningful = node.children.filter(
+    (child) => !(child.type === "text" && child.value.trim() === ""),
+  );
+  const only = meaningful[0];
+  if (
+    meaningful.length !== 1 ||
+    only.type !== "element" ||
+    only.tagName !== "a"
+  )
+    return null;
+  return parseInternalArticleSlug(only.properties?.href);
 }
 
 // mdast の最小ノード型（依存追加を避けるためローカル定義）
@@ -98,7 +136,17 @@ const PROSE_CLASSES = [
   "prose-pre:overflow-x-auto prose-pre:text-sm prose-table:block prose-table:overflow-x-auto",
 ].join(" ");
 
-export function ArticleBody({ content }: { content: string }) {
+// linkCards: 本文中の内部リンク slug → 記事メタ のマップ（Server 側で事前取得）。
+// これが渡された環境（記事詳細・admin プレビュー）でのみ、単独行の
+// サイト内リンクをブログカードに差し替える。渡されない環境（編集フォームの
+// ライブプレビュー）では通常リンクにフォールバックする。
+export function ArticleBody({
+  content,
+  linkCards,
+}: {
+  content: string;
+  linkCards?: Map<string, ArticleCard>;
+}) {
   return (
     <div className={PROSE_CLASSES}>
       <ReactMarkdown
@@ -109,7 +157,45 @@ export function ArticleBody({ content }: { content: string }) {
           // markdown の `![](...)` は <p> に包まれるが、img を figure に
           // 置き換えると <p> 内に <figure> が入り HTML として不正になるため。
           p({ node, children }) {
-            return isImageOnlyParagraph(node) ? children : <p>{children}</p>;
+            if (isImageOnlyParagraph(node)) return children;
+            // 単独行のサイト内リンクで、リンク先が公開記事ならカードに差し替える。
+            // カードはブロック要素なので <p> で包まず直接出す。
+            const slug = getStandaloneArticleSlug(node);
+            const card = slug ? linkCards?.get(slug) : undefined;
+            if (card) return <ArticleLinkCard {...card} />;
+            return <p>{children}</p>;
+          },
+          // 外部リンク（http/https）は別タブで開き、外部アイコンを添える。
+          // サイト内リンク（相対 / アンカー）と見分けられるようにするため。
+          a({ href, children }) {
+            const isExternal =
+              typeof href === "string" && /^https?:\/\//.test(href);
+            if (!isExternal) return <a href={href}>{children}</a>;
+            return (
+              <a
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-baseline gap-0.5"
+              >
+                {children}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="inline h-3.5 w-3.5 self-center text-sky-500"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                  <path d="M15 3h6v6" />
+                  <path d="M10 14 21 3" />
+                </svg>
+              </a>
+            );
           },
           img({ src, alt }) {
             if (!src || typeof src !== "string") return null;
