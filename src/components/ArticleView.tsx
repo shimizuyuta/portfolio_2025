@@ -119,7 +119,7 @@ export function ArticleView({
           {publishedDate && (
             <time
               dateTime={publishedAt ?? undefined}
-              className="text-xs text-gray-400 ml-auto"
+              className="text-xs text-gray-400 w-full md:w-auto md:ml-auto"
             >
               {publishedDate}
             </time>
@@ -135,7 +135,7 @@ export function ArticleView({
         {headings.length > 0 && (
           <nav
             aria-label="目次"
-            className="mb-10 rounded-xl border border-gray-200 bg-gray-50 px-6 py-5"
+            className="mb-10 rounded-xl border border-gray-200 bg-gray-50 px-4 py-5 md:px-6"
           >
             <p className="text-sm font-bold text-gray-700 mb-3">目次</p>
             <div className="space-y-2">
