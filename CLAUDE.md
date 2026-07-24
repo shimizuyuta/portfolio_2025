@@ -44,6 +44,7 @@ No test framework is configured.
 | `.claude/rules/vercel.md`   | Vercel デプロイ／CI ステータス確認の前 |
 | `.claude/rules/env.md`      | 環境変数を追加・変更する前 |
 | `.claude/rules/docs.md`     | 設計に関わる実装の前（`docs/design/` 更新を伴う作業） |
+| `.claude/rules/article-images.md` | 記事の図・画像を生成／配置する作業の前 |
 
 破壊的な git コマンド（`push --force` / `reset --hard` / `clean -fd`）は `.claude/settings.json` の `permissions.deny` でブロック済み。
 
