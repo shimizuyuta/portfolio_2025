@@ -130,7 +130,7 @@ export function KnowledgeClient({ articles }: { articles: Article[] }) {
                 className="group block rounded-xl overflow-hidden border border-gray-200 bg-white hover:shadow-lg transition-shadow duration-200"
               >
                 {/* サムネイル */}
-                <div className="relative h-36 overflow-hidden">
+                <div className="relative aspect-[1200/630] overflow-hidden">
                   {article.thumbnail_url ? (
                     <Image
                       src={article.thumbnail_url}
