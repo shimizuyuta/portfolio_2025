@@ -127,9 +127,9 @@ const PROSE_CLASSES = [
   "[&_blockquote_p]:before:content-none [&_blockquote_p]:after:content-none",
   // 太字(**): キーワード強調。太さのみ（マーカーは付けない）
   "prose-strong:text-gray-900",
-  // マーカー(==...==→<mark>): 重要な一文のハイライト。黒背景＋白文字で強調
+  // マーカー(==...==→<mark>): 重要な一文のハイライト。黄色の蛍光ペン風（黄背景＋黒文字）
   //   複数行に折り返しても背景が各行に付くよう box-decoration-clone を指定
-  "[&_mark]:bg-gray-900 [&_mark]:text-white [&_mark]:box-decoration-clone [&_mark]:rounded [&_mark]:px-1.5 [&_mark]:py-0.5",
+  "[&_mark]:bg-yellow-200 [&_mark]:text-gray-900 [&_mark]:box-decoration-clone [&_mark]:rounded-sm [&_mark]:px-1 [&_mark]:py-0.5",
   // リスト: マーカーを sky 色に
   "prose-li:marker:text-sky-500",
   // リンク・コード・表（既存の対策を維持）
