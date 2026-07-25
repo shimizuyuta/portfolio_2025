@@ -7,6 +7,7 @@ import rehypeSlug from "rehype-slug";
 import remarkFootnotes from "remark-footnotes";
 import remarkGfm from "remark-gfm";
 import { ArticleLinkCard } from "@/components/article/ArticleLinkCard";
+import { CodeBlock } from "@/components/article/CodeBlock";
 import type { ArticleCard } from "@/lib/knowledge";
 
 // 記事本文の描画。記事詳細ページと /admin のプレビューで共有する。
@@ -125,9 +126,9 @@ const PROSE_CLASSES = [
   "[&_blockquote_p]:before:content-none [&_blockquote_p]:after:content-none",
   // 太字(**): キーワード強調。太さのみ（マーカーは付けない）
   "prose-strong:text-gray-900",
-  // マーカー(==...==→<mark>): 重要な一文のハイライト。sky のマーカー風下地
-  //   ブラウザ既定の黄色背景を bg-transparent で消し、下地グラデを敷く
-  "[&_mark]:bg-transparent [&_mark]:bg-[linear-gradient(transparent_65%,#bae6fd_65%)] [&_mark]:box-decoration-clone [&_mark]:text-inherit",
+  // マーカー(==...==→<mark>): 重要な一文のハイライト。黒背景＋白文字で強調
+  //   複数行に折り返しても背景が各行に付くよう box-decoration-clone を指定
+  "[&_mark]:bg-gray-900 [&_mark]:text-white [&_mark]:box-decoration-clone [&_mark]:rounded [&_mark]:px-1.5 [&_mark]:py-0.5",
   // リスト: マーカーを sky 色に
   "prose-li:marker:text-sky-500",
   // リンク・コード・表（既存の対策を維持）
@@ -196,6 +197,11 @@ export function ArticleBody({
                 </svg>
               </a>
             );
+          },
+          // コードブロックはコピーボタン付きの CodeBlock で描画する。
+          // children（<code>）をそのまま渡し、内部で <pre> に包む。
+          pre({ children }) {
+            return <CodeBlock>{children}</CodeBlock>;
           },
           img({ src, alt }) {
             if (!src || typeof src !== "string") return null;
