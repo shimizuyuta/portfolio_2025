@@ -114,6 +114,7 @@ const PROSE_CLASSES = [
   // 引用ボーダー色は prose の変数を上書きして指定（specificity 争いを避ける）
   "prose prose-neutral md:prose-lg max-w-none break-words",
   "[--tw-prose-body:#1f2937] [--tw-prose-quote-borders:#38bdf8]",
+  "[--tw-prose-pre-bg:#f6f8fa] [--tw-prose-pre-code:#1f2937]",
   "prose-p:my-6 prose-p:leading-[1.8]",
   "prose-headings:font-bold prose-headings:scroll-mt-24",
   // h2: テーマカラー(sky-600)の塗り帯・白文字・角丸（セクションの開始を明確化）
@@ -134,6 +135,8 @@ const PROSE_CLASSES = [
   // リンク・コード・表（既存の対策を維持）
   "prose-a:text-sky-600 prose-a:no-underline hover:prose-a:underline",
   "prose-code:text-sky-700 prose-code:bg-sky-50 prose-code:px-1 prose-code:rounded",
+  // コードブロック内の code はインラインコード用の青/背景を打ち消し、pre の色を継承
+  "[&_pre_code]:bg-transparent [&_pre_code]:text-inherit [&_pre_code]:p-0",
   "prose-pre:overflow-x-auto prose-pre:text-sm",
   // 表は prose のデフォルトを使わず、下の TABLE_CLASSES で描画する（not-prose）。
 ].join(" ");

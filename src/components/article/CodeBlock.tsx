@@ -31,8 +31,8 @@ export function CodeBlock({ children }: { children: React.ReactNode }) {
         aria-label={copied ? "コピーしました" : "コードをコピー"}
         className={cn(
           "absolute right-2 top-2 inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs",
-          "border border-white/20 bg-white/10 text-white/90 backdrop-blur-sm transition",
-          "opacity-0 hover:bg-white/20 focus-visible:opacity-100 group-hover:opacity-100",
+          "border border-gray-300 bg-white/80 text-gray-600 backdrop-blur-sm transition",
+          "opacity-0 hover:bg-white hover:text-gray-900 focus-visible:opacity-100 group-hover:opacity-100",
         )}
       >
         {copied ? (
