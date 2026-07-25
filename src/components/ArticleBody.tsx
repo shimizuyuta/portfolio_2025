@@ -133,7 +133,26 @@ const PROSE_CLASSES = [
   // リンク・コード・表（既存の対策を維持）
   "prose-a:text-sky-600 prose-a:no-underline hover:prose-a:underline",
   "prose-code:text-sky-700 prose-code:bg-sky-50 prose-code:px-1 prose-code:rounded",
-  "prose-pre:overflow-x-auto prose-pre:text-sm prose-table:block prose-table:overflow-x-auto",
+  "prose-pre:overflow-x-auto prose-pre:text-sm",
+  // 表は prose のデフォルトを使わず、下の TABLE_CLASSES で描画する（not-prose）。
+].join(" ");
+
+// 記事本文の表スタイル（SWELL 風）。prose のデフォルト表装飾を not-prose で切り、
+// ここで一括定義する。記事間で大きさ・見た目を揃えるのが目的。
+//   - 見出し行: sky の淡い背景・太字・中央寄せ（SWELL のヘッダー表現）
+//   - セル: 内側の罫線＋外枠は wrapper の border で角丸フレーム化、偶数行に淡いゼブラ
+//   - SP: セルを nowrap にして1行に保ち、自然幅＋横スクロール（角丸ボックス内でスクロール）
+//   - md+: w-full + table-fixed（列幅均等）＋セル内折り返しで、記事間の表幅を統一する
+const TABLE_CLASSES = [
+  "not-prose my-6 overflow-x-auto rounded-lg border border-gray-300 text-sm md:text-base",
+  "[&_table]:min-w-full [&_table]:border-collapse md:[&_table]:w-full md:[&_table]:table-fixed",
+  "[&_th]:bg-sky-50 [&_th]:px-4 [&_th]:py-2.5 [&_th]:text-center [&_th]:font-bold [&_th]:text-gray-900",
+  "[&_td]:px-4 [&_td]:py-2.5 [&_td]:align-top [&_td]:text-gray-800",
+  "[&_th]:border-b [&_th]:border-gray-200 [&_td]:border-b [&_td]:border-gray-200",
+  "[&_th:not(:last-child)]:border-r [&_td:not(:last-child)]:border-r",
+  "[&_tr:last-child_td]:border-b-0",
+  "[&_tbody_tr:nth-child(even)]:bg-gray-50",
+  "[&_th]:whitespace-nowrap [&_td]:whitespace-nowrap md:[&_th]:whitespace-normal md:[&_td]:whitespace-normal",
 ].join(" ");
 
 // linkCards: 本文中の内部リンク slug → 記事メタ のマップ（Server 側で事前取得）。
@@ -219,6 +238,16 @@ export function ArticleBody({
                   </figcaption>
                 )}
               </figure>
+            );
+          },
+          // 表は角丸ボーダーの外枠で包む。SP はこの枠内で横スクロールする。
+          // 装飾は TABLE_CLASSES（not-prose）で一括指定し、prose の既定表スタイルと
+          // 二重にならないようにする。
+          table({ children }) {
+            return (
+              <div className={TABLE_CLASSES}>
+                <table>{children}</table>
+              </div>
             );
           },
         }}
