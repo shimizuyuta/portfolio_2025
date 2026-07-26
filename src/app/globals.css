@@ -132,6 +132,29 @@
 }
 
 @layer utilities {
+  /* 横スクロール可能な領域（記事の表など）で、スクロールバーを常時表示する。
+     WebKit はオーバーレイをやめて古典的なバーになり、オーバーフロー時は常に見える。
+     iOS Safari は ::-webkit-scrollbar 非対応のため常時表示にはならない点に注意。 */
+  .table-scroll {
+    scrollbar-width: thin; /* Firefox */
+    scrollbar-color: #9ca3af #f3f4f6; /* thumb / track (Firefox) */
+  }
+  .table-scroll::-webkit-scrollbar {
+    height: 8px;
+    -webkit-appearance: none;
+  }
+  .table-scroll::-webkit-scrollbar-track {
+    background: #f3f4f6;
+    border-radius: 9999px;
+  }
+  .table-scroll::-webkit-scrollbar-thumb {
+    background: #9ca3af;
+    border-radius: 9999px;
+  }
+  .table-scroll::-webkit-scrollbar-thumb:hover {
+    background: #6b7280;
+  }
+
   .animate-pulse {
     animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }

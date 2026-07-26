@@ -147,8 +147,13 @@ const PROSE_CLASSES = [
 //   - セル: 内側の罫線＋外枠は wrapper の border で角丸フレーム化、偶数行に淡いゼブラ
 //   - SP: セルを nowrap にして1行に保ち、自然幅＋横スクロール（角丸ボックス内でスクロール）
 //   - md+: w-full + table-fixed（列幅均等）＋セル内折り返しで、記事間の表幅を統一する
+//   - スクロールバー: ::-webkit-scrollbar をカスタム指定するとオーバーレイをやめ、
+//     オーバーフロー時（主に SP 幅）は横スクロールバーが常時表示される。
+//     overflow-x-auto のままなので、表が収まる md+ では空のバーは出ない。
 const TABLE_CLASSES = [
   "not-prose my-6 overflow-x-auto rounded-lg border border-gray-300 text-sm md:text-base",
+  // 横スクロールバーを常時表示（スクロール可能なことを伝える）。実体は globals.css の .table-scroll
+  "table-scroll",
   "[&_table]:min-w-full [&_table]:border-collapse md:[&_table]:w-full md:[&_table]:table-fixed",
   "[&_th]:bg-sky-50 [&_th]:px-4 [&_th]:py-2.5 [&_th]:text-center [&_th]:font-bold [&_th]:text-gray-900",
   "[&_td]:px-4 [&_td]:py-2.5 [&_td]:align-top [&_td]:text-gray-800",
